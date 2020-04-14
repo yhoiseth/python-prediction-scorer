@@ -32,6 +32,6 @@ print(brier.calculate(george)) # Decimal('0.72')
 print(str(brier.calculate(kramer))) # '0.245'
 ```
 
-As you can see, Kramer's score is _lower_ than George's. How can a better prediction give a lower score? You see, with Brier scores, the lower, the better. To help your intuition, you can consider a Brier score as the _distance from the truth_. (A perfect prediction yields 0, while the worst possible prediction yields 2.)
+As you can see, Kramer's score is _lower_ than George's. How can a better prediction give a lower score? The thing is, with Brier scores, the lower, the better. To help your intuition, you can consider a Brier score as the _distance from the truth_. (A perfect prediction yields 0, while the worst possible prediction yields 2.)
 
 Questions where the order of alternatives matters is currently not supported.
