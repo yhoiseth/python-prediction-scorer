@@ -1,0 +1,2 @@
+class Brier:
+    pass

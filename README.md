@@ -13,16 +13,16 @@ Considering that Trump won, Kramer's prediction was better than George's. But ho
 The following code scores the predictions.
 
 ```python
-from predictionscorer.predictions import Prediction
-from predictionscorer.calculators import Brier # Brier scoring is arguably the most common way of scoring predictions.
+import predictionscorer.predictions
+import predictionscorer.calculators
 
-george = Prediction(probabilities=[60, 40]), # George put Clinton at 60 % and Trump at 40 %.
-kramer = Prediction(probabilities=[35, 65]), # Kramer put Clinton at 35 % and Trump at 65 %.
+george = predictions.Prediction(probabilities=[60, 40]), # George put Clinton at 60 % and Trump at 40 %.
+kramer = predictions.Prediction(probabilities=[35, 65]), # Kramer put Clinton at 35 % and Trump at 65 %.
 
-calculator = Brier(true_alternative_index=1) # Alternative 0 is Hillary Clinton. Alternative 1 is Donald Trump.
+calculator = calculator.Brier(true_alternative_index=1) # Alternative 0 is Hillary Clinton. Alternative 1 is Donald Trump.
 
-print(Brier.calculate(george)) # 0.72
-print(Brier.calculate(kramer)) # 0.245
+print(calculator.calculate(george)) # 0.72
+print(calculator.calculate(kramer)) # 0.245
 ```
 
 As you can see, Kramer's score is _lower_ than George's. With Brier scores, the lower, the better. To help your intuition, you can consider a Brier score as the _distance from the truth_. (A perfect prediction yields 0, while the worst possible prediction yields 2.)

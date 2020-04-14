@@ -17,3 +17,11 @@
 # Check pre-commit hooks
 
 `pre-commit run --all-files`
+
+# Prepare for tests
+
+`pip install -e .`
+
+# Run tests
+
+`pytest`
