@@ -17,10 +17,16 @@ The following code scores the predictions.
 from predictionscorer import predictions
 from predictionscorer import calculators
 
-george = predictions.Prediction(probabilities=[60, 40]) # George put Clinton at 60 % and Trump at 40 %.
-kramer = predictions.Prediction(probabilities=[35, 65]) # Kramer put Clinton at 35 % and Trump at 65 %.
+george = predictions.Prediction(
+    probabilities=[60, 40] # George put Clinton at 60 % and Trump at 40 %.
+)
+kramer = predictions.Prediction(
+    probabilities=[35, 65] # Kramer put Clinton at 35 % and Trump at 65 %.
+)
 
-calculator = calculators.Brier(true_alternative_index=1) # Alternative 0 is Hillary Clinton. Alternative 1 is Donald Trump.
+calculator = calculators.Brier(
+    true_alternative_index=1 # Alternative 0 is Hillary Clinton. Alternative 1 is Donald Trump.
+)
 
 print(calculator.calculate(george)) # Decimal('0.72')
 print(str(calculator.calculate(kramer))) # '0.245'
