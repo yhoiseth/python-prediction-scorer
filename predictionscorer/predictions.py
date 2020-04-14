@@ -1,2 +1,6 @@
+import typing
+
+
 class Prediction:
-    pass
+    def __init__(self, probabilities: typing.List[int]):
+        pass
