@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 setup(
     author="Yngve Hoiseth",
@@ -7,7 +7,7 @@ setup(
     include_package_data=True,
     license="MIT",
     name="predictionscorer",
-    packages="predictionscorer",
+    packages=find_packages(),
     url="https://github.com/yhoiseth/python-prediction-scorer",
     version="0.1.0",
     zip_safe=False,
