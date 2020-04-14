@@ -1,7 +1,6 @@
 import decimal
 
-from predictionscorer import predictions
-from predictionscorer import calculators
+from predictionscorer import calculators, predictions
 
 
 class TestBrier:
