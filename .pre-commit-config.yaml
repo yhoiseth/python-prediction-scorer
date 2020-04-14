@@ -4,3 +4,12 @@ repos:
     hooks:
       - id: black
         language_version: python3.7
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        stages: [commit]
+        language: system
+        entry: mypy predictionscorer
+        types: [python]
+        pass_filenames: false
