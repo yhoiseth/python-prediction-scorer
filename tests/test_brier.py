@@ -6,11 +6,11 @@ from predictionscorer import (
 
 class TestBrier:
     def test_readme(self):
-        george = (
-            predictions.Prediction(probabilities=[60, 40]),
+        george = predictions.Prediction(
+            probabilities=[60, 40]
         )  # George put Clinton at 60 % and Trump at 40 %.
-        kramer = (
-            predictions.Prediction(probabilities=[35, 65]),
+        kramer = predictions.Prediction(
+            probabilities=[35, 65]
         )  # Kramer put Clinton at 35 % and Trump at 65 %.
 
         calculator = calculators.Brier(
