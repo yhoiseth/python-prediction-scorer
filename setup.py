@@ -4,6 +4,7 @@ setup(
     author="Yngve Hoiseth",
     author_email="yngve@hoiseth.net",
     description="Python library to score predictions",
+    include_package_data=True,
     license="MIT",
     name="predictionscorer",
     packages="predictionscorer",
