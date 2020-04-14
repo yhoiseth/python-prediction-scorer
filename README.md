@@ -14,8 +14,7 @@ Considering that Trump won, Kramer's prediction was better than George's. But ho
 The following code scores the predictions.
 
 ```python
-from predictionscorer import predictions
-from predictionscorer import calculators
+from predictionscorer import calculators, predictions
 
 george = predictions.Prediction(
     probabilities=[60, 40] # George put Clinton at 60 % and Trump at 40 %.
