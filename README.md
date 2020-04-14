@@ -1,4 +1,5 @@
 ![Code style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)
+![tests](https://github.com/yhoiseth/python-prediction-scorer/workflows/Python%20package/badge.svg)
 
 # Python Prediction Scorer
 
