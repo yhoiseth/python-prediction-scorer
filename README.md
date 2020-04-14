@@ -2,13 +2,15 @@
 
 # Python Prediction Scorer
 
-## Introduction
+The purpose of this library is to help you _compare predictions_. 
 
-The purpose of this library is to help you _compare predictions_. Let's, for example, say that George and Kramer were predicting the outcome of the 2016 US presidential election. George said that Donald Trump had a 40 percent probability of winning, while Kramer put his chances at 65 percent.
+## Usage
+
+Let's, for example, say that George and Kramer were predicting the outcome of the 2016 US presidential election. George said that Donald Trump had a 40 percent probability of winning, while Kramer put his chances at 65 percent.
 
 Considering that Trump won, Kramer's prediction was better than George's. But how much better? In order to find out, we must assign numerical scores to their predictions and compare them. That's what this library does.
 
-## Usage
+The following code scores the predictions.
 
 ```python
 from predictionscorer.predictions import Prediction
