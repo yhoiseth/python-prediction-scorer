@@ -1,3 +1,5 @@
+import decimal
+
 from predictionscorer import predictions
 from predictionscorer import (
     calculators,
@@ -17,5 +19,5 @@ class TestBrier:
             true_alternative_index=1
         )  # Alternative 0 is Hillary Clinton. Alternative 1 is Donald Trump.
 
-        assert calculator.calculate(george) == 0.72
-        assert calculator.calculate(kramer) == 0.245
+        assert calculator.calculate(george) == decimal.Decimal("0.72")
+        assert calculator.calculate(kramer) == decimal.Decimal("0.245")

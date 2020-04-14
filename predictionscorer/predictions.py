@@ -2,5 +2,7 @@ import typing
 
 
 class Prediction:
-    def __init__(self, probabilities: typing.List[int]):
-        pass
+    probabilities: typing.List[int]
+
+    def __init__(self, probabilities: typing.List[int]) -> None:
+        self.probabilities = probabilities
