@@ -1,4 +1,8 @@
 repos:
+  - repo: https://github.com/asottile/seed-isort-config
+    rev: v2.1.1
+    hooks:
+      - id: seed-isort-config
   - repo: local
     hooks:
       - id: isort
