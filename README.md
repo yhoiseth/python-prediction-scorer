@@ -18,13 +18,15 @@ Considering that Trump won, Kramer's prediction was better than George's. But ho
 The following code scores the predictions.
 
 ```python
+import decimal
+
 from predictionscorer import calculators, predictions
 
 george = predictions.Prediction(
-    probabilities=[60, 40] # George put Clinton at 60 % and Trump at 40 %.
+    probabilities=[decimal.Decimal(60), decimal.Decimal(40)] # George put Clinton at 60 % and Trump at 40 %.
 )
 kramer = predictions.Prediction(
-    probabilities=[35, 65] # Kramer put Clinton at 35 % and Trump at 65 %.
+    probabilities=[decimal.Decimal(35), decimal.Decimal(65)] # Kramer put Clinton at 35 % and Trump at 65 %.
 )
 
 brier = calculators.Brier(
@@ -42,13 +44,15 @@ As you can see, Kramer's score is _lower_ than George's. How can a better predic
 The above example is binary — there are only two alternatives. But sometimes you need more. For example, you might want to add an "other" alternative:
 
 ```python
+import decimal
+
 from predictionscorer import calculators, predictions
 
 prediction = predictions.Prediction(
     probabilities=[
-        55, # Clinton
-        35, # Trump
-        10, # Other
+        decimal.Decimal(55), # Clinton
+        decimal.Decimal(35), # Trump
+        decimal.Decimal(10), # Other
     ]
 )
 
