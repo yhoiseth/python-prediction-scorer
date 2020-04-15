@@ -25,3 +25,17 @@ class TestBrier:
         )
         brier = calculators.Brier(true_alternative_index=1,)
         assert brier.calculate(prediction) == decimal.Decimal("0.735")
+
+    def test_order_matters(self):
+        prediction = predictions.Prediction(
+            probabilities=[
+                decimal.Decimal(25),
+                decimal.Decimal(25),
+                decimal.Decimal(50),
+                decimal.Decimal(0),
+            ],
+        )
+
+        brier = calculators.Brier(true_alternative_index=1, order_matters=True,)
+
+        assert brier.calculate(prediction) == decimal.Decimal("0.208")
