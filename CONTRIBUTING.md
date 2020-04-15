@@ -25,3 +25,17 @@
 # Run tests
 
 `pytest`
+
+# Create release
+
+## Update version number in
+
+Edit in `setup.py`.
+
+## Create distribution
+
+`python setup.py sdist`
+
+## Publish
+
+`twine upload dist/*`

@@ -3,7 +3,11 @@
 
 # Python Prediction Scorer
 
-The purpose of this library is to help you compare predictions. 
+The purpose of this library is to help you compare predictions.
+
+## Installation
+
+`pip install predictionscorer` 
 
 ## Usage
 
