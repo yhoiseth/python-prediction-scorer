@@ -31,9 +31,9 @@ class TestBrier:
             probabilities=[
                 decimal.Decimal(25),
                 decimal.Decimal(25),
-                decimal.Decimal(50),
-                decimal.Decimal(0),
+                decimal.Decimal(30),
+                decimal.Decimal(20),
             ],
         )
-        brier = calculators.Brier(true_alternative_index=1, order_matters=True,)
-        assert brier.calculate(prediction) == decimal.Decimal("0.208")
+        ordered_categorical = calculators.OrderedCategorical(true_alternative_index=1)
+        assert ordered_categorical.calculate(prediction) == decimal.Decimal("0.2350")

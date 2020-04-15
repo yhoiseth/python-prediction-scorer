@@ -89,17 +89,16 @@ prediction = predictions.Prediction(
     probabilities=[
         decimal.Decimal(25),
         decimal.Decimal(25),
-        decimal.Decimal(50),
-        decimal.Decimal(0),
+        decimal.Decimal(30),
+        decimal.Decimal(20),
     ],
 )
 
-brier = calculators.Brier(
+ordered_categorical = calculators.OrderedCategorical(
     true_alternative_index=1,
-    order_matters=True,
 )
 
-print(str(brier.calculate(prediction))) # '0.208'
+print(str(ordered_categorical.calculate(prediction))) # '0.2350'
 ```
 
 ## Changelog
