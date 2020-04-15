@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Changelog.
 - Documentation and test for Brier calculation with more than two alternatives.
 
+### Changed
+- Decimal input for probabilities instead of integer.
+
 ## [0.1.1] - 2020-04-15
 ### Added
 - Python version requirement (greater than or equal to 3.7) in `setup.py`.
