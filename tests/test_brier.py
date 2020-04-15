@@ -35,7 +35,5 @@ class TestBrier:
                 decimal.Decimal(0),
             ],
         )
-
         brier = calculators.Brier(true_alternative_index=1, order_matters=True,)
-
         assert brier.calculate(prediction) == decimal.Decimal("0.208")
