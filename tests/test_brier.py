@@ -10,3 +10,8 @@ class TestBrier:
         calculator = calculators.Brier(true_alternative_index=1)
         assert calculator.calculate(george) == decimal.Decimal("0.72")
         assert calculator.calculate(kramer) == decimal.Decimal("0.245")
+
+    def test_readme_example_more_than_two_alternatives(self):
+        prediction = predictions.Prediction(probabilities=[55, 35, 10,])
+        brier = calculators.Brier(true_alternative_index=1,)
+        assert brier.calculate(prediction) == decimal.Decimal("0.735")
