@@ -32,6 +32,10 @@
 
 Edit in `setup.py`.
 
+## Update Changelog
+
+[CHANGELOG.md](CHANGELOG.md)
+
 ## Create distribution
 
 `python setup.py sdist`
@@ -39,3 +43,7 @@ Edit in `setup.py`.
 ## Publish
 
 `twine upload dist/*`
+
+## Create tag
+
+`git tag -a v[version number] -m "version number"`
