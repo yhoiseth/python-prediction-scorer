@@ -28,7 +28,7 @@
 
 # Create release
 
-## Update version number in
+## Update version number
 
 Edit in `setup.py`.
 
