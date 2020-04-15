@@ -47,3 +47,9 @@ Edit in `setup.py`.
 ## Create tag
 
 `git tag -a v[version number] -m "version number"`
+
+## Create GitHub release
+
+1. [Create new release](https://github.com/yhoiseth/python-prediction-scorer/releases/new)
+2. Use the tag — e.g. `v1.0.0` as the release title.
+3. Copy-paste the changelog entry into the description.
