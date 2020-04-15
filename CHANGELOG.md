@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - Changelog.
 - Documentation and test for Brier calculation with more than two alternatives.
+- Assertions for creating `Prediction` instances:
+   - Two or more probabilities
+   - Sum of probabilities must equal 100
 
 ### Changed
 - Decimal input for probabilities instead of integer.
