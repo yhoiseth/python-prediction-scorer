@@ -63,7 +63,42 @@ brier = calculators.Brier(
 print(str(brier.calculate(prediction))) # '0.735'
 ```
 
-Questions where the order of alternatives matters is currently not supported.
+#### If the order matters
+
+Sometimes, the ordering of alternatives matters. For example, consider the following question:
+
+> What will the closing value of the S&P 500 stock market index be on 2019-12-31?
+>
+> | Index | Alternative                                  |
+> |-------|----------------------------------------------|
+> | 0     | Lower than 3,000.00                          |
+> | 1     | Higher than 3,000.00 and lower than 3,500.00 |
+> | 2     | Higher than 3,500.00 and lower than 4,000.00 |
+> | 3     | Higher than 4,000.00                         |
+
+We [now know that the answer is 3,230.78](https://us.spindices.com/indices/equity/sp-500). This means that, among our alternatives, the one with index 1 turned out to be correct. But notice that "Higher than 3,500.00 and lower than 4,000.00" (index 2) is closer to the right answer than "Higher than 4,000.00" (index 3). In such cases, the regular Brier score is a poor measure of forecasting accuracy. Instead, we use [the ordered categorical scoring rule](https://goodjudgment.io/Training/Ordered_Categorical_Scoring_Rule.pdf):
+
+```python
+import decimal
+
+from predictionscorer import calculators, predictions
+
+prediction = predictions.Prediction(
+    probabilities=[
+        decimal.Decimal(25),
+        decimal.Decimal(25),
+        decimal.Decimal(50),
+        decimal.Decimal(0),
+    ],
+)
+
+brier = calculators.Brier(
+    true_alternative_index=1,
+    order_matters=True,
+)
+
+print(str(brier.calculate(prediction))) # '0.208'
+```
 
 ## Changelog
 
