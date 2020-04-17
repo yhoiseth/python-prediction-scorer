@@ -15,7 +15,13 @@ For example, say that George and Kramer were predicting the outcome of the 2016 
 
 Considering that Trump won, Kramer's prediction was better than George's. But how much better? In order to find out, we must assign numerical scores to their predictions and compare them. That's what this library does.
 
-The following code scores the predictions.
+There are several ways to score predictions like these. Here, we are using [Brier scores](https://www.gjopen.com/faq#faq4). Below, you can see a chart of what the Brier score would be given a range of different probabilities for the alternative that turned out to be true.
+
+![Brier scores for probabilities 0-100](docs/images/brier-scores-probabilities-0-100.svg)
+
+(See [plot.py](plot.py) for the code that generated this chart.)
+
+Now, back to our election example. The following code scores the predictions.
 
 ```python
 import decimal
