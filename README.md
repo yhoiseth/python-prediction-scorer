@@ -129,6 +129,6 @@ To achieve this, I've made the following decisions:
 
 ## Contributing
 
-Please [open an issue on GitHub](https://github.com/yhoiseth/python-prediction-scorer/issues/new) if you discover any problems or suggestions for improvement.
+Please [open an issue on GitHub](https://github.com/yhoiseth/python-prediction-scorer/issues/new) if you discover any problems or potential for improvement.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
