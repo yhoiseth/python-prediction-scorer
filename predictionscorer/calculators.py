@@ -12,6 +12,10 @@ class Base:
 
 
 class Brier(Base):
+    """
+    Calculates scores when the order of predictions does not matter.
+    """
+
     def calculate(self, prediction: predictions.Prediction) -> decimal.Decimal:
         score = decimal.Decimal("0.00")
         for index, probability in enumerate(prediction.probabilities):
@@ -24,19 +28,46 @@ class Brier(Base):
 
 
 class OrderedCategorical(Base):
+    """
+    Calculates scores when the order of predictions matters.
+    """
+
     def calculate(self, prediction: predictions.Prediction) -> decimal.Decimal:
         total = decimal.Decimal("0.00")
         for index, probability in enumerate(prediction.probabilities):
             if index == len(prediction.probabilities) - 1:
+                """
+                We need one fewer pair than the number of probabilities. E.g. if there are three — A, B and C, the pairs are:
+                
+                - A and BC
+                - AB and C
+                """
                 break
-            first_part = prediction.probabilities[: (index + 1)]
-            second_part = prediction.probabilities[(index + 1) :]
-            sum_first_part = decimal.Decimal(sum(first_part))
-            sum_second_part = decimal.Decimal(sum(second_part))
-            pair = predictions.Prediction([sum_first_part, sum_second_part])
-            true_alternative_index = 0 if index > self.true_alternative_index else 1
-            brier_calculator = Brier(true_alternative_index=true_alternative_index)
-            brier_score = brier_calculator.calculate(pair)
-            total += brier_score
-        average = total / decimal.Decimal(len(prediction.probabilities) - 1)
-        return average
+            pair = predictions.Prediction(
+                self._split_probabilities(index, prediction.probabilities)
+            )
+            score = self._score_pair(index, pair)
+            total += score
+        return self._average(total, decimal.Decimal(len(prediction.probabilities) - 1))
+
+    @staticmethod
+    def _average(total: decimal.Decimal, count: decimal.Decimal) -> decimal.Decimal:
+        return total / count
+
+    def _score_pair(self, index: int, pair: predictions.Prediction) -> decimal.Decimal:
+        true_alternative_index = 0 if index > self.true_alternative_index else 1
+        brier_calculator = Brier(true_alternative_index=true_alternative_index)
+        return brier_calculator.calculate(pair)
+
+    @staticmethod
+    def _split_probabilities(
+        index: int, probabilities: typing.List[decimal.Decimal]
+    ) -> typing.List[decimal.Decimal]:
+        """
+        Given an index and a list of more than two probabilities, return a pair of grouped probabilities.
+        """
+        first_part = probabilities[: (index + 1)]
+        second_part = probabilities[(index + 1) :]
+        sum_first_part = decimal.Decimal(sum(first_part))
+        sum_second_part = decimal.Decimal(sum(second_part))
+        return [sum_first_part, sum_second_part]
