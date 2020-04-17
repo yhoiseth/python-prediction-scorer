@@ -78,7 +78,7 @@ Sometimes, the ordering of alternatives matters. For example, consider the follo
 
 We [now know that the answer is 3,230.78](https://us.spindices.com/indices/equity/sp-500). This means that, among our alternatives, the one with index 1 turned out to be correct. But notice that "Higher than 3,500.00 and lower than 4,000.00" (index 2) is closer to the right answer than "Higher than 4,000.00" (index 3). In such cases, the regular Brier score is a poor measure of forecasting accuracy. Instead, we use [the ordered categorical scoring rule](https://goodjudgment.io/Training/Ordered_Categorical_Scoring_Rule.pdf).
 
-The code below should look familiar, with the exception of `order_matters=True` in the calculator constructor.
+The code below should look familiar, except that we are now using the `OrderedCategorical` calculator instead of the `Brier` calculator.
 
 ```python
 import decimal
