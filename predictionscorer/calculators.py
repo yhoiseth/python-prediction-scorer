@@ -58,6 +58,7 @@ class OrderedCategorical(Base):
         return total / decimal.Decimal(count)
 
     def _score_pair(self, index: int, pair: predictions.Prediction) -> decimal.Decimal:
+        assert len(pair.probabilities) == 2, "There must be exactly two probabilities."
         true_alternative_index = 0 if index > self.true_alternative_index else 1
         brier_calculator = Brier(true_alternative_index=true_alternative_index)
         return brier_calculator.calculate(pair)
