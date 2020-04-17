@@ -23,4 +23,8 @@ for prediction in all_predictions:
 
 
 plt.plot(x_axis_data, y_axis_data)
-plt.show()
+plt.xlabel("Probability")
+plt.ylabel("Brier score if true")
+plt.title("Brier scores for probabilities 0-100")
+plt.draw()
+plt.savefig("docs/images/plot.svg")
