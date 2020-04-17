@@ -49,14 +49,15 @@ class OrderedCategorical(Base):
             )
             score = self._score_pair(index, pair)
             total += score
-        return self._average(total, decimal.Decimal(pair_count))
+        return self._average(total, pair_count)
 
-    def _pair_count(self, probabilities: typing.List[decimal.Decimal]) -> int:
+    @staticmethod
+    def _pair_count(probabilities: typing.List[decimal.Decimal]) -> int:
         return len(probabilities) - 1
 
     @staticmethod
-    def _average(total: decimal.Decimal, count: decimal.Decimal) -> decimal.Decimal:
-        return total / count
+    def _average(total: decimal.Decimal, count: int) -> decimal.Decimal:
+        return total / decimal.Decimal(count)
 
     def _score_pair(self, index: int, pair: predictions.Prediction) -> decimal.Decimal:
         true_alternative_index = 0 if index > self.true_alternative_index else 1
