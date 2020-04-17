@@ -113,7 +113,7 @@ With the design of this library, I am trying to achieve the following goals.
 
 The code should be easy to read, even for people who don't know math or Python well. 
 
-To achieve this, I've opted for an object-oriented design rather than, say, the array approach used by [NumPy](https://numpy.org/). The result is a more verbose and explicit API. I also try to not use advanced Python features which many don't understand.
+To achieve this, I've opted for an object-oriented design rather than, say, the array approach used by [NumPy](https://numpy.org/). The result is a more verbose and explicit API. I also try to not use advanced Python features (which many don't understand).
 
 ### Easy and predictable to use (with modern tools)
 
