@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
    - Two or more probabilities
    - Sum of probabilities must equal 100
 - Calculation of scores for when the order of alternatives matters.
+- Design philosophy documentation
 
 ### Changed
 - Decimal input for probabilities instead of integer.
