@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Assertions for creating `Prediction` instances:
    - Two or more probabilities
    - Sum of probabilities must equal 100
+- Calculation of scores for when the order of alternatives matters.
 
 ### Changed
 - Decimal input for probabilities instead of integer.
