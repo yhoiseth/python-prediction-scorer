@@ -8,7 +8,7 @@
 
 # Install dependencies
 
-`pip install -r dev-requirements.txt`
+`pip-sync`
 
 # Set up pre-commit hooks
 
@@ -25,6 +25,10 @@
 # Run tests
 
 `pytest`
+
+# Update dependencies
+
+`./update-dependencies.sh`
 
 # Create release
 
@@ -46,7 +50,7 @@ Edit in `setup.py`.
 
 ## Create tag
 
-`git tag -a v[version number] -m "version number"`
+`git tag -a v[version number] -m "[version number]"`
 
 ## Create GitHub release
 
