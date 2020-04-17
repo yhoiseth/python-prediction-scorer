@@ -107,7 +107,7 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 ## Design goals and decisions
 
-With this library, I am trying to achieve the following goals.
+With the design of this library, I am trying to achieve the following goals.
 
 ### Easy to read (for as many people as possible)
 
@@ -122,7 +122,7 @@ The library should be easy to use, and the results should be predictable and cor
 To achieve this, I've made the following decisions:
 
 - Type hints and annotations wherever possible (this also makes the code easier to read). Use a modern IDE like [PyCharm](https://www.jetbrains.com/pycharm/) and a type checker like [mypy](http://mypy-lang.org/) to benefit from this.
-- The [Decimal](https://docs.python.org/3/library/decimal.html) data type rather than floats. This makes the library a bit more involved to use, but you won't get unexpected return values like 3.3000000000000003.
+- The [Decimal](https://docs.python.org/3/library/decimal.html) data type rather than floats. This makes the library a bit more involved to use if you don't use decimals in your code, but you won't get unexpected return values like 3.3000000000000003.
 - Assertions so the code fails early instead of producing incorrect results. For example, creating an instance of the `Prediction` class will fail if you pass it probabilities that sum to anything else than 100.
 - Probabilities as percentages, not decimals. Most people think in terms of percentages — e.g. "it's 50 % likely," not "it's 0.50 likely."
 - Automated tests to make sure that we get the expected results.
