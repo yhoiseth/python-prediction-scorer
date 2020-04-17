@@ -35,15 +35,7 @@ class OrderedCategorical(Base):
     def calculate(self, prediction: predictions.Prediction) -> decimal.Decimal:
         total = decimal.Decimal("0.00")
         pair_count = self._pair_count(prediction.probabilities)
-        for index, probability in enumerate(prediction.probabilities):
-            if index == pair_count:
-                """
-                We need one fewer pair than the number of probabilities. E.g. if there are three — A, B and C, the pairs are:
-                
-                - A and BC
-                - AB and C
-                """
-                break
+        for index in range(pair_count):
             pair = predictions.Prediction(
                 self._split_probabilities(index, prediction.probabilities)
             )
@@ -53,6 +45,12 @@ class OrderedCategorical(Base):
 
     @staticmethod
     def _pair_count(probabilities: typing.List[decimal.Decimal]) -> int:
+        """
+        We need one fewer pairs than the number of alternatives. For example, if there are three alternatives — A, B and C, the pairs are:
+
+        - A and BC
+        - AB and C
+        """
         return len(probabilities) - 1
 
     @staticmethod
