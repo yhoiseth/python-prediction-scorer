@@ -132,6 +132,7 @@ To achieve this, I've made the following decisions:
 - Assertions so the code fails early instead of producing incorrect results. For example, creating an instance of the `Prediction` class will fail if you pass it probabilities that sum to anything else than 100.
 - Probabilities as percentages, not decimals. Most people think in terms of percentages — e.g. "it's 50 % likely," not "it's 0.50 likely."
 - Automated tests to make sure that we get the expected results.
+- Immutability where possible in order to prevent bugs.
 
 ## Contributing
 
