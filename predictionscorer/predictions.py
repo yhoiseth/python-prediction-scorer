@@ -7,9 +7,9 @@ class Prediction:
     This class encapsulates probabilities for a given question.
     """
 
-    probabilities: typing.List[decimal.Decimal]
+    probabilities: typing.Tuple[decimal.Decimal, ...]
 
-    def __init__(self, probabilities: typing.List[decimal.Decimal]) -> None:
+    def __init__(self, probabilities: typing.Tuple[decimal.Decimal, ...]) -> None:
         """
         2 or more probabilities are required. Make sure that they sum to 100.
         """

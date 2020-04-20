@@ -11,7 +11,7 @@ all_predictions: typing.List[predictions.Prediction] = []
 
 for index in range(0, 101):
     all_predictions.append(
-        predictions.Prediction([decimal.Decimal(index), decimal.Decimal(100 - index),])
+        predictions.Prediction((decimal.Decimal(index), decimal.Decimal(100 - index)),)
     )
 
 x_axis_data: typing.List[decimal.Decimal] = []
