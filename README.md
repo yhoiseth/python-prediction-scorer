@@ -29,10 +29,10 @@ import decimal
 from predictionscorer import calculators, predictions
 
 george = predictions.Prediction(
-    probabilities=[decimal.Decimal(60), decimal.Decimal(40)] # George put Clinton at 60 % and Trump at 40 %.
+    probabilities=(decimal.Decimal(60), decimal.Decimal(40)) # George put Clinton at 60 % and Trump at 40 %.
 )
 kramer = predictions.Prediction(
-    probabilities=[decimal.Decimal(35), decimal.Decimal(65)] # Kramer put Clinton at 35 % and Trump at 65 %.
+    probabilities=(decimal.Decimal(35), decimal.Decimal(65)) # Kramer put Clinton at 35 % and Trump at 65 %.
 )
 
 brier = calculators.Brier(
@@ -55,11 +55,11 @@ import decimal
 from predictionscorer import calculators, predictions
 
 prediction = predictions.Prediction(
-    probabilities=[
+    probabilities=(
         decimal.Decimal(55), # Clinton
         decimal.Decimal(35), # Trump
         decimal.Decimal(10), # Other
-    ]
+    )
 )
 
 brier = calculators.Brier(
@@ -92,12 +92,12 @@ import decimal
 from predictionscorer import calculators, predictions
 
 prediction = predictions.Prediction(
-    probabilities=[
+    probabilities=(
         decimal.Decimal(25),
         decimal.Decimal(25),
         decimal.Decimal(30),
         decimal.Decimal(20),
-    ],
+    ),
 )
 
 ordered_categorical = calculators.OrderedCategorical(
