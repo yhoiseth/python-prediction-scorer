@@ -44,7 +44,7 @@ class OrderedCategorical(Base):
         return self._average(total, pair_count)
 
     @staticmethod
-    def _pair_count(probabilities: typing.List[decimal.Decimal]) -> int:
+    def _pair_count(probabilities: typing.Tuple[decimal.Decimal, ...]) -> int:
         """
         We need one fewer pairs than the number of alternatives. For example, if there are three alternatives — A, B and C, the pairs are:
 
@@ -65,13 +65,14 @@ class OrderedCategorical(Base):
 
     @staticmethod
     def _split_probabilities(
-        index: int, probabilities: typing.List[decimal.Decimal]
-    ) -> typing.List[decimal.Decimal]:
+        index: int, probabilities: typing.Tuple[decimal.Decimal, ...]
+    ) -> typing.Tuple[decimal.Decimal, decimal.Decimal]:
         """
-        Given an index and a list of more than two probabilities, return a pair of grouped probabilities.
+        Given an index and a tuple of more than two probabilities, return a pair of grouped probabilities.
         """
+        assert len(probabilities) > 2
         first_part = probabilities[: (index + 1)]
         second_part = probabilities[(index + 1) :]
         sum_first_part = decimal.Decimal(sum(first_part))
         sum_second_part = decimal.Decimal(sum(second_part))
-        return [sum_first_part, sum_second_part]
+        return sum_first_part, sum_second_part
