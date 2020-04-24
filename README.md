@@ -107,6 +107,40 @@ ordered_categorical = calculators.OrderedCategorical(
 print(str(ordered_categorical.calculate(prediction))) # '0.2350'
 ```
 
+### Confidence intervals
+
+Questions with discrete alternatives make a lot of sense for things like presidential elections. But when forecasting numbers such as the value of the S&P 500, discrete alternatives have some issues:
+
+1. You need to come up with alternatives.
+2. The alternatives you come up with may affect the forecasts — the forecasters can be affected by the values you choose, for example due to [anchoring](https://en.wikipedia.org/wiki/Anchoring_(cognitive_bias).
+3. Aggregating and visualizing the forecasts can be tricky.
+
+Using [confidence intervals](https://en.wikipedia.org/wiki/Confidence_interval) you can minimize the above problems:
+
+1. You don't need to come up with alternatives. Instead, you simply need to choose a target date. Optionally, you can also ask for specific intervals, e.g. 95 %.
+2. Because you don't present the forecasters with alternatives, you can't bias them that way.
+3. Simple aggregation such as computing the average is straight-forward. For visualization, you can e.g. use a [fan chart](https://en.wikipedia.org/wiki/Fan_chart_(time_series)).
+
+Let's say that you were 90 % confident that the S&P 500 would close between 2,500 and 3,500 inclusive on December 31, 2019. To score this confidence interval:
+
+```python
+import decimal
+
+from predictionscorer import calculators, predictions
+
+prediction = predictions.ConfidenceInterval(
+    confidence=decimal.Decimal(90),
+    high=decimal.Decimal(2500),
+    low=decimal.Decimal(3500),
+)
+
+calculator = calculators.ConfidenceInterval(
+    true_value=decimal.Decimal("3230.78")
+)
+
+print(calculator.calculate(prediction)) # TODO: Find value
+```
+
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md).
