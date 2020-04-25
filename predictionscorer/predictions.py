@@ -1,5 +1,5 @@
-import decimal
 import typing
+from decimal import Decimal
 
 
 class Prediction:
@@ -7,9 +7,9 @@ class Prediction:
     This class encapsulates probabilities for a given question.
     """
 
-    probabilities: typing.Tuple[decimal.Decimal, ...]
+    probabilities: typing.Tuple[Decimal, ...]
 
-    def __init__(self, probabilities: typing.Tuple[decimal.Decimal, ...]) -> None:
+    def __init__(self, probabilities: typing.Tuple[Decimal, ...]) -> None:
         """
         2 or more probabilities are required. Make sure that they sum to 100.
         """

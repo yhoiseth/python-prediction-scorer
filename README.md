@@ -38,15 +38,15 @@ There are several ways to score predictions like these. Here, we are using [Brie
 Now, back to our election example. The following code scores the predictions.
 
 ```python
-import decimal
+from decimal import Decimal
 
 from predictionscorer import calculators, predictions
 
 george = predictions.Prediction(
-    probabilities=(decimal.Decimal(60), decimal.Decimal(40)) # George put Clinton at 60 % and Trump at 40 %.
+    probabilities=(Decimal(60), Decimal(40)) # George put Clinton at 60 % and Trump at 40 %.
 )
 kramer = predictions.Prediction(
-    probabilities=(decimal.Decimal(35), decimal.Decimal(65)) # Kramer put Clinton at 35 % and Trump at 65 %.
+    probabilities=(Decimal(35), Decimal(65)) # Kramer put Clinton at 35 % and Trump at 65 %.
 )
 
 brier = calculators.Brier(
@@ -64,15 +64,15 @@ As you can see, Kramer's score is _lower_ than George's. How can a better predic
 The above example is binary — there are only two alternatives. But sometimes you need more. For example, you might want to add an "other" alternative:
 
 ```python
-import decimal
+from decimal import Decimal
 
 from predictionscorer import calculators, predictions
 
 prediction = predictions.Prediction(
     probabilities=(
-        decimal.Decimal(55), # Clinton
-        decimal.Decimal(35), # Trump
-        decimal.Decimal(10), # Other
+        Decimal(55), # Clinton
+        Decimal(35), # Trump
+        Decimal(10), # Other
     )
 )
 
@@ -101,16 +101,16 @@ We [now know that the answer is 3,230.78](https://us.spindices.com/indices/equit
 The code below should look familiar, except that we are now using the `OrderedCategorical` calculator instead of the `Brier` calculator.
 
 ```python
-import decimal
+from decimal import Decimal
 
 from predictionscorer import calculators, predictions
 
 prediction = predictions.Prediction(
     probabilities=(
-        decimal.Decimal(25),
-        decimal.Decimal(25),
-        decimal.Decimal(30),
-        decimal.Decimal(20),
+        Decimal(25),
+        Decimal(25),
+        Decimal(30),
+        Decimal(20),
     ),
 )
 
