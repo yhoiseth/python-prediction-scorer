@@ -5,6 +5,10 @@
 
 The purpose of this library is to help you compare predictions.
 
+For example, say that George and Kramer were predicting the outcome of the 2016 US presidential election. George said that Donald Trump had a 40 percent probability of winning, while Kramer put Trump's chances at 65 percent.
+
+Considering that Trump won, Kramer's prediction was better than George's. But how much better? In order to find out, we must assign numerical scores to their predictions.
+
 ## Status
 
 Python Prediction Scorer is **not ready for production use**.
@@ -21,13 +25,26 @@ For a thorough introduction to scoring rules, see [Calibration Scoring Rules for
 
 ## Installation
 
-`pip install predictionscorer` 
+`pip install predictionscorer`
 
 ## Usage
 
-For example, say that George and Kramer were predicting the outcome of the 2016 US presidential election. George said that Donald Trump had a 40 percent probability of winning, while Kramer put Trump's chances at 65 percent.
+You can make predictions in two different ways. You can
 
-Considering that Trump won, Kramer's prediction was better than George's. But how much better? In order to find out, we must assign numerical scores to their predictions and compare them. That's what this library does.
+1. assign probabilities to a finite set of _options_; or
+2. make a _confidence interval_.
+
+Because they are scored in different ways, we will deal with them separately. (Scoring of a finite set of options is partially implemented. Confidence interval scoring is not implemented at all.)
+
+### A finite set of options
+
+In the election example above, there is a finite set of options — Clinton and Trump. For scoring these kinds of predictions, we have the following three rules:
+
+1. Brier
+2. Logarithmic (not yet implemented)
+3. Quadratic (not yet implemented)
+
+#### Brier
 
 There are several ways to score predictions like these. Here, we are using [Brier scores](https://www.gjopen.com/faq#faq4). Below, you can see a chart of what the Brier score would be given a range of different probabilities for the alternative that turned out to be true.
 
@@ -59,9 +76,9 @@ print(str(brier.calculate(kramer))) # '0.245'
 
 As you can see, Kramer's score is _lower_ than George's. How can a better prediction give a lower score? The thing is, with Brier scores, the lower, the better. To help your intuition, you can consider a Brier score as the _distance from the truth_. (A perfect prediction yields 0, while the worst possible prediction yields 2.)
 
-### More than two alternatives
+##### More than two alternatives
 
-The above example is binary — there are only two alternatives. But sometimes you need more. For example, you might want to add an "other" alternative:
+The above example is binary — there are only two alternatives. But sometimes you need more. For example, you might want to add an "other" alternative. If so, the tuple of probabilities simply contains another probability:
 
 ```python
 from decimal import Decimal
@@ -83,7 +100,7 @@ brier = calculators.Brier(
 print(str(brier.calculate(prediction))) # '0.735'
 ```
 
-#### If the order matters
+##### If the order matters
 
 Sometimes, the ordering of alternatives matters. For example, consider the following question:
 
@@ -120,6 +137,18 @@ ordered_categorical = calculators.OrderedCategorical(
 
 print(str(ordered_categorical.calculate(prediction))) # '0.2350'
 ```
+
+#### Logarithmic
+
+Not yet implemented.
+
+#### Quadratic
+
+Not yet implemented.
+
+### Confidence intervals
+
+Not yet implemented.
 
 ## Changelog
 
