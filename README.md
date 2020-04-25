@@ -5,6 +5,20 @@
 
 The purpose of this library is to help you compare predictions.
 
+## Status
+
+Python Prediction Scorer is **not ready for production use**.
+
+## Goals
+
+With this library, I aim to correctly implement many useful prediction scoring rules in a library that is user-friendly and easy to maintain and improve.
+
+## Background
+
+Some of the code in this library comes from my work at [Empiricast](https://yngve.hoiseth.net/empiricast-post-mortem/), a forecasting startup I co-founded.
+
+For a thorough introduction to scoring rules, see [Calibration Scoring Rules for Practical Prediction Training](https://arxiv.org/abs/1808.07501v1) by [Spencer Greenberg](https://www.spencergreenberg.com/).
+
 ## Installation
 
 `pip install predictionscorer` 
