@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Calculation of scores for when the order of alternatives matters.
 - Design philosophy documentation.
 - Meta documentation
+- Simplify API
 
 ### Changed
 - Decimal input for probabilities instead of integer.
