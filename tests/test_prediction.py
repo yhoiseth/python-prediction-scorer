@@ -79,5 +79,4 @@ class TestBrier:
             true_alternative_index=1,
             order_matters=True,
         )
-
         assert prediction.brier_score == Decimal("0.2350")
