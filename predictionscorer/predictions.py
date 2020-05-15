@@ -1,3 +1,4 @@
+import statistics
 import typing
 from decimal import Decimal
 
@@ -85,6 +86,7 @@ class Prediction:
     _cached_brier_score: typing.Optional[Decimal] = None
     order_matters: bool
     probabilities: typing.Tuple[Decimal, ...]
+    relative_brier_score: typing.Optional[Decimal] = None
     true_alternative_index: int
 
     def __init__(
@@ -121,3 +123,17 @@ class Prediction:
         score = calculator.calculate(self)
         self._cached_brier_score = score
         return score
+
+
+def compare(
+    predictions: typing.Tuple[Prediction, ...]
+) -> typing.Tuple[Decimal, typing.Tuple[Prediction, ...]]:
+    brier_scores: typing.List[Decimal] = []
+    for prediction in predictions:
+        brier_scores.append(prediction.brier_score)
+    median = Decimal(statistics.median(brier_scores))
+    enriched_predictions: typing.List[Prediction] = []
+    for prediction in predictions:
+        prediction.relative_brier_score = prediction.brier_score - median
+        enriched_predictions.append(prediction)
+    return median, tuple(enriched_predictions)

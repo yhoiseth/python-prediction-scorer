@@ -30,6 +30,16 @@
 
 `./update-dependencies.sh`
 
+# Issue checklist
+
+Copy and paste into GitHub:
+
+- [ ] Documentation
+- [ ] Tests
+- [ ] Implementation
+- [ ] Changelog
+- [ ] Release
+
 # Create release
 
 ## Update version number
