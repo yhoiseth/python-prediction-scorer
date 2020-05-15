@@ -144,11 +144,11 @@ kramer = predictions.Prediction(
 (median, (george, kramer)) = predictions.compare((george, kramer))
 
 print(median) # Decimal('0.4825') 
-print(george.relative_brier_score) # Decimal('0.237')
-print(kramer.relative_brier_score) # Decimal('-0.238')
+print(george.relative_brier_score) # Decimal('0.2375')
+print(kramer.relative_brier_score) # Decimal('-0.2375')
 ```
 
-As you can see, George’s score is 0.237 higher (worse) than the median, whilst Kramer’s score is 0.238 lower (better).
+As you can see, George’s score is 0.2375 higher (worse) than the median, whilst Kramer’s score is 0.2375 lower (better).
 
 ## Changelog
 
