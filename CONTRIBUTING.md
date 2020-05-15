@@ -37,6 +37,8 @@ Copy and paste into GitHub:
 - [ ] Documentation
 - [ ] Tests
 - [ ] Implementation
+- [ ] Changelog
+- [ ] Release
 
 # Create release
 
