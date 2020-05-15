@@ -150,6 +150,16 @@ print(kramer.relative_brier_score) # Decimal('-0.2375')
 
 As you can see, George’s score is 0.2375 higher (worse) than the median, whilst Kramer’s score is 0.2375 lower (better).
 
+### Comparing scores over time
+
+It is more difficult to predict things a long time into the future. It is also more valuable to have good predictions farther in advance. Also, predictions can often be updated over time. Consider the following example, consider the following (fictional) predictions for the 2016 US presidential election.
+
+| Forecaster | Clinton | Trump | Date       | Time  |
+|------------|---------|-------|------------|-------|
+| George     | 45      | 55    | Nov 1      | 16:05 |
+| Kramer     | 40      | 60    | Nov 2      | 11:37 |
+
+
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md).
