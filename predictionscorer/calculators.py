@@ -37,7 +37,8 @@ class OrderedCategorical(Base):
         pair_count = self._pair_count(prediction.probabilities)
         for index in range(pair_count):
             pair = predictions.Prediction(
-                self._split_probabilities(index, prediction.probabilities)
+                self._split_probabilities(index, prediction.probabilities),
+                true_alternative_index=1,
             )
             score = self._score_pair(index, pair)
             total += score

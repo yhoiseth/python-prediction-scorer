@@ -39,26 +39,26 @@ There are several ways to score predictions like these. Here, we are using [Brie
 
 (See [plot.py](plot.py) for the code that generated this chart.)
 
-Now, back to our election example. The following code scores the predictions.
+Now, back to our election example. The following code scores the predictions using the Brier scoring rule.
 
 ```python
 from decimal import Decimal
 
 from predictionscorer import calculators, predictions
 
+true_alternative_index = 1 # Alternative 0 is Hillary Clinton. Alternative 1 is Donald Trump.
+
 george = predictions.Prediction(
-    probabilities=(Decimal(60), Decimal(40)) # George put Clinton at 60 % and Trump at 40 %.
+    probabilities=(Decimal(60), Decimal(40)), # George put Clinton at 60 % and Trump at 40 %.
+    true_alternative_index=true_alternative_index,
 )
 kramer = predictions.Prediction(
-    probabilities=(Decimal(35), Decimal(65)) # Kramer put Clinton at 35 % and Trump at 65 %.
+    probabilities=(Decimal(35), Decimal(65)), # Kramer put Clinton at 35 % and Trump at 65 %.
+    true_alternative_index=true_alternative_index,
 )
 
-brier = calculators.Brier(
-    true_alternative_index=1 # Alternative 0 is Hillary Clinton. Alternative 1 is Donald Trump.
-)
-
-print(brier.calculate(george)) # Decimal('0.72')
-print(brier.calculate(kramer)) # Decimal('0.245')
+print(george.brier_score) # Decimal('0.72')
+print(kramer.brier_score) # Decimal('0.245')
 ```
 
 As you can see, Kramer’s score is _lower_ than George’s. How can a better prediction give a lower score? The thing is, with Brier scores, the lower, the better. To help your intuition, you can consider a Brier score as the _distance from the truth_. (A perfect prediction yields 0, while the worst possible prediction yields 2.)
