@@ -23,7 +23,7 @@ For a thorough introduction to scoring rules, see [Calibration Scoring Rules for
 
 `pip install predictionscorer`
 
-## System requirements
+### System requirements
 
 Python Prediction Scorer requires Python 3.7+. There are currently no other dependencies.
 
