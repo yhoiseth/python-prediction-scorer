@@ -44,7 +44,7 @@ Now, back to our election example. The following code scores the predictions usi
 ```python
 from decimal import Decimal
 
-from predictionscorer import calculators, predictions
+from predictionscorer import predictions
 
 true_alternative_index = 1 # Alternative 0 is Hillary Clinton. Alternative 1 is Donald Trump.
 
@@ -52,12 +52,14 @@ george = predictions.Prediction(
     probabilities=(Decimal(60), Decimal(40)), # George put Clinton at 60 % and Trump at 40 %.
     true_alternative_index=true_alternative_index,
 )
+
+print(george.brier_score) # Decimal('0.72')
+
 kramer = predictions.Prediction(
     probabilities=(Decimal(35), Decimal(65)), # Kramer put Clinton at 35 % and Trump at 65 %.
     true_alternative_index=true_alternative_index,
 )
 
-print(george.brier_score) # Decimal('0.72')
 print(kramer.brier_score) # Decimal('0.245')
 ```
 
@@ -70,21 +72,18 @@ The above example is binary — there are only two alternatives. But sometimes y
 ```python
 from decimal import Decimal
 
-from predictionscorer import calculators, predictions
+from predictionscorer import predictions
 
 prediction = predictions.Prediction(
     probabilities=(
         Decimal(55), # Clinton
         Decimal(35), # Trump
         Decimal(10), # Other
-    )
-)
-
-brier = calculators.Brier(
+    ),
     true_alternative_index=1,
 )
 
-print(brier.calculate(prediction)) # Decimal('0.735')
+print(prediction.brier_score) # Decimal('0.735')
 ```
 
 #### If the order matters
@@ -102,12 +101,12 @@ Sometimes, the ordering of alternatives matters. For example, consider the follo
 
 We [now know that the answer is 3,230.78](https://us.spindices.com/indices/equity/sp-500). This means that, among our alternatives, the one with index 1 turned out to be correct. But notice that index 2 is closer to the right answer than index 3. In such cases, the regular Brier score is a poor measure of forecasting accuracy. Instead, we can use [the ordered categorical scoring rule](https://goodjudgment.io/Training/Ordered_Categorical_Scoring_Rule.pdf).
 
-The code below should look familiar, except that we are now using the `OrderedCategorical` calculator instead of the `Brier` calculator.
+The code below should look familiar, except that we are now setting `order_matters=True`:
 
 ```python
 from decimal import Decimal
 
-from predictionscorer import calculators, predictions
+from predictionscorer import predictions
 
 prediction = predictions.Prediction(
     probabilities=(
@@ -116,13 +115,11 @@ prediction = predictions.Prediction(
         Decimal(30),
         Decimal(20),
     ),
-)
-
-ordered_categorical = calculators.OrderedCategorical(
     true_alternative_index=1,
+    order_matters=True,
 )
 
-print(ordered_categorical.calculate(prediction)) # Decimal('0.2350')
+print(prediction.brier_score) # Decimal('0.2350')
 ```
 
 ## Changelog
