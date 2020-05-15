@@ -4,16 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.2.0] - 2020-05-15
+
 ### Added
 - Changelog.
 - Documentation and test for Brier calculation with more than two alternatives.
 - Assertions for creating `Prediction` instances:
    - Two or more probabilities
    - Sum of probabilities must equal 100
+   - Probabilities must contain true alternative
 - Calculation of scores for when the order of alternatives matters.
 - Design philosophy documentation.
 - Meta documentation
-- Simplify API
+- API simplifications
 
 ### Changed
 - Decimal input for probabilities instead of integer.
@@ -31,6 +35,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - Brier score calculation.
 
-[Unreleased]: https://github.com/yhoiseth/python-prediction-scorer/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/yhoiseth/python-prediction-scorer/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/yhoiseth/python-prediction-scorer/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/yhoiseth/python-prediction-scorer/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/yhoiseth/python-prediction-scorer/releases/tag/v0.1.0

@@ -34,7 +34,7 @@
 
 ## Update version number
 
-Edit in `setup.py`.
+Edit in [`setup.py`](setup.py).
 
 ## Update Changelog
 
@@ -48,9 +48,17 @@ Edit in `setup.py`.
 
 `twine upload dist/*`
 
+## Commit
+
+`git commit -am 'Release v[version number]`
+
 ## Create tag
 
 `git tag -a v[version number] -m "[version number]"`
+
+## Push
+
+`git push origin`
 
 ## Create GitHub release
 

@@ -4,3 +4,4 @@ matplotlib
 mypy
 pre-commit
 pytest
+twine
