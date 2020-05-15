@@ -122,6 +122,34 @@ prediction = predictions.Prediction(
 print(prediction.brier_score) # Decimal('0.2350')
 ```
 
+## Comparing scores
+
+So far, we have looked at how to score predictions on an _absolute_ scale. Now, let’s compare them to each other:
+
+```python
+from decimal import Decimal
+
+from predictionscorer import predictions
+
+true_alternative_index = 1
+george = predictions.Prediction(
+    probabilities=(Decimal(60), Decimal(40)),
+    true_alternative_index=true_alternative_index,
+)
+kramer = predictions.Prediction(
+    probabilities=(Decimal(35), Decimal(65)),
+    true_alternative_index=true_alternative_index,
+)
+
+(median, (george, kramer)) = predictions.compare((george, kramer))
+
+print(median) # Decimal('0.483') 
+print(george.relative_brier_score) # Decimal('0.237')
+print(kramer.relative_brier_score) # Decimal('-0.238')
+```
+
+As you can see, George’s score is 0.237 higher (worse) than the median, whilst Kramer’s score is 0.238 lower (better).
+
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md).
