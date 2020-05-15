@@ -80,3 +80,22 @@ class TestBrier:
             order_matters=True,
         )
         assert prediction.brier_score == Decimal("0.2350")
+
+
+class TestComparison:
+    def test_two_binary_predictions(self):
+        true_alternative_index = 1
+        george = predictions.Prediction(
+            probabilities=(Decimal(60), Decimal(40)),
+            true_alternative_index=true_alternative_index,
+        )
+        kramer = predictions.Prediction(
+            probabilities=(Decimal(35), Decimal(65)),
+            true_alternative_index=true_alternative_index,
+        )
+
+        (median, (george, kramer)) = predictions.compare((george, kramer))
+
+        assert median == Decimal("0.4825")
+        assert george.relative_brier_score == Decimal("0.2375")
+        assert kramer.relative_brier_score == Decimal("-0.2375")

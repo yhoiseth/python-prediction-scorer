@@ -143,7 +143,7 @@ kramer = predictions.Prediction(
 
 (median, (george, kramer)) = predictions.compare((george, kramer))
 
-print(median) # Decimal('0.483') 
+print(median) # Decimal('0.4825') 
 print(george.relative_brier_score) # Decimal('0.237')
 print(kramer.relative_brier_score) # Decimal('-0.238')
 ```
