@@ -54,11 +54,11 @@ Edit in [`setup.py`](setup.py).
 
 ## Create tag
 
-`git tag -a v[version number] -m "[version number]"`
+`git tag -a v[version number] -m "v[version number]"`
 
 ## Push
 
-`git push origin`
+`git push origin v[version number]`
 
 ## Create GitHub release
 
