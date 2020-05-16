@@ -1,3 +1,4 @@
+import datetime
 from decimal import Decimal
 
 import pytest
@@ -99,3 +100,50 @@ class TestComparison:
         assert median == Decimal("0.4825")
         assert george.relative_brier_score == Decimal("0.2375")
         assert kramer.relative_brier_score == Decimal("-0.2375")
+
+
+class TestTimeline:
+    def test_two_predictors(self):
+        GEORGE = "George"
+        KRAMER = "Kramer"
+
+        # Dump the set of predictions into the a new Timeline object:
+        timeline = predictionscorer.Timeline(
+            predictions=frozenset(
+                (
+                    predictionscorer.Prediction(
+                        (Decimal(70), Decimal(30)),
+                        true_alternative_index=1,
+                        created_at=datetime.datetime(2016, 11, 1, 16, 5),
+                        created_by=GEORGE,
+                    ),
+                    predictionscorer.Prediction(
+                        (Decimal(40), Decimal(60)),
+                        true_alternative_index=1,
+                        created_at=datetime.datetime(2016, 11, 2, 11, 37),
+                        created_by=KRAMER,
+                    ),
+                    predictionscorer.Prediction(
+                        (Decimal(50), Decimal(50)),
+                        true_alternative_index=1,
+                        created_at=datetime.datetime(2016, 11, 3, 9, 9),
+                        created_by=GEORGE,
+                    ),
+                    predictionscorer.Prediction(
+                        (Decimal(60), Decimal(40)),
+                        true_alternative_index=1,
+                        created_at=datetime.datetime(2016, 11, 3, 21, 42),
+                        created_by=GEORGE,
+                    ),
+                    predictionscorer.Prediction(
+                        (Decimal(30), Decimal(70)),
+                        true_alternative_index=1,
+                        created_at=datetime.datetime(2016, 11, 5, 11, 45),
+                        created_by=KRAMER,
+                    ),
+                )
+            )
+        )
+
+        assert timeline.scores[GEORGE] == Decimal(0)
+        assert timeline.scores[KRAMER] == Decimal(0)

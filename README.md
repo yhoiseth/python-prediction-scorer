@@ -176,11 +176,11 @@ from decimal import Decimal
 
 import predictionscorer
 
-KRAMER = "Kramer"
 GEORGE = "George"
+KRAMER = "Kramer"
 
 # Dump the set of predictions into the a new Timeline object:
-timeline = predictionscorer.Timeline({
+timeline = predictionscorer.Timeline(predictions=frozenset((
     predictionscorer.Prediction(
         (Decimal(70), Decimal(30)), 
         true_alternative_index=1, 
@@ -211,22 +211,22 @@ timeline = predictionscorer.Timeline({
         created_at=datetime.datetime(2016, 11, 5, 11, 45), 
         created_by=KRAMER,
     ),
-})
+)))
 
 # We can now access a dictionary of creators to get their relative Brier scores:
-print(timeline.creators[GEORGE]) # Decimal('')
-print(timeline.creators[KRAMER]) # Decimal('')
+print(timeline.scores[GEORGE]) # Decimal('')
+print(timeline.scores[KRAMER]) # Decimal('')
 
 # We can also access an ordered dictionary of days:
 november_5 = timeline.days[datetime.date(2016, 11, 1)]
-print(november_5.median) # Decimal('')
+
 
 # Each day contains a dictionary of the predictions that counted. The key is the user, so you can get their scores that day:
-print(november_5.creators[GEORGE].brier_score) # Decimal('')
-print(november_5.creators[GEORGE].relative_brier_score) # Decimal('')
+# print(november_5.creators[GEORGE].brier_score) # Decimal('')
+# print(november_5.creators[GEORGE].relative_brier_score) # Decimal('')
 
 # Days also have a median Brier score property:
-print(november_5.median_brier_score) # Decimal('')
+print(november_5.median) # Decimal('')
 ```
 
 ## Changelog

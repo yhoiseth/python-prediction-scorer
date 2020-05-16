@@ -85,6 +85,9 @@ class Prediction:
     """
 
     _cached_brier_score: typing.Optional[Decimal] = None
+    created_at: typing.Optional[datetime.datetime]
+    created_by: typing.Optional[str]
+    created_on: typing.Optional[datetime.date]
     order_matters: bool
     probabilities: typing.Tuple[Decimal, ...]
     relative_brier_score: typing.Optional[Decimal] = None
@@ -94,6 +97,8 @@ class Prediction:
         self,
         probabilities: typing.Tuple[Decimal, ...],
         true_alternative_index: int,
+        created_at: datetime.datetime = None,
+        created_by: str = None,
         order_matters: bool = False,
     ) -> None:
         """
@@ -108,6 +113,10 @@ class Prediction:
         assert (
             true_alternative_index <= length - 1
         ), "Probabilities need to contain the true alternative"
+        self.created_at = created_at
+        self.created_by = created_by
+        if created_at:
+            self.created_on = created_at.date()
         self.order_matters = order_matters
         self.probabilities = probabilities
         self.true_alternative_index = true_alternative_index
@@ -141,8 +150,81 @@ def compare(
 
 
 class Day:
+    scores: typing.Dict[str, Decimal] = {}
+    creators: typing.List[str] = []
     date: datetime.date
+    predictions: typing.List[Prediction]
+    scored_predictions: typing.Tuple[Prediction]
+    median: Decimal
+
+    def __init__(
+        self, date: datetime.date, predictions: typing.List[Prediction]
+    ) -> None:
+        self.date = date
+        self.predictions = predictions
+        latest_predictions: typing.List[Prediction] = []
+        for prediction in predictions:
+            if prediction.created_by not in self.creators:
+                self.creators.append(prediction.created_by)
+        for creator in self.creators:
+            creator_predictions: typing.List[Prediction] = []
+            for _prediction in predictions:
+                if _prediction.created_by == creator:
+                    creator_predictions.append(_prediction)
+            latest_prediction = creator_predictions[0]
+            for creator_prediction in creator_predictions:
+                if creator_prediction.created_at > latest_prediction.created_at:
+                    latest_prediction = creator_prediction
+            latest_predictions.append(latest_prediction)
+        (self.median, self.scored_predictions) = compare(tuple(latest_predictions))
+        for scored_prediction in self.scored_predictions:
+            self.scores[
+                scored_prediction.created_by
+            ] = scored_prediction.relative_brier_score
 
 
 class Timeline:
-    predictions: typing.Set[Prediction]
+    scores: typing.Dict[str, Decimal] = {}
+    days: typing.List[Day]
+
+    def __init__(self, predictions: typing.FrozenSet[Prediction]) -> None:
+        dates: typing.List[datetime.date] = []
+        creators: typing.List[str] = []
+        for prediction in predictions:
+            created_on = prediction.created_on
+            if created_on not in dates:
+                dates.append(created_on)
+            creator = prediction.created_by
+            if creator not in creators:
+                creators.append(creator)
+        creators.sort()
+        dates.sort()
+        days: typing.List[Day] = []
+        first_date = dates[0]
+        last_date = dates[1]
+        date = first_date
+        while date <= last_date:
+            prediction_found = False
+            for prediction in predictions:
+                if prediction.created_on == date:
+                    prediction_found = True
+            if prediction_found:
+                date_predictions: typing.List[Prediction] = []
+                for prediction in predictions:
+                    if prediction.created_on == date:
+                        prediction_found = True
+                        date_predictions.append(prediction)
+                day = Day(date, date_predictions)
+            if "day" in locals():
+                days.append(day)
+            date = date + datetime.timedelta(days=1)
+        self.days = days
+        nominators: typing.Dict[str, Decimal] = {}
+        for creator in creators:
+            nominators[creator] = Decimal(0)
+        for day in days:
+            for creator, score in day.scores.items():
+                nominators[creator] = nominators[creator] + score
+        denominator = len(days)
+        for creator, nominator in nominators.items():
+            self.scores[creator] = nominator / denominator
