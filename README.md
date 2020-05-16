@@ -44,18 +44,18 @@ Now, back to our election example. The following code scores the predictions usi
 ```python
 from decimal import Decimal
 
-from predictionscorer import predictions
+import predictionscorer
 
 true_alternative_index = 1 # Alternative 0 is Hillary Clinton. Alternative 1 is Donald Trump.
 
-george = predictions.Prediction(
+george = predictionscorer.Prediction(
     probabilities=(Decimal(60), Decimal(40)), # George put Clinton at 60 % and Trump at 40 %.
     true_alternative_index=true_alternative_index,
 )
 
 print(george.brier_score) # Decimal('0.72')
 
-kramer = predictions.Prediction(
+kramer = predictionscorer.Prediction(
     probabilities=(Decimal(35), Decimal(65)), # Kramer put Clinton at 35 % and Trump at 65 %.
     true_alternative_index=true_alternative_index,
 )
@@ -72,9 +72,9 @@ The above example is binary — there are only two alternatives. But sometimes y
 ```python
 from decimal import Decimal
 
-from predictionscorer import predictions
+import predictionscorer
 
-prediction = predictions.Prediction(
+prediction = predictionscorer.Prediction(
     probabilities=(
         Decimal(55), # Clinton
         Decimal(35), # Trump
@@ -106,9 +106,9 @@ The code below should look familiar, except that we are now setting `order_matte
 ```python
 from decimal import Decimal
 
-from predictionscorer import predictions
+import predictionscorer
 
-prediction = predictions.Prediction(
+prediction = predictionscorer.Prediction(
     probabilities=(
         Decimal(25),
         Decimal(25),
@@ -129,19 +129,19 @@ So far, we have looked at how to score predictions on an _absolute_ scale. Now, 
 ```python
 from decimal import Decimal
 
-from predictionscorer import predictions
+import predictionscorer
 
 true_alternative_index = 1
-george = predictions.Prediction(
+george = predictionscorer.Prediction(
     probabilities=(Decimal(60), Decimal(40)),
     true_alternative_index=true_alternative_index,
 )
-kramer = predictions.Prediction(
+kramer = predictionscorer.Prediction(
     probabilities=(Decimal(35), Decimal(65)),
     true_alternative_index=true_alternative_index,
 )
 
-(median, (george, kramer)) = predictions.compare((george, kramer))
+(median, (george, kramer)) = predictionscorer.compare((george, kramer))
 
 print(median) # Decimal('0.4825') 
 print(george.relative_brier_score) # Decimal('0.2375')
