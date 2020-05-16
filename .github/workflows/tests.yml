@@ -32,3 +32,6 @@ jobs:
       run: |
         pip install -e .
         pytest
+    - name: Plot script smoke test
+      run: |
+        python plot.py
