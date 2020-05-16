@@ -152,13 +152,34 @@ As you can see, George’s score is 0.2375 higher (worse) than the median, whils
 
 ### Comparing scores over time
 
-It is more difficult to predict things a long time into the future. It is also more valuable to have good predictions farther in advance. Also, predictions can often be updated over time. Consider the following example, consider the following (fictional) predictions for the 2016 US presidential election.
+It is more difficult to predict things a long time into the future. It is also more valuable to have good predictions farther in advance. Also, predictions can often be updated over time. To account for these things, we can do the following. 
 
-| Forecaster | Clinton | Trump | Date       | Time  |
-|------------|---------|-------|------------|-------|
-| George     | 45      | 55    | Nov 1      | 16:05 |
-| Kramer     | 40      | 60    | Nov 2      | 11:37 |
+1. Group predictions by date. If one person (or bot) made several predictions in any given day, discard all but the most recent one. If someone doesn’t make a forecast on any given day, use their most recent forecast from previous days.
+2. Score the forecasts against each other within each day.
+3. Average all the relative scores to get the total relative score.
 
+#### Example
+
+To illustrate, consider the following six (made-up) predictions for the 2016 US presidential election. In this example, no forecasts could be made after November 7.
+
+| ID | Forecaster | Clinton | Trump | Date       | Time  |
+|----|------------|---------|-------|------------|-------|
+| 1  | George     | 70      | 30    | Nov 1      | 16:05 |
+| 2  | Kramer     | 40      | 60    | Nov 2      | 11:37 |
+| 3  | George     | 50      | 50    | Nov 3      | 09:09 |
+| 4  | George     | 60      | 40    | Nov 3      | 21:42 |
+| 5  | Kramer     | 30      | 70    | Nov 5      | 11:45 |
+
+```python
+from decimal import Decimal
+
+from predictionscorer import predictions
+
+# Dump all the predictions into the a new Timeline object:
+timeline = predictions.Timeline({
+    predictions.Prediction((Decimal(70), Decimal(30)), 1, at="Nov 1 16:05", by="George"),
+})
+```
 
 ## Changelog
 
