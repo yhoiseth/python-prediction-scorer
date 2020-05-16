@@ -1,6 +1,7 @@
 import datetime
 import statistics
 import typing
+from dataclasses import dataclass
 from decimal import Decimal
 
 
@@ -171,6 +172,8 @@ class Day:
             for _prediction in predictions:
                 if _prediction.created_by == creator:
                     creator_predictions.append(_prediction)
+            if len(creator_predictions) == 0:
+                continue
             latest_prediction = creator_predictions[0]
             for creator_prediction in creator_predictions:
                 if creator_prediction.created_at > latest_prediction.created_at:

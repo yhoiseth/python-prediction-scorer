@@ -147,3 +147,4 @@ class TestTimeline:
 
         assert timeline.scores[GEORGE] == Decimal(0)
         assert timeline.scores[KRAMER] == Decimal(0)
+        assert False
