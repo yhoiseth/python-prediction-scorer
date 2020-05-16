@@ -1,3 +1,4 @@
+import datetime
 import statistics
 import typing
 from decimal import Decimal
@@ -137,3 +138,11 @@ def compare(
         prediction.relative_brier_score = prediction.brier_score - median
         enriched_predictions.append(prediction)
     return median, tuple(enriched_predictions)
+
+
+class Day:
+    date: datetime.date
+
+
+class Timeline:
+    predictions: typing.Set[Prediction]

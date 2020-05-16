@@ -171,14 +171,62 @@ To illustrate, consider the following six (made-up) predictions for the 2016 US 
 | 5  | Kramer     | 30      | 70    | Nov 5      | 11:45 |
 
 ```python
+import datetime
 from decimal import Decimal
 
 from predictionscorer import predictions
 
-# Dump all the predictions into the a new Timeline object:
+KRAMER = "Kramer"
+GEORGE = "George"
+
+# Dump the set of predictions into the a new Timeline object:
 timeline = predictions.Timeline({
-    predictions.Prediction((Decimal(70), Decimal(30)), 1, at="Nov 1 16:05", by="George"),
+    predictions.Prediction(
+        (Decimal(70), Decimal(30)), 
+        true_alternative_index=1, 
+        created_at=datetime.datetime(2016, 11, 1, 16, 5), 
+        created_by=GEORGE,
+    ),
+    predictions.Prediction(
+        (Decimal(40), Decimal(60)), 
+        true_alternative_index=1, 
+        created_at=datetime.datetime(2016, 11, 2, 11, 37), 
+        created_by=KRAMER,
+    ),
+    predictions.Prediction(
+        (Decimal(50), Decimal(50)), 
+        true_alternative_index=1, 
+        created_at=datetime.datetime(2016, 11, 3, 9, 9), 
+        created_by=GEORGE,
+    ),
+    predictions.Prediction(
+        (Decimal(60), Decimal(40)), 
+        true_alternative_index=1, 
+        created_at=datetime.datetime(2016, 11, 3, 21, 42), 
+        created_by=GEORGE,
+    ),
+    predictions.Prediction(
+        (Decimal(30), Decimal(70)), 
+        true_alternative_index=1, 
+        created_at=datetime.datetime(2016, 11, 5, 11, 45), 
+        created_by=KRAMER,
+    ),
 })
+
+# We can now access a dictionary of creators to get their relative Brier scores:
+print(timeline.creators[GEORGE]) # Decimal('')
+print(timeline.creators[KRAMER]) # Decimal('')
+
+# We can also access an ordered dictionary of days:
+november_5 = timeline.days[datetime.date(2016, 11, 1)]
+print(november_5.median) # Decimal('')
+
+# Each day contains a dictionary of the predictions that counted. The key is the user, so you can get their scores that day:
+print(november_5.creators[GEORGE].brier_score) # Decimal('')
+print(november_5.creators[GEORGE].relative_brier_score) # Decimal('')
+
+# Days also have a median Brier score property:
+print(november_5.median_brier_score) # Decimal('')
 ```
 
 ## Changelog
