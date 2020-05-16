@@ -174,38 +174,38 @@ To illustrate, consider the following six (made-up) predictions for the 2016 US 
 import datetime
 from decimal import Decimal
 
-from predictionscorer import predictions
+import predictionscorer
 
 KRAMER = "Kramer"
 GEORGE = "George"
 
 # Dump the set of predictions into the a new Timeline object:
-timeline = predictions.Timeline({
-    predictions.Prediction(
+timeline = predictionscorer.Timeline({
+    predictionscorer.Prediction(
         (Decimal(70), Decimal(30)), 
         true_alternative_index=1, 
         created_at=datetime.datetime(2016, 11, 1, 16, 5), 
         created_by=GEORGE,
     ),
-    predictions.Prediction(
+    predictionscorer.Prediction(
         (Decimal(40), Decimal(60)), 
         true_alternative_index=1, 
         created_at=datetime.datetime(2016, 11, 2, 11, 37), 
         created_by=KRAMER,
     ),
-    predictions.Prediction(
+    predictionscorer.Prediction(
         (Decimal(50), Decimal(50)), 
         true_alternative_index=1, 
         created_at=datetime.datetime(2016, 11, 3, 9, 9), 
         created_by=GEORGE,
     ),
-    predictions.Prediction(
+    predictionscorer.Prediction(
         (Decimal(60), Decimal(40)), 
         true_alternative_index=1, 
         created_at=datetime.datetime(2016, 11, 3, 21, 42), 
         created_by=GEORGE,
     ),
-    predictions.Prediction(
+    predictionscorer.Prediction(
         (Decimal(30), Decimal(70)), 
         true_alternative_index=1, 
         created_at=datetime.datetime(2016, 11, 5, 11, 45), 
