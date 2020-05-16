@@ -3,13 +3,13 @@ import typing
 
 import matplotlib.pyplot as plt
 
-from predictionscorer import predictions
+import predictionscorer
 
-all_predictions: typing.List[predictions.Prediction] = []
+predictions: typing.List[predictionscorer.Prediction] = []
 
 for index in range(0, 101):
-    all_predictions.append(
-        predictions.Prediction(
+    predictions.append(
+        predictionscorer.Prediction(
             (decimal.Decimal(index), decimal.Decimal(100 - index)),
             true_alternative_index=0,
         )
@@ -18,7 +18,7 @@ for index in range(0, 101):
 x_axis_data: typing.List[decimal.Decimal] = []
 y_axis_data: typing.List[decimal.Decimal] = []
 
-for prediction in all_predictions:
+for prediction in predictions:
     x_axis_data.append(prediction.probabilities[0])
     y_axis_data.append(prediction.brier_score)
 
