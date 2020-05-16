@@ -98,8 +98,6 @@ class Prediction:
         self,
         probabilities: typing.Tuple[Decimal, ...],
         true_alternative_index: int,
-        created_at: datetime.datetime = None,
-        created_by: str = None,
         order_matters: bool = False,
     ) -> None:
         """
@@ -114,10 +112,6 @@ class Prediction:
         assert (
             true_alternative_index <= length - 1
         ), "Probabilities need to contain the true alternative"
-        self.created_at = created_at
-        self.created_by = created_by
-        if created_at:
-            self.created_on = created_at.date()
         self.order_matters = order_matters
         self.probabilities = probabilities
         self.true_alternative_index = true_alternative_index
@@ -134,6 +128,30 @@ class Prediction:
         score = calculator.calculate(self)
         self._cached_brier_score = score
         return score
+
+
+class AttributedPrediction(Prediction):
+    _cached_created_on: typing.Optional[datetime.date] = None
+    created_at: datetime.datetime
+    created_by: str
+
+    def __init__(
+        self,
+        probabilities: typing.Tuple[Decimal, ...],
+        true_alternative_index: int,
+        order_matters: bool = False,
+        created_at: datetime.datetime = None,
+        created_by: str = None,
+    ):
+        super().__init__(probabilities, true_alternative_index, order_matters)
+        self.created_at = created_at
+        self.created_by = created_by
+
+    @property
+    def created_on(self) -> datetime.date:
+        if not self._cached_created_on:
+            self._cached_created_on = self.created_at.date()
+        return self._cached_created_on
 
 
 def compare(
@@ -186,11 +204,35 @@ class Day:
             ] = scored_prediction.relative_brier_score
 
 
+def generate_date_range(
+    predictions: typing.Tuple[AttributedPrediction, ...]
+) -> typing.Tuple[datetime.date, ...]:
+    assert len(predictions) > 0
+    earliest_date_so_far = predictions[0].created_on
+    latest_date_so_far = earliest_date_so_far
+    for prediction in predictions:
+        created_on = prediction.created_on
+        if created_on < earliest_date_so_far:
+            earliest_date_so_far = created_on
+        if created_on > latest_date_so_far:
+            latest_date_so_far = created_on
+    earliest_date = earliest_date_so_far
+    latest_date = latest_date_so_far
+    date_range: typing.List[datetime.date] = []
+    date = earliest_date
+    one_day = datetime.timedelta(days=1)
+    while date <= latest_date:
+        date_range.append(date)
+        date += one_day
+    return tuple(date_range)
+
+
 class Timeline:
     scores: typing.Dict[str, Decimal] = {}
     days: typing.List[Day]
 
     def __init__(self, predictions: typing.FrozenSet[Prediction]) -> None:
+        assert len(predictions) > 0
         dates: typing.List[datetime.date] = []
         creators: typing.List[str] = []
         for prediction in predictions:

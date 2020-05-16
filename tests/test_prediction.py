@@ -148,3 +148,51 @@ class TestTimeline:
         assert timeline.scores[GEORGE] == Decimal(0)
         assert timeline.scores[KRAMER] == Decimal(0)
         assert False
+
+
+class TestDateRangeGenerator:
+    def test(self):
+        GEORGE = "George"
+        KRAMER = "Kramer"
+        actual_date_range = predictionscorer.generate_date_range(
+            (
+                predictionscorer.AttributedPrediction(
+                    (Decimal(70), Decimal(30)),
+                    true_alternative_index=1,
+                    created_at=datetime.datetime(2016, 11, 1, 16, 5),
+                    created_by=GEORGE,
+                ),
+                predictionscorer.AttributedPrediction(
+                    (Decimal(40), Decimal(60)),
+                    true_alternative_index=1,
+                    created_at=datetime.datetime(2016, 11, 2, 11, 37),
+                    created_by=KRAMER,
+                ),
+                predictionscorer.AttributedPrediction(
+                    (Decimal(50), Decimal(50)),
+                    true_alternative_index=1,
+                    created_at=datetime.datetime(2016, 11, 3, 9, 9),
+                    created_by=GEORGE,
+                ),
+                predictionscorer.AttributedPrediction(
+                    (Decimal(60), Decimal(40)),
+                    true_alternative_index=1,
+                    created_at=datetime.datetime(2016, 11, 3, 21, 42),
+                    created_by=GEORGE,
+                ),
+                predictionscorer.AttributedPrediction(
+                    (Decimal(30), Decimal(70)),
+                    true_alternative_index=1,
+                    created_at=datetime.datetime(2016, 11, 5, 11, 45),
+                    created_by=KRAMER,
+                ),
+            )
+        )
+        expected_date_range = (
+            datetime.date(2016, 11, 1),
+            datetime.date(2016, 11, 2),
+            datetime.date(2016, 11, 3),
+            datetime.date(2016, 11, 4),
+            datetime.date(2016, 11, 5),
+        )
+        assert expected_date_range == actual_date_range
