@@ -7,7 +7,7 @@ The purpose of this library is to help you score and compare predictions.
 
 ## Status
 
-Python Prediction Scorer is neither stable nor feature complete. Expect major backwards-incompatible changes.
+**Python Prediction Scorer is not ready for production use.** It is neither stable nor feature complete. Expect major backwards-incompatible changes at any time.
 
 ## Goals
 
@@ -186,10 +186,8 @@ The library should be easy to use, and the results should be predictable and cor
 - Immutability where possible in order to prevent bugs.
 - [Semantic versioning](https://semver.org/) in order to make it easy to deal with changes.
 
-## Issues
-
-Please [open an issue on GitHub](https://github.com/yhoiseth/python-prediction-scorer/issues/new) if you discover any problems or potential for improvement.
-
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+Please [open an issue on GitHub](https://github.com/yhoiseth/python-prediction-scorer/issues/new) if you discover any problems or potential for improvement. They are very welcome. Comments on the API design are especially useful at this point.
+
+Also, see [CONTRIBUTING.md](CONTRIBUTING.md).
