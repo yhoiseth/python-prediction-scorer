@@ -134,6 +134,7 @@ class AttributedPrediction(Prediction):
     _cached_created_on: typing.Optional[datetime.date] = None
     created_at: datetime.datetime
     created_by: str
+    id: typing.Optional[str]
 
     def __init__(
         self,
@@ -142,16 +143,24 @@ class AttributedPrediction(Prediction):
         order_matters: bool = False,
         created_at: datetime.datetime = None,
         created_by: str = None,
+        _id: str = None,
     ):
         super().__init__(probabilities, true_alternative_index, order_matters)
         self.created_at = created_at
         self.created_by = created_by
+        self.id = _id
 
     @property
     def created_on(self) -> datetime.date:
         if not self._cached_created_on:
             self._cached_created_on = self.created_at.date()
         return self._cached_created_on
+
+    def __repr__(self) -> str:
+        probabilities = ""
+        for probability in self.probabilities:
+            probabilities += f" {str(probability)}"
+        return f"{self.created_by}:{probabilities}"
 
 
 def compare(
@@ -227,23 +236,87 @@ def generate_date_range(
     return tuple(date_range)
 
 
+def generate_day(
+    date: datetime.date, predictions: typing.Tuple[AttributedPrediction, ...]
+) -> Day:
+    day_predictions: typing.List[AttributedPrediction] = [
+        prediction for prediction in predictions if prediction.created_on == date
+    ]
+    day_predictions.sort(key=lambda prediction: prediction.created_at)
+    day_creators: typing.List[str] = [
+        prediction.created_by for prediction in day_predictions
+    ]
+
+
+def eliminate_overwritten(
+    predictions: typing.Tuple[AttributedPrediction, ...]
+) -> typing.Tuple[AttributedPrediction]:
+    dates = generate_date_range(predictions)
+    filtered_predictions: typing.List[AttributedPrediction] = []
+    for date in dates:
+        date_predictions: typing.List[AttributedPrediction] = [
+            prediction for prediction in predictions if prediction.created_on == date
+        ]
+        latest_predictions: typing.Dict[str, AttributedPrediction] = {}
+        for date_prediction in date_predictions:
+            if date_prediction.created_by in latest_predictions:
+                if (
+                    date_prediction.created_at
+                    > latest_predictions[date_prediction.created_by].created_at
+                ):
+                    latest_predictions[date_prediction.created_by] = date_prediction
+            else:
+                latest_predictions[date_prediction.created_by] = date_prediction
+        for creator, prediction in latest_predictions.items():
+            filtered_predictions.append(prediction)
+    return tuple(filtered_predictions)
+
+
+class Collection:
+    def created_on(self, date: datetime.date) -> typing.List[AttributedPrediction]:
+        pass
+
+    def created_before_or_on(
+        self, date: datetime.date
+    ) -> typing.List[AttributedPrediction]:
+        pass
+
+    def created_before_or_on_by(
+        self, creator: str
+    ) -> typing.List[AttributedPrediction]:
+        pass
+
+    @property
+    def creators(self) -> typing.List[str]:
+        pass
+
+    @property
+    def days(self) -> typing.List[Day]:
+        pass
+
+
+def generate_days(
+    predictions: typing.Tuple[AttributedPrediction, ...]
+) -> typing.Tuple[Day, ...]:
+    dates = generate_date_range(predictions)
+    days: typing.List[Day] = []
+    creators: typing.List[str] = []
+
+
 class Timeline:
     scores: typing.Dict[str, Decimal] = {}
     days: typing.List[Day]
 
-    def __init__(self, predictions: typing.FrozenSet[Prediction]) -> None:
+    def __init__(self, predictions: typing.Tuple[AttributedPrediction]) -> None:
         assert len(predictions) > 0
-        dates: typing.List[datetime.date] = []
+        dates = generate_date_range(predictions)
+
         creators: typing.List[str] = []
         for prediction in predictions:
-            created_on = prediction.created_on
-            if created_on not in dates:
-                dates.append(created_on)
             creator = prediction.created_by
             if creator not in creators:
                 creators.append(creator)
         creators.sort()
-        dates.sort()
         days: typing.List[Day] = []
         first_date = dates[0]
         last_date = dates[1]
