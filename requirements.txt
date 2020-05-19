@@ -23,12 +23,12 @@ isort==4.3.21             # via -r requirements.in
 keyring==21.2.1           # via twine
 kiwisolver==1.2.0         # via matplotlib
 matplotlib==3.2.1         # via -r requirements.in
-more-itertools==8.2.0     # via pytest
+more-itertools==8.3.0     # via pytest
 mypy-extensions==0.4.3    # via mypy
 mypy==0.770               # via -r requirements.in
 nodeenv==1.3.5            # via pre-commit
 numpy==1.18.4             # via matplotlib
-packaging==20.3           # via bleach, pytest
+packaging==20.4           # via bleach, pytest
 pathspec==0.8.0           # via black
 pkginfo==1.5.0.1          # via twine
 pluggy==0.13.1            # via pytest
