@@ -163,9 +163,11 @@ class AttributedPrediction(Prediction):
 
 class Forecaster:
     id: str
+    predictions: typing.Tuple[AttributedPrediction, ...]
 
-    def __init__(self, _id: str):
+    def __init__(self, _id: str, predictions: typing.Tuple[AttributedPrediction, ...]):
         self.id = _id
+        self.predictions = predictions
 
 
 class Day:
@@ -245,6 +247,15 @@ class Question:
                 result = prediction
         return result
 
+    def predictions_by_forecaster(
+        self, forecaster_id: str
+    ) -> typing.Tuple[AttributedPrediction, ...]:
+        predictions: typing.List[AttributedPrediction] = []
+        for prediction in self.predictions:
+            if prediction.created_by == forecaster_id:
+                predictions.append(prediction)
+        return tuple(predictions)
+
     def latest_predictions_by_date(
         self, date: datetime.date
     ) -> typing.Tuple[AttributedPrediction, ...]:
@@ -267,7 +278,9 @@ class Question:
         forecaster_ids.sort()
         forecasters: typing.List[Forecaster] = []
         for forecaster_id in forecaster_ids:
-            forecasters.append(Forecaster(forecaster_id))
+            forecasters.append(
+                Forecaster(forecaster_id, self.predictions_by_forecaster(forecaster_id))
+            )
         self._cached_forecasters = tuple(forecasters)
         return self._cached_forecasters
 
