@@ -164,11 +164,11 @@ To illustrate, consider the following six (made-up) predictions for the 2016 US 
 
 | ID | Forecaster | Clinton | Trump | Date       | Time  | Brier score |
 |----|------------|---------|-------|------------|-------|-------------|
-| 1  | George     | 70      | 30    | Nov 1      | 16:05 | 0.98      |
-| 2  | Kramer     | 40      | 60    | Nov 2      | 11:37 | 0.32 |
-| 3  | George     | 50      | 50    | Nov 3      | 09:09 | 0.50 |
-| 4  | George     | 60      | 40    | Nov 3      | 21:42 | 0.72 |
-| 5  | Kramer     | 30      | 70    | Nov 5      | 11:45 | 0.18 |
+| 1  | George     | 70      | 30    | Nov 1      | 16:05 | 0.98        |
+| 2  | Kramer     | 40      | 60    | Nov 2      | 11:37 | 0.32        |
+| 3  | George     | 50      | 50    | Nov 3      | 09:09 | 0.50        |
+| 4  | George     | 60      | 40    | Nov 3      | 21:42 | 0.72        |
+| 5  | Kramer     | 30      | 70    | Nov 5      | 11:45 | 0.18        |
 
 ```python
 import datetime
