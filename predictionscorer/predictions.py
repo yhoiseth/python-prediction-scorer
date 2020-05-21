@@ -139,13 +139,13 @@ class AttributedPrediction(Prediction):
         probabilities: typing.Tuple[Decimal, ...],
         true_alternative_index: int,
         created_at: datetime.datetime,
-        created_by: str,
+        forecaster_id: str,
         _id: str = None,
         order_matters: bool = False,
     ):
         super().__init__(probabilities, true_alternative_index, order_matters)
         self.created_at = created_at
-        self.created_by = created_by
+        self.created_by = forecaster_id
         self.id = _id
 
     @property
