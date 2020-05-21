@@ -174,6 +174,8 @@ To illustrate, consider the following five (made-up) predictions for the 2016 US
 
 George’s participation rate is 7/7. Kramer’s participation rate is 6/7.
 
+George’s average daily Brier score is (2 * 0.98 + 5 * 0.72) / 7 = 0.794. Kramer’s average daily Brier score is 3 * (0.32 + 0.18) / 6 = 0.25.
+
 The median scores for each day are given below.
 
 | Day   | IDs of active forecasts | Median score | Comment                                        |
