@@ -189,66 +189,6 @@ The median scores for each day are given below.
 | Nov 7 | 4 and 5                 | 0.45         | Same as November 6.                            |
 
 
-
-```python
-import datetime
-from decimal import Decimal
-
-import predictionscorer
-
-GEORGE = "George"
-KRAMER = "Kramer"
-
-# Dump the set of predictions into the a new Timeline object:
-timeline = predictionscorer.Timeline(predictions=frozenset((
-    predictionscorer.Prediction(
-        (Decimal(70), Decimal(30)), 
-        true_alternative_index=1, 
-        created_at=datetime.datetime(2016, 11, 1, 16, 5), 
-        created_by=GEORGE,
-    ),
-    predictionscorer.Prediction(
-        (Decimal(40), Decimal(60)), 
-        true_alternative_index=1, 
-        created_at=datetime.datetime(2016, 11, 2, 11, 37), 
-        created_by=KRAMER,
-    ),
-    predictionscorer.Prediction(
-        (Decimal(50), Decimal(50)), 
-        true_alternative_index=1, 
-        created_at=datetime.datetime(2016, 11, 3, 9, 9), 
-        created_by=GEORGE,
-    ),
-    predictionscorer.Prediction(
-        (Decimal(60), Decimal(40)), 
-        true_alternative_index=1, 
-        created_at=datetime.datetime(2016, 11, 3, 21, 42), 
-        created_by=GEORGE,
-    ),
-    predictionscorer.Prediction(
-        (Decimal(30), Decimal(70)), 
-        true_alternative_index=1, 
-        created_at=datetime.datetime(2016, 11, 5, 11, 45), 
-        created_by=KRAMER,
-    ),
-)))
-
-# We can now access a dictionary of creators to get their relative Brier scores:
-print(timeline.scores[GEORGE]) # Decimal('')
-print(timeline.scores[KRAMER]) # Decimal('')
-
-# We can also access an ordered dictionary of days:
-november_5 = timeline.days[datetime.date(2016, 11, 1)]
-
-
-# Each day contains a dictionary of the predictions that counted. The key is the user, so you can get their scores that day:
-# print(november_5.creators[GEORGE].brier_score) # Decimal('')
-# print(november_5.creators[GEORGE].relative_brier_score) # Decimal('')
-
-# Days also have a median Brier score property:
-print(november_5.median) # Decimal('')
-```
-
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md).

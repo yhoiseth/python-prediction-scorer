@@ -200,7 +200,7 @@ class Question:
     _cached_forecasters: typing.Optional[typing.Tuple[Forecaster, ...]] = None
     first_date: datetime.date
     last_date: datetime.date
-    all_predictions: typing.Tuple[AttributedPrediction, ...]
+    predictions: typing.Tuple[AttributedPrediction, ...]
 
     def __init__(
         self,
@@ -208,9 +208,7 @@ class Question:
         first_date: datetime.date,
         last_date: datetime.date,
     ):
-        self.all_predictions = tuple(
-            sorted(predictions, key=lambda prediction: prediction.created_at)
-        )
+        self.predictions = eliminate_overwritten(predictions)
         self.first_date = first_date
         self.last_date = last_date
 
@@ -241,7 +239,7 @@ class Question:
         self, date: datetime.date, forecaster: Forecaster
     ) -> typing.Optional[AttributedPrediction]:
         result: typing.Optional[AttributedPrediction] = None
-        for prediction in self.all_predictions:
+        for prediction in self.predictions:
             if prediction.created_on > date:
                 break
             if prediction.created_by == forecaster.id:
@@ -263,7 +261,7 @@ class Question:
         if self._cached_forecasters is not None:
             return self._cached_forecasters
         forecaster_ids: typing.List[str] = []
-        for prediction in self.all_predictions:
+        for prediction in self.predictions:
             forecaster_id = prediction.created_by
             if forecaster_id not in forecaster_ids:
                 forecaster_ids.append(forecaster_id)
@@ -289,42 +287,6 @@ def compare(
     return median, tuple(enriched_predictions)
 
 
-# class Day:
-#     scores: typing.Dict[str, Decimal] = {}
-#     creators: typing.List[str] = []
-#     date: datetime.date
-#     predictions: typing.List[Prediction]
-#     scored_predictions: typing.Tuple[Prediction]
-#     median: Decimal
-#
-#     def __init__(
-#         self, date: datetime.date, predictions: typing.List[Prediction]
-#     ) -> None:
-#         self.date = date
-#         self.predictions = predictions
-#         latest_predictions: typing.List[Prediction] = []
-#         for prediction in predictions:
-#             if prediction.created_by not in self.creators:
-#                 self.creators.append(prediction.created_by)
-#         for creator in self.creators:
-#             creator_predictions: typing.List[Prediction] = []
-#             for _prediction in predictions:
-#                 if _prediction.created_by == creator:
-#                     creator_predictions.append(_prediction)
-#             if len(creator_predictions) == 0:
-#                 continue
-#             latest_prediction = creator_predictions[0]
-#             for creator_prediction in creator_predictions:
-#                 if creator_prediction.created_at > latest_prediction.created_at:
-#                     latest_prediction = creator_prediction
-#             latest_predictions.append(latest_prediction)
-#         (self.median, self.scored_predictions) = compare(tuple(latest_predictions))
-#         for scored_prediction in self.scored_predictions:
-#             self.scores[
-#                 scored_prediction.created_by
-#             ] = scored_prediction.relative_brier_score
-
-
 def generate_date_range(
     predictions: typing.Tuple[AttributedPrediction, ...]
 ) -> typing.Tuple[datetime.date, ...]:
@@ -348,40 +310,30 @@ def generate_date_range(
     return tuple(date_range)
 
 
-# def generate_day(
-#     date: datetime.date, predictions: typing.Tuple[AttributedPrediction, ...]
-# ) -> Day:
-#     day_predictions: typing.List[AttributedPrediction] = [
-#         prediction for prediction in predictions if prediction.created_on == date
-#     ]
-#     day_predictions.sort(key=lambda prediction: prediction.created_at)
-#     day_creators: typing.List[str] = [
-#         prediction.created_by for prediction in day_predictions
-#     ]
-#
-#
-# def eliminate_overwritten(
-#     predictions: typing.Tuple[AttributedPrediction, ...]
-# ) -> typing.Tuple[AttributedPrediction]:
-#     dates = generate_date_range(predictions)
-#     filtered_predictions: typing.List[AttributedPrediction] = []
-#     for date in dates:
-#         date_predictions: typing.List[AttributedPrediction] = [
-#             prediction for prediction in predictions if prediction.created_on == date
-#         ]
-#         latest_predictions: typing.Dict[str, AttributedPrediction] = {}
-#         for date_prediction in date_predictions:
-#             if date_prediction.created_by in latest_predictions:
-#                 if (
-#                     date_prediction.created_at
-#                     > latest_predictions[date_prediction.created_by].created_at
-#                 ):
-#                     latest_predictions[date_prediction.created_by] = date_prediction
-#             else:
-#                 latest_predictions[date_prediction.created_by] = date_prediction
-#         for creator, prediction in latest_predictions.items():
-#             filtered_predictions.append(prediction)
-#     return tuple(filtered_predictions)
+def eliminate_overwritten(
+    predictions: typing.Tuple[AttributedPrediction, ...]
+) -> typing.Tuple[AttributedPrediction, ...]:
+    dates = generate_date_range(predictions)
+    filtered_predictions: typing.List[AttributedPrediction] = []
+    for date in dates:
+        date_predictions: typing.List[AttributedPrediction] = [
+            prediction for prediction in predictions if prediction.created_on == date
+        ]
+        latest_predictions: typing.Dict[str, AttributedPrediction] = {}
+        for date_prediction in date_predictions:
+            if date_prediction.created_by in latest_predictions:
+                if (
+                    date_prediction.created_at
+                    > latest_predictions[date_prediction.created_by].created_at
+                ):
+                    latest_predictions[date_prediction.created_by] = date_prediction
+            else:
+                latest_predictions[date_prediction.created_by] = date_prediction
+        for creator, prediction in latest_predictions.items():
+            filtered_predictions.append(prediction)
+    return tuple(filtered_predictions)
+
+
 #
 #
 # class Collection:
