@@ -162,15 +162,28 @@ class AttributedPrediction(Prediction):
         return f"{self.created_by}:{probabilities}"
 
 
+class Forecaster:
+    id: str
+
+    def __init__(self, _id: str):
+        self.id = _id
+
+
 class Day:
     date: datetime.date
     median_brier_score: Decimal
 
+    def __init__(self, date: datetime.date):
+        self.date = date
+
 
 class Question:
     _cached_dates: typing.Optional[typing.Tuple[datetime.date, ...]] = None
+    _cached_days: typing.Optional[typing.Tuple[Day, ...]] = None
+    _cached_forecasters: typing.Optional[typing.Tuple[Forecaster, ...]] = None
     first_date: datetime.date
     last_date: datetime.date
+    all_predictions: typing.Tuple[AttributedPrediction, ...]
 
     def __init__(
         self,
@@ -178,12 +191,15 @@ class Question:
         first_date: datetime.date,
         last_date: datetime.date,
     ):
+        self.all_predictions = tuple(
+            sorted(predictions, key=lambda prediction: prediction.created_at)
+        )
         self.first_date = first_date
         self.last_date = last_date
 
     @property
     def dates(self) -> typing.Tuple[datetime.date, ...]:
-        if self._cached_dates:
+        if self._cached_dates is not None:
             return self._cached_dates
         dates: typing.List[datetime.date] = []
         date = self.first_date
@@ -191,7 +207,33 @@ class Question:
         while date <= self.last_date:
             dates.append(date)
             date += one_day
-        return tuple(dates)
+        self._cached_dates = tuple(dates)
+        return self._cached_dates
+
+    def days(self) -> typing.Tuple[Day, ...]:
+        if self._cached_days is not None:
+            return self._cached_days
+        days: typing.List[Day] = []
+        for date in self.dates:
+            days.append(Day(date))
+        self._cached_days = tuple(days)
+        return self._cached_days
+
+    @property
+    def forecasters(self) -> typing.Tuple[Forecaster, ...]:
+        if self._cached_forecasters is not None:
+            return self._cached_forecasters
+        forecaster_ids: typing.List[str] = []
+        for prediction in self.all_predictions:
+            forecaster_id = prediction.created_by
+            if forecaster_id not in forecaster_ids:
+                forecaster_ids.append(forecaster_id)
+        forecaster_ids.sort()
+        forecasters: typing.List[Forecaster] = []
+        for forecaster_id in forecaster_ids:
+            forecasters.append(Forecaster(forecaster_id))
+        self._cached_forecasters = tuple(forecasters)
+        return self._cached_forecasters
 
 
 def compare(

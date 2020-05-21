@@ -199,6 +199,11 @@ class TestInitializeQuestion:
         assert dates[5] == datetime.date(2016, 11, 6)
         assert dates[6] == datetime.date(2016, 11, 7)
 
+        forecasters = question.forecasters
+        assert len(forecasters) == 2
+        assert forecasters[0].id == GEORGE
+        assert forecasters[1].id == KRAMER
+
 
 class TestDateRangeGenerator:
     def test(self):
