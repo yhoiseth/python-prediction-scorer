@@ -150,6 +150,56 @@ class TestTimeline:
         assert False
 
 
+class TestInitializeQuestion:
+    def test(self):
+        GEORGE = "George"
+        KRAMER = "Kramer"
+        predictions = (
+            predictionscorer.AttributedPrediction(
+                (Decimal(70), Decimal(30)),
+                true_alternative_index=1,
+                created_at=datetime.datetime(2016, 11, 1, 16, 5),
+                created_by=GEORGE,
+            ),
+            predictionscorer.AttributedPrediction(
+                (Decimal(40), Decimal(60)),
+                true_alternative_index=1,
+                created_at=datetime.datetime(2016, 11, 2, 11, 37),
+                created_by=KRAMER,
+            ),
+            predictionscorer.AttributedPrediction(
+                (Decimal(50), Decimal(50)),
+                true_alternative_index=1,
+                created_at=datetime.datetime(2016, 11, 3, 9, 9),
+                created_by=GEORGE,
+            ),
+            predictionscorer.AttributedPrediction(
+                (Decimal(60), Decimal(40)),
+                true_alternative_index=1,
+                created_at=datetime.datetime(2016, 11, 3, 21, 42),
+                created_by=GEORGE,
+            ),
+            predictionscorer.AttributedPrediction(
+                (Decimal(30), Decimal(70)),
+                true_alternative_index=1,
+                created_at=datetime.datetime(2016, 11, 5, 11, 45),
+                created_by=KRAMER,
+            ),
+        )
+        question = predictionscorer.Question(
+            predictions, datetime.date(2016, 11, 1), datetime.date(2016, 11, 7)
+        )
+        dates = question.dates
+        assert len(dates) == 7
+        assert dates[0] == datetime.date(2016, 11, 1)
+        assert dates[1] == datetime.date(2016, 11, 2)
+        assert dates[2] == datetime.date(2016, 11, 3)
+        assert dates[3] == datetime.date(2016, 11, 4)
+        assert dates[4] == datetime.date(2016, 11, 5)
+        assert dates[5] == datetime.date(2016, 11, 6)
+        assert dates[6] == datetime.date(2016, 11, 7)
+
+
 class TestDateRangeGenerator:
     def test(self):
         GEORGE = "George"
@@ -198,49 +248,49 @@ class TestDateRangeGenerator:
         assert expected_date_range == actual_date_range
 
 
-class TestEliminateOverwritten:
-    def test(self):
-        GEORGE = "George"
-        KRAMER = "Kramer"
-        with_overwritten = (
-            predictionscorer.AttributedPrediction(
-                (Decimal(70), Decimal(30)),
-                true_alternative_index=1,
-                created_at=datetime.datetime(2016, 11, 1, 16, 5),
-                created_by=GEORGE,
-                _id="george_1",
-            ),
-            predictionscorer.AttributedPrediction(
-                (Decimal(40), Decimal(60)),
-                true_alternative_index=1,
-                created_at=datetime.datetime(2016, 11, 2, 11, 37),
-                created_by=GEORGE,
-                _id="george_2",
-            ),
-            predictionscorer.AttributedPrediction(
-                (Decimal(60), Decimal(40)),
-                true_alternative_index=1,
-                created_at=datetime.datetime(2016, 11, 2, 21, 42),
-                created_by=GEORGE,
-                _id="george_3",
-            ),
-            predictionscorer.AttributedPrediction(
-                (Decimal(30), Decimal(70)),
-                true_alternative_index=1,
-                created_at=datetime.datetime(2016, 11, 5, 11, 45),
-                created_by=KRAMER,
-                _id="kramer_1",
-            ),
-            predictionscorer.AttributedPrediction(
-                (Decimal(50), Decimal(50)),
-                true_alternative_index=1,
-                created_at=datetime.datetime(2016, 11, 5, 9, 9),
-                created_by=KRAMER,
-                _id="kramer_2",
-            ),
-        )
-        relevant_ids = ["george_1", "george_3", "kramer_1"]
-        eliminated = predictionscorer.eliminate_overwritten(with_overwritten)
-        assert len(eliminated) == 3
-        for prediction in eliminated:
-            assert prediction.id in relevant_ids
+# class TestEliminateOverwritten:
+#     def test(self):
+#         GEORGE = "George"
+#         KRAMER = "Kramer"
+#         with_overwritten = (
+#             predictionscorer.AttributedPrediction(
+#                 (Decimal(70), Decimal(30)),
+#                 true_alternative_index=1,
+#                 created_at=datetime.datetime(2016, 11, 1, 16, 5),
+#                 created_by=GEORGE,
+#                 _id="george_1",
+#             ),
+#             predictionscorer.AttributedPrediction(
+#                 (Decimal(40), Decimal(60)),
+#                 true_alternative_index=1,
+#                 created_at=datetime.datetime(2016, 11, 2, 11, 37),
+#                 created_by=GEORGE,
+#                 _id="george_2",
+#             ),
+#             predictionscorer.AttributedPrediction(
+#                 (Decimal(60), Decimal(40)),
+#                 true_alternative_index=1,
+#                 created_at=datetime.datetime(2016, 11, 2, 21, 42),
+#                 created_by=GEORGE,
+#                 _id="george_3",
+#             ),
+#             predictionscorer.AttributedPrediction(
+#                 (Decimal(30), Decimal(70)),
+#                 true_alternative_index=1,
+#                 created_at=datetime.datetime(2016, 11, 5, 11, 45),
+#                 created_by=KRAMER,
+#                 _id="kramer_1",
+#             ),
+#             predictionscorer.AttributedPrediction(
+#                 (Decimal(50), Decimal(50)),
+#                 true_alternative_index=1,
+#                 created_at=datetime.datetime(2016, 11, 5, 9, 9),
+#                 created_by=KRAMER,
+#                 _id="kramer_2",
+#             ),
+#         )
+#         relevant_ids = ["george_1", "george_3", "kramer_1"]
+#         eliminated = predictionscorer.eliminate_overwritten(with_overwritten)
+#         assert len(eliminated) == 3
+#         for prediction in eliminated:
+#             assert prediction.id in relevant_ids

@@ -88,7 +88,6 @@ class Prediction:
     _cached_brier_score: typing.Optional[Decimal] = None
     created_at: typing.Optional[datetime.datetime]
     created_by: typing.Optional[str]
-    created_on: typing.Optional[datetime.date]
     order_matters: bool
     probabilities: typing.Tuple[Decimal, ...]
     relative_brier_score: typing.Optional[Decimal] = None
@@ -140,10 +139,10 @@ class AttributedPrediction(Prediction):
         self,
         probabilities: typing.Tuple[Decimal, ...],
         true_alternative_index: int,
-        order_matters: bool = False,
-        created_at: datetime.datetime = None,
-        created_by: str = None,
+        created_at: datetime.datetime,
+        created_by: str,
         _id: str = None,
+        order_matters: bool = False,
     ):
         super().__init__(probabilities, true_alternative_index, order_matters)
         self.created_at = created_at
@@ -163,6 +162,38 @@ class AttributedPrediction(Prediction):
         return f"{self.created_by}:{probabilities}"
 
 
+class Day:
+    date: datetime.date
+    median_brier_score: Decimal
+
+
+class Question:
+    _cached_dates: typing.Optional[typing.Tuple[datetime.date, ...]] = None
+    first_date: datetime.date
+    last_date: datetime.date
+
+    def __init__(
+        self,
+        predictions: typing.Tuple[AttributedPrediction, ...],
+        first_date: datetime.date,
+        last_date: datetime.date,
+    ):
+        self.first_date = first_date
+        self.last_date = last_date
+
+    @property
+    def dates(self) -> typing.Tuple[datetime.date, ...]:
+        if self._cached_dates:
+            return self._cached_dates
+        dates: typing.List[datetime.date] = []
+        date = self.first_date
+        one_day = datetime.timedelta(days=1)
+        while date <= self.last_date:
+            dates.append(date)
+            date += one_day
+        return tuple(dates)
+
+
 def compare(
     predictions: typing.Tuple[Prediction, ...]
 ) -> typing.Tuple[Decimal, typing.Tuple[Prediction, ...]]:
@@ -177,40 +208,40 @@ def compare(
     return median, tuple(enriched_predictions)
 
 
-class Day:
-    scores: typing.Dict[str, Decimal] = {}
-    creators: typing.List[str] = []
-    date: datetime.date
-    predictions: typing.List[Prediction]
-    scored_predictions: typing.Tuple[Prediction]
-    median: Decimal
-
-    def __init__(
-        self, date: datetime.date, predictions: typing.List[Prediction]
-    ) -> None:
-        self.date = date
-        self.predictions = predictions
-        latest_predictions: typing.List[Prediction] = []
-        for prediction in predictions:
-            if prediction.created_by not in self.creators:
-                self.creators.append(prediction.created_by)
-        for creator in self.creators:
-            creator_predictions: typing.List[Prediction] = []
-            for _prediction in predictions:
-                if _prediction.created_by == creator:
-                    creator_predictions.append(_prediction)
-            if len(creator_predictions) == 0:
-                continue
-            latest_prediction = creator_predictions[0]
-            for creator_prediction in creator_predictions:
-                if creator_prediction.created_at > latest_prediction.created_at:
-                    latest_prediction = creator_prediction
-            latest_predictions.append(latest_prediction)
-        (self.median, self.scored_predictions) = compare(tuple(latest_predictions))
-        for scored_prediction in self.scored_predictions:
-            self.scores[
-                scored_prediction.created_by
-            ] = scored_prediction.relative_brier_score
+# class Day:
+#     scores: typing.Dict[str, Decimal] = {}
+#     creators: typing.List[str] = []
+#     date: datetime.date
+#     predictions: typing.List[Prediction]
+#     scored_predictions: typing.Tuple[Prediction]
+#     median: Decimal
+#
+#     def __init__(
+#         self, date: datetime.date, predictions: typing.List[Prediction]
+#     ) -> None:
+#         self.date = date
+#         self.predictions = predictions
+#         latest_predictions: typing.List[Prediction] = []
+#         for prediction in predictions:
+#             if prediction.created_by not in self.creators:
+#                 self.creators.append(prediction.created_by)
+#         for creator in self.creators:
+#             creator_predictions: typing.List[Prediction] = []
+#             for _prediction in predictions:
+#                 if _prediction.created_by == creator:
+#                     creator_predictions.append(_prediction)
+#             if len(creator_predictions) == 0:
+#                 continue
+#             latest_prediction = creator_predictions[0]
+#             for creator_prediction in creator_predictions:
+#                 if creator_prediction.created_at > latest_prediction.created_at:
+#                     latest_prediction = creator_prediction
+#             latest_predictions.append(latest_prediction)
+#         (self.median, self.scored_predictions) = compare(tuple(latest_predictions))
+#         for scored_prediction in self.scored_predictions:
+#             self.scores[
+#                 scored_prediction.created_by
+#             ] = scored_prediction.relative_brier_score
 
 
 def generate_date_range(
@@ -236,113 +267,113 @@ def generate_date_range(
     return tuple(date_range)
 
 
-def generate_day(
-    date: datetime.date, predictions: typing.Tuple[AttributedPrediction, ...]
-) -> Day:
-    day_predictions: typing.List[AttributedPrediction] = [
-        prediction for prediction in predictions if prediction.created_on == date
-    ]
-    day_predictions.sort(key=lambda prediction: prediction.created_at)
-    day_creators: typing.List[str] = [
-        prediction.created_by for prediction in day_predictions
-    ]
+# def generate_day(
+#     date: datetime.date, predictions: typing.Tuple[AttributedPrediction, ...]
+# ) -> Day:
+#     day_predictions: typing.List[AttributedPrediction] = [
+#         prediction for prediction in predictions if prediction.created_on == date
+#     ]
+#     day_predictions.sort(key=lambda prediction: prediction.created_at)
+#     day_creators: typing.List[str] = [
+#         prediction.created_by for prediction in day_predictions
+#     ]
+#
+#
+# def eliminate_overwritten(
+#     predictions: typing.Tuple[AttributedPrediction, ...]
+# ) -> typing.Tuple[AttributedPrediction]:
+#     dates = generate_date_range(predictions)
+#     filtered_predictions: typing.List[AttributedPrediction] = []
+#     for date in dates:
+#         date_predictions: typing.List[AttributedPrediction] = [
+#             prediction for prediction in predictions if prediction.created_on == date
+#         ]
+#         latest_predictions: typing.Dict[str, AttributedPrediction] = {}
+#         for date_prediction in date_predictions:
+#             if date_prediction.created_by in latest_predictions:
+#                 if (
+#                     date_prediction.created_at
+#                     > latest_predictions[date_prediction.created_by].created_at
+#                 ):
+#                     latest_predictions[date_prediction.created_by] = date_prediction
+#             else:
+#                 latest_predictions[date_prediction.created_by] = date_prediction
+#         for creator, prediction in latest_predictions.items():
+#             filtered_predictions.append(prediction)
+#     return tuple(filtered_predictions)
+#
+#
+# class Collection:
+#     def created_on(self, date: datetime.date) -> typing.List[AttributedPrediction]:
+#         pass
+#
+#     def created_before_or_on(
+#         self, date: datetime.date
+#     ) -> typing.List[AttributedPrediction]:
+#         pass
+#
+#     def created_before_or_on_by(
+#         self, creator: str
+#     ) -> typing.List[AttributedPrediction]:
+#         pass
+#
+#     @property
+#     def creators(self) -> typing.List[str]:
+#         pass
+#
+#     @property
+#     def days(self) -> typing.List[Day]:
+#         pass
 
 
-def eliminate_overwritten(
-    predictions: typing.Tuple[AttributedPrediction, ...]
-) -> typing.Tuple[AttributedPrediction]:
-    dates = generate_date_range(predictions)
-    filtered_predictions: typing.List[AttributedPrediction] = []
-    for date in dates:
-        date_predictions: typing.List[AttributedPrediction] = [
-            prediction for prediction in predictions if prediction.created_on == date
-        ]
-        latest_predictions: typing.Dict[str, AttributedPrediction] = {}
-        for date_prediction in date_predictions:
-            if date_prediction.created_by in latest_predictions:
-                if (
-                    date_prediction.created_at
-                    > latest_predictions[date_prediction.created_by].created_at
-                ):
-                    latest_predictions[date_prediction.created_by] = date_prediction
-            else:
-                latest_predictions[date_prediction.created_by] = date_prediction
-        for creator, prediction in latest_predictions.items():
-            filtered_predictions.append(prediction)
-    return tuple(filtered_predictions)
-
-
-class Collection:
-    def created_on(self, date: datetime.date) -> typing.List[AttributedPrediction]:
-        pass
-
-    def created_before_or_on(
-        self, date: datetime.date
-    ) -> typing.List[AttributedPrediction]:
-        pass
-
-    def created_before_or_on_by(
-        self, creator: str
-    ) -> typing.List[AttributedPrediction]:
-        pass
-
-    @property
-    def creators(self) -> typing.List[str]:
-        pass
-
-    @property
-    def days(self) -> typing.List[Day]:
-        pass
-
-
-def generate_days(
-    predictions: typing.Tuple[AttributedPrediction, ...]
-) -> typing.Tuple[Day, ...]:
-    dates = generate_date_range(predictions)
-    days: typing.List[Day] = []
-    creators: typing.List[str] = []
-
-
-class Timeline:
-    scores: typing.Dict[str, Decimal] = {}
-    days: typing.List[Day]
-
-    def __init__(self, predictions: typing.Tuple[AttributedPrediction]) -> None:
-        assert len(predictions) > 0
-        dates = generate_date_range(predictions)
-
-        creators: typing.List[str] = []
-        for prediction in predictions:
-            creator = prediction.created_by
-            if creator not in creators:
-                creators.append(creator)
-        creators.sort()
-        days: typing.List[Day] = []
-        first_date = dates[0]
-        last_date = dates[1]
-        date = first_date
-        while date <= last_date:
-            prediction_found = False
-            for prediction in predictions:
-                if prediction.created_on == date:
-                    prediction_found = True
-            if prediction_found:
-                date_predictions: typing.List[Prediction] = []
-                for prediction in predictions:
-                    if prediction.created_on == date:
-                        prediction_found = True
-                        date_predictions.append(prediction)
-                day = Day(date, date_predictions)
-            if "day" in locals():
-                days.append(day)
-            date = date + datetime.timedelta(days=1)
-        self.days = days
-        nominators: typing.Dict[str, Decimal] = {}
-        for creator in creators:
-            nominators[creator] = Decimal(0)
-        for day in days:
-            for creator, score in day.scores.items():
-                nominators[creator] = nominators[creator] + score
-        denominator = len(days)
-        for creator, nominator in nominators.items():
-            self.scores[creator] = nominator / denominator
+# def generate_days(
+#     predictions: typing.Tuple[AttributedPrediction, ...]
+# ) -> typing.Tuple[Day, ...]:
+#     dates = generate_date_range(predictions)
+#     days: typing.List[Day] = []
+#     creators: typing.List[str] = []
+#
+#
+# class Timeline:
+#     scores: typing.Dict[str, Decimal] = {}
+#     days: typing.List[Day]
+#
+#     def __init__(self, predictions: typing.Tuple[AttributedPrediction]) -> None:
+#         assert len(predictions) > 0
+#         dates = generate_date_range(predictions)
+#
+#         creators: typing.List[str] = []
+#         for prediction in predictions:
+#             creator = prediction.created_by
+#             if creator not in creators:
+#                 creators.append(creator)
+#         creators.sort()
+#         days: typing.List[Day] = []
+#         first_date = dates[0]
+#         last_date = dates[1]
+#         date = first_date
+#         while date <= last_date:
+#             prediction_found = False
+#             for prediction in predictions:
+#                 if prediction.created_on == date:
+#                     prediction_found = True
+#             if prediction_found:
+#                 date_predictions: typing.List[Prediction] = []
+#                 for prediction in predictions:
+#                     if prediction.created_on == date:
+#                         prediction_found = True
+#                         date_predictions.append(prediction)
+#                 day = Day(date, date_predictions)
+#             if "day" in locals():
+#                 days.append(day)
+#             date = date + datetime.timedelta(days=1)
+#         self.days = days
+#         nominators: typing.Dict[str, Decimal] = {}
+#         for creator in creators:
+#             nominators[creator] = Decimal(0)
+#         for day in days:
+#             for creator, score in day.scores.items():
+#                 nominators[creator] = nominators[creator] + score
+#         denominator = len(days)
+#         for creator, nominator in nominators.items():
+#             self.scores[creator] = nominator / denominator
