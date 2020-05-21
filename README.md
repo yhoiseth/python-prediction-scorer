@@ -152,15 +152,17 @@ As you can see, George’s score is 0.2375 higher (worse) than the median, whils
 
 ### Comparing scores over time
 
-It is more difficult to predict things a long time into the future. It is also more valuable to have good predictions farther in advance. Also, predictions can often be updated over time. To account for these things, we can do the following. 
+It is more difficult to predict things a long time into the future. It is also more valuable to have good predictions farther in advance. In addition, predictions can often be updated over time. [Good Judgment Open](https://www.gjopen.com/faq#faq4) has shared how they score cases like this:
 
-1. Group predictions by date. If one person (or bot) made several predictions in any given day, discard all but the most recent one. If someone doesn’t make a forecast on any given day, use their most recent forecast from previous days.
-2. Score the forecasts against each other within each day.
-3. Average all the relative scores to get the total relative score.
+> **Median Score**: The Median score is simply the median of all Brier scores from all users with an active forecast on a question (in other words, forecasts made on or before that day). Like with your Brier score, we calculate a Median score for each day that a question is open…
+>
+> **Accuracy Score**: The Accuracy Score is how we quantify how much more or less accurate you were than the crowd…
+>
+> To calculate your Accuracy Score for a single question, we take your average daily Brier score and subtract the average Median daily Brier score of the crowd. Then, we multiply the difference by your Participation Rate, which is the percentage of possible days on which you had an active forecast. That means negative scores indicate you were more accurate than the crowd, and positive scores indicate you were less accurate than the crowd (on average). 
 
 #### Example
 
-To illustrate, consider the following six (made-up) predictions for the 2016 US presidential election. In this example, no forecasts could be made after November 7.
+To illustrate, consider the following five (made-up) predictions for the 2016 US presidential election. In this example, no forecasts could be made before November 1 or after November 7.
 
 | ID | Forecaster | Clinton | Trump | Date       | Time  | Brier score |
 |----|------------|---------|-------|------------|-------|-------------|
@@ -169,6 +171,22 @@ To illustrate, consider the following six (made-up) predictions for the 2016 US 
 | 3  | George     | 50      | 50    | Nov 3      | 09:09 | 0.50        |
 | 4  | George     | 60      | 40    | Nov 3      | 21:42 | 0.72        |
 | 5  | Kramer     | 30      | 70    | Nov 5      | 11:45 | 0.18        |
+
+George’s participation rate is 7/7. Kramer’s participation rate is 6/7.
+
+The median scores for each day are given below.
+
+| Day   | IDs of active forecasts | Median score | Comment                                        |
+|-------|-------------------------|--------------|------------------------------------------------|
+| Nov 1 | 1                       | 0.98         | Only George had an active forecast.            |
+| Nov 2 | 1 and 2                 | 0.65         | Kramer made his first forecast.                |
+| Nov 3 | 2 and 4                 | 0.52         | George overwrites his 09:09 forecast at 21:42. |
+| Nov 4 | 2 and 4                 | 0.52         | Same as November 3.                            |
+| Nov 5 | 4 and 5                 | 0.45         | Kramer updated his forecast.                   |
+| Nov 6 | 4 and 5                 | 0.45         | Same as November 5.                            |
+| Nov 7 | 4 and 5                 | 0.45         | Same as November 6.                            |
+
+
 
 ```python
 import datetime
