@@ -204,6 +204,16 @@ class TestInitializeQuestion:
         assert forecasters[0].id == GEORGE
         assert forecasters[1].id == KRAMER
 
+        days = question.days
+        assert len(days) == 7
+        assert days[0].median_brier_score == Decimal("0.98")
+        assert days[1].median_brier_score == Decimal("0.65")
+        assert days[2].median_brier_score == Decimal("0.52")
+        assert days[3].median_brier_score == Decimal("0.52")
+        assert days[4].median_brier_score == Decimal("0.45")
+        assert days[5].median_brier_score == Decimal("0.45")
+        assert days[6].median_brier_score == Decimal("0.45")
+
 
 class TestDateRangeGenerator:
     def test(self):

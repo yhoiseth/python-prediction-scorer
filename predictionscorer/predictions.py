@@ -171,10 +171,27 @@ class Forecaster:
 
 class Day:
     date: datetime.date
-    median_brier_score: Decimal
+    _cached_median_brier_score: typing.Optional[Decimal]
+    predictions: typing.Tuple[AttributedPrediction, ...]
 
-    def __init__(self, date: datetime.date):
+    def __init__(
+        self, date: datetime.date, predictions: typing.Tuple[AttributedPrediction, ...]
+    ):
         self.date = date
+        self.predictions = predictions
+
+    @property
+    def median_brier_score(self) -> typing.Optional[Decimal]:
+        if hasattr(self, "_cached_median_brier_score"):
+            return self._cached_median_brier_score
+        if len(self.predictions) == 0:
+            self._cached_median_brier_score = None
+            return self._cached_median_brier_score
+        brier_scores: typing.List[Decimal] = []
+        for prediction in self.predictions:
+            brier_scores.append(prediction.brier_score)
+        self._cached_median_brier_score = Decimal(statistics.median(brier_scores))
+        return self._cached_median_brier_score
 
 
 class Question:
@@ -210,14 +227,36 @@ class Question:
         self._cached_dates = tuple(dates)
         return self._cached_dates
 
+    @property
     def days(self) -> typing.Tuple[Day, ...]:
         if self._cached_days is not None:
             return self._cached_days
         days: typing.List[Day] = []
         for date in self.dates:
-            days.append(Day(date))
+            days.append(Day(date, self.latest_predictions_by_date(date)))
         self._cached_days = tuple(days)
         return self._cached_days
+
+    def latest_prediction_by_date_by_forecaster(
+        self, date: datetime.date, forecaster: Forecaster
+    ) -> typing.Optional[AttributedPrediction]:
+        result: typing.Optional[AttributedPrediction] = None
+        for prediction in self.all_predictions:
+            if prediction.created_on > date:
+                break
+            if prediction.created_by == forecaster.id:
+                result = prediction
+        return result
+
+    def latest_predictions_by_date(
+        self, date: datetime.date
+    ) -> typing.Tuple[AttributedPrediction, ...]:
+        predictions: typing.List[AttributedPrediction] = []
+        for forecaster in self.forecasters:
+            prediction = self.latest_prediction_by_date_by_forecaster(date, forecaster)
+            if isinstance(prediction, AttributedPrediction):
+                predictions.append(prediction)
+        return tuple(predictions)
 
     @property
     def forecasters(self) -> typing.Tuple[Forecaster, ...]:
