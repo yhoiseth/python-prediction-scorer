@@ -153,8 +153,12 @@ class TestInitializeQuestion:
 
         forecasters = question.forecasters
         assert len(forecasters) == 2
-        assert forecasters[0].id == GEORGE
-        assert forecasters[1].id == KRAMER
+        george = forecasters[0]
+        kramer = forecasters[1]
+        assert george.id == GEORGE
+        assert kramer.id == KRAMER
+        assert george.participation_rate == Decimal("1")
+        assert kramer.participation_rate == pytest.approx(Decimal("0.8571428"))
 
         days = question.days
         assert len(days) == 7

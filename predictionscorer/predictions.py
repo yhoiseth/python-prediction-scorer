@@ -162,12 +162,33 @@ class AttributedPrediction(Prediction):
 
 
 class Forecaster:
+    _cached_participation_rate: Decimal
     id: str
     predictions: typing.Tuple[AttributedPrediction, ...]
+    first_date: datetime.date
+    last_date: datetime.date
 
-    def __init__(self, _id: str, predictions: typing.Tuple[AttributedPrediction, ...]):
+    def __init__(
+        self,
+        _id: str,
+        predictions: typing.Tuple[AttributedPrediction, ...],
+        first_date: datetime.date,
+        last_date: datetime.date,
+    ):
         self.id = _id
         self.predictions = predictions
+        self.first_date = first_date
+        self.last_date = last_date
+
+    @property
+    def participation_rate(self) -> Decimal:
+        try:
+            return self._cached_participation_rate
+        except AttributeError:
+            nominator = (self.last_date - self.predictions[0].created_on).days + 1
+            denominator = (self.last_date - self.first_date).days + 1
+            self._cached_participation_rate = Decimal(nominator) / Decimal(denominator)
+            return self._cached_participation_rate
 
 
 class Day:
@@ -279,7 +300,12 @@ class Question:
         forecasters: typing.List[Forecaster] = []
         for forecaster_id in forecaster_ids:
             forecasters.append(
-                Forecaster(forecaster_id, self.predictions_by_forecaster(forecaster_id))
+                Forecaster(
+                    forecaster_id,
+                    self.predictions_by_forecaster(forecaster_id),
+                    first_date=self.first_date,
+                    last_date=self.last_date,
+                )
             )
         self._cached_forecasters = tuple(forecasters)
         return self._cached_forecasters
