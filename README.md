@@ -188,6 +188,9 @@ The median scores for each day are given below.
 | Nov 6 | 4 and 5                 | 0.45         | Same as November 5.                            |
 | Nov 7 | 4 and 5                 | 0.45         | Same as November 6.                            |
 
+The average daily median score of the crowd is (0.98 + 0.65 + 2 * 0.52 + 3 * 0.45) / 7 = 0.574.
+
+George’s accuracy score is (0.794 - 0.574) * 7/7 = 0.22. Kramer’s accuracy score is (0.25 - 0.574) * 6/7 = -0.278. 
 
 ## Changelog
 

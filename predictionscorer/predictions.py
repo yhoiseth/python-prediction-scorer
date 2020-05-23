@@ -162,6 +162,7 @@ class AttributedPrediction(Prediction):
 
 
 class Forecaster:
+    accuracy_score: typing.Optional[Decimal] = None
     _cached_average_daily_brier_score: Decimal
     _cached_number_of_days_with_active_prediction: Decimal
     _cached_participation_rate: Decimal
@@ -259,6 +260,7 @@ class Day:
 
 
 class Question:
+    _cached_average_median_daily_brier_score: Decimal
     _cached_dates: typing.Optional[typing.Tuple[datetime.date, ...]] = None
     _cached_days: typing.Optional[typing.Tuple[Day, ...]] = None
     _cached_forecasters: typing.Optional[typing.Tuple[Forecaster, ...]] = None
@@ -275,6 +277,29 @@ class Question:
         self.predictions = eliminate_overwritten(predictions)
         self.first_date = first_date
         self.last_date = last_date
+        self.calculate_accuracy_scores()
+
+    def calculate_accuracy_scores(self) -> None:
+        for forecaster in self.forecasters:
+            forecaster.accuracy_score = (
+                forecaster.average_daily_brier_score
+                - self.average_median_daily_brier_score
+            ) / forecaster.participation_rate
+
+    @property
+    def average_median_daily_brier_score(self) -> Decimal:
+        try:
+            return self._cached_average_median_daily_brier_score
+        except AttributeError:
+            total = Decimal("0")
+            for day in self.days:
+                if day.median_brier_score is None:
+                    continue
+                total += day.median_brier_score
+            self._cached_average_median_daily_brier_score = total / Decimal(
+                len(self.dates)
+            )
+            return self._cached_average_median_daily_brier_score
 
     @property
     def dates(self) -> typing.Tuple[datetime.date, ...]:

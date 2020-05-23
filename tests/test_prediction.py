@@ -138,9 +138,11 @@ class TestInitializeQuestion:
                 forecaster_id=KRAMER,
             ),
         )
+
         question = predictionscorer.Question(
             predictions, datetime.date(2016, 11, 1), datetime.date(2016, 11, 7)
         )
+
         dates = question.dates
         assert len(dates) == 7
         assert dates[0] == datetime.date(2016, 11, 1)
@@ -161,6 +163,8 @@ class TestInitializeQuestion:
         assert kramer.participation_rate == pytest.approx(Decimal("0.8571428"))
         assert george.average_daily_brier_score == pytest.approx(Decimal("0.7942857"))
         assert kramer.average_daily_brier_score == Decimal("0.25")
+        assert george.accuracy_score == Decimal("0.22")
+        assert kramer.accuracy_score == pytest.approx(Decimal("-0.3783333"))
 
         days = question.days
         assert len(days) == 7
@@ -171,6 +175,10 @@ class TestInitializeQuestion:
         assert days[4].median_brier_score == Decimal("0.45")
         assert days[5].median_brier_score == Decimal("0.45")
         assert days[6].median_brier_score == Decimal("0.45")
+
+        assert question.average_median_daily_brier_score == pytest.approx(
+            Decimal("0.5742857")
+        )
 
 
 class TestDateRangeGenerator:
