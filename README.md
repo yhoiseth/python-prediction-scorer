@@ -192,6 +192,65 @@ The average daily median score of the crowd is (0.98 + 0.65 + 2 * 0.52 + 3 * 0.4
 
 George’s accuracy score is (0.794 - 0.574) * 7/7 = 0.22. Kramer’s accuracy score is (0.25 - 0.574) * 6/7 = -0.278. 
 
+In code:
+
+```python
+import datetime
+from decimal import Decimal
+
+import predictionscorer
+
+GEORGE = "George"
+KRAMER = "Kramer"
+
+predictions = (
+    predictionscorer.AttributedPrediction(
+        (Decimal(70), Decimal(30)),
+        true_alternative_index=1,
+        created_at=datetime.datetime(2016, 11, 1, 16, 5),
+        forecaster_id=GEORGE,
+    ),
+    predictionscorer.AttributedPrediction(
+        (Decimal(40), Decimal(60)),
+        true_alternative_index=1,
+        created_at=datetime.datetime(2016, 11, 2, 11, 37),
+        forecaster_id=KRAMER,
+    ),
+    predictionscorer.AttributedPrediction(
+        (Decimal(50), Decimal(50)),
+        true_alternative_index=1,
+        created_at=datetime.datetime(2016, 11, 3, 9, 9),
+        forecaster_id=GEORGE,
+    ),
+    predictionscorer.AttributedPrediction(
+        (Decimal(60), Decimal(40)),
+        true_alternative_index=1,
+        created_at=datetime.datetime(2016, 11, 3, 21, 42),
+        forecaster_id=GEORGE,
+    ),
+    predictionscorer.AttributedPrediction(
+        (Decimal(30), Decimal(70)),
+        true_alternative_index=1,
+        created_at=datetime.datetime(2016, 11, 5, 11, 45),
+        forecaster_id=KRAMER,
+    ),
+)
+
+question = predictionscorer.Question(
+    predictions, datetime.date(2016, 11, 1), datetime.date(2016, 11, 7)
+)
+
+forecasters = question.forecasters
+george = forecasters[0] # Forecasters are ordered alphabetically.
+kramer = forecasters[1]
+print(george.participation_rate) # Decimal("1")
+print(kramer.participation_rate) # Decimal("0.857") (rounded) 
+print(george.average_daily_brier_score) # Decimal("0.794") (rounded)
+print(kramer.average_daily_brier_score) # Decimal("0.25")
+print(george.accuracy_score) # Decimal("0.22")
+print(kramer.accuracy_score) # Decimal("-0.378") (rounded)
+```
+
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md).
