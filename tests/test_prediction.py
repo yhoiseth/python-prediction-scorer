@@ -159,6 +159,8 @@ class TestInitializeQuestion:
         assert kramer.id == KRAMER
         assert george.participation_rate == Decimal("1")
         assert kramer.participation_rate == pytest.approx(Decimal("0.8571428"))
+        assert george.average_daily_brier_score == pytest.approx(Decimal("0.7942857"))
+        assert kramer.average_daily_brier_score == Decimal("0.25")
 
         days = question.days
         assert len(days) == 7

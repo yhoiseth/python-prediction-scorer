@@ -162,6 +162,8 @@ class AttributedPrediction(Prediction):
 
 
 class Forecaster:
+    _cached_average_daily_brier_score: Decimal
+    _cached_number_of_days_with_active_prediction: Decimal
     _cached_participation_rate: Decimal
     id: str
     predictions: typing.Tuple[AttributedPrediction, ...]
@@ -181,14 +183,54 @@ class Forecaster:
         self.last_date = last_date
 
     @property
+    def number_of_days_with_active_prediction(self) -> Decimal:
+        try:
+            return self._cached_number_of_days_with_active_prediction
+        except AttributeError:
+            self._cached_number_of_days_with_active_prediction = Decimal(
+                (self.last_date - self.predictions[0].created_on).days + 1
+            )
+            return self._cached_number_of_days_with_active_prediction
+
+    @property
+    def average_daily_brier_score(self) -> Decimal:
+        try:
+            return self._cached_average_daily_brier_score
+        except AttributeError:
+            sum_daily_brier_scores = Decimal("0")
+            date = self.first_date
+            brier_score: typing.Optional[Decimal] = None
+            one_day = datetime.timedelta(days=1)
+            while date <= self.last_date:
+                prediction = self.prediction_by_date(date)
+                if prediction:
+                    brier_score = prediction.brier_score
+                if brier_score is not None:
+                    sum_daily_brier_scores += brier_score
+                date += one_day
+            self._cached_average_daily_brier_score = (
+                sum_daily_brier_scores / self.number_of_days_with_active_prediction
+            )
+            return self._cached_average_daily_brier_score
+
+    @property
     def participation_rate(self) -> Decimal:
         try:
             return self._cached_participation_rate
         except AttributeError:
-            nominator = (self.last_date - self.predictions[0].created_on).days + 1
             denominator = (self.last_date - self.first_date).days + 1
-            self._cached_participation_rate = Decimal(nominator) / Decimal(denominator)
+            self._cached_participation_rate = Decimal(
+                self.number_of_days_with_active_prediction
+            ) / Decimal(denominator)
             return self._cached_participation_rate
+
+    def prediction_by_date(
+        self, date: datetime.date
+    ) -> typing.Optional[AttributedPrediction]:
+        for prediction in self.predictions:
+            if prediction.created_on == date:
+                return prediction
+        return None
 
 
 class Day:
