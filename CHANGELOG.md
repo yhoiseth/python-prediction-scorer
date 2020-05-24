@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+## [0.3.0] - 2020-05-24
+
+### Added
 - `compare` method to score predictions relative to each other
 - Ability to import directly from `predictionscorer`
 - `Question` class to score predictions over time
@@ -44,7 +54,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - Brier score calculation.
 
-[Unreleased]: https://github.com/yhoiseth/python-prediction-scorer/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/yhoiseth/python-prediction-scorer/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/yhoiseth/python-prediction-scorer/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/yhoiseth/python-prediction-scorer/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/yhoiseth/python-prediction-scorer/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/yhoiseth/python-prediction-scorer/releases/tag/v0.1.0

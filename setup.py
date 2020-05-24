@@ -15,6 +15,6 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     python_requires=">=3.7",
     url="https://github.com/yhoiseth/python-prediction-scorer",
-    version="0.2.0",
+    version="0.3.0",
     zip_safe=False,
 )
