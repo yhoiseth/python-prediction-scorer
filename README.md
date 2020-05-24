@@ -263,6 +263,8 @@ With this library, I am trying to achieve the following goals.
 - Easy to read (for as many people as possible)
 - Easy and predictable to use (with modern tools)
 
+Performance is _not_ a goal at the moment.
+
 ### Feature complete
 
 There are many ways to score and compare predictions, some more complicated than others. For example, consider the case where many people make multiple forecasts on the same question over a period of time. We want to award being right early, which means comparing early forecasts to early forecasts, late forecasts to late forecasts, and aggregating them all together.
