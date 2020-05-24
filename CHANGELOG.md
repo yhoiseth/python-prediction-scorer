@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - `compare` method to score predictions relative to each other
 - Ability to import directly from `predictionscorer`
 - `Question` class to score predictions over time
+- MIT License
 
 ### Fixed
 - Update [plot script](plot.py) to work with new API
