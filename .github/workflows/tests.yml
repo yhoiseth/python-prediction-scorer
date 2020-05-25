@@ -18,9 +18,25 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
+      if: matrix.python-version != '3.9'
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Set up Python 3.9
+      if: matrix.python-version == '3.9'
+      run: |
+        curl -O https://www.python.org/ftp/python/3.9.0/Python-3.9.0b1.tgz
+        chmod +x Python-3.9.0b1.tgz
+        tar xf Python-3.9.0b1.tgz
+        sudo apt update
+        sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev
+        cd Python-3.9.0b1
+        ./configure
+        make
+        sudo make install
+        which python3
+        /usr/local/bin/python3 --version
+        python --version
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip pip-tools setuptools wheel
