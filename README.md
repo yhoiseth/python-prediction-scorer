@@ -150,6 +150,107 @@ print(kramer.relative_brier_score) # Decimal('-0.2375')
 
 As you can see, George’s score is 0.2375 higher (worse) than the median, whilst Kramer’s score is 0.2375 lower (better).
 
+### Comparing scores over time
+
+It is more difficult to predict things a long time into the future. It is also more valuable to have good predictions farther in advance. In addition, predictions can often be updated over time. [Good Judgment Open](https://www.gjopen.com/faq#faq4) has shared how they score cases like this:
+
+> **Median Score**: The Median score is simply the median of all Brier scores from all users with an active forecast on a question (in other words, forecasts made on or before that day). Like with your Brier score, we calculate a Median score for each day that a question is open…
+>
+> **Accuracy Score**: The Accuracy Score is how we quantify how much more or less accurate you were than the crowd…
+>
+> To calculate your Accuracy Score for a single question, we take your average daily Brier score and subtract the average Median daily Brier score of the crowd. Then, we multiply the difference by your Participation Rate, which is the percentage of possible days on which you had an active forecast. That means negative scores indicate you were more accurate than the crowd, and positive scores indicate you were less accurate than the crowd (on average). 
+
+#### Example
+
+To illustrate, consider the following five (made-up) predictions for the 2016 US presidential election. In this example, no forecasts could be made before November 1 or after November 7.
+
+| ID | Forecaster | Clinton | Trump | Date       | Time  | Brier score |
+|----|------------|---------|-------|------------|-------|-------------|
+| 1  | George     | 70      | 30    | Nov 1      | 16:05 | 0.98        |
+| 2  | Kramer     | 40      | 60    | Nov 2      | 11:37 | 0.32        |
+| 3  | George     | 50      | 50    | Nov 3      | 09:09 | 0.50        |
+| 4  | George     | 60      | 40    | Nov 3      | 21:42 | 0.72        |
+| 5  | Kramer     | 30      | 70    | Nov 5      | 11:45 | 0.18        |
+
+George’s participation rate is 7/7. Kramer’s participation rate is 6/7.
+
+George’s average daily Brier score is (2 * 0.98 + 5 * 0.72) / 7 = 0.794. Kramer’s average daily Brier score is 3 * (0.32 + 0.18) / 6 = 0.25.
+
+The median scores for each day are given below.
+
+| Day   | IDs of active forecasts | Median score | Comment                                        |
+|-------|-------------------------|--------------|------------------------------------------------|
+| Nov 1 | 1                       | 0.98         | Only George had an active forecast.            |
+| Nov 2 | 1 and 2                 | 0.65         | Kramer made his first forecast.                |
+| Nov 3 | 2 and 4                 | 0.52         | George overwrites his 09:09 forecast at 21:42. |
+| Nov 4 | 2 and 4                 | 0.52         | Same as November 3.                            |
+| Nov 5 | 4 and 5                 | 0.45         | Kramer updated his forecast.                   |
+| Nov 6 | 4 and 5                 | 0.45         | Same as November 5.                            |
+| Nov 7 | 4 and 5                 | 0.45         | Same as November 6.                            |
+
+The average daily median score of the crowd is (0.98 + 0.65 + 2 * 0.52 + 3 * 0.45) / 7 = 0.574.
+
+George’s accuracy score is (0.794 - 0.574) * 7/7 = 0.22. Kramer’s accuracy score is (0.25 - 0.574) * 6/7 = -0.278. 
+
+In code:
+
+```python
+import datetime
+from decimal import Decimal
+
+import predictionscorer
+
+GEORGE = "George"
+KRAMER = "Kramer"
+
+predictions = (
+    predictionscorer.AttributedPrediction(
+        (Decimal(70), Decimal(30)),
+        true_alternative_index=1,
+        created_at=datetime.datetime(2016, 11, 1, 16, 5),
+        forecaster_id=GEORGE,
+    ),
+    predictionscorer.AttributedPrediction(
+        (Decimal(40), Decimal(60)),
+        true_alternative_index=1,
+        created_at=datetime.datetime(2016, 11, 2, 11, 37),
+        forecaster_id=KRAMER,
+    ),
+    predictionscorer.AttributedPrediction(
+        (Decimal(50), Decimal(50)),
+        true_alternative_index=1,
+        created_at=datetime.datetime(2016, 11, 3, 9, 9),
+        forecaster_id=GEORGE,
+    ),
+    predictionscorer.AttributedPrediction(
+        (Decimal(60), Decimal(40)),
+        true_alternative_index=1,
+        created_at=datetime.datetime(2016, 11, 3, 21, 42),
+        forecaster_id=GEORGE,
+    ),
+    predictionscorer.AttributedPrediction(
+        (Decimal(30), Decimal(70)),
+        true_alternative_index=1,
+        created_at=datetime.datetime(2016, 11, 5, 11, 45),
+        forecaster_id=KRAMER,
+    ),
+)
+
+question = predictionscorer.Question(
+    predictions, datetime.date(2016, 11, 1), datetime.date(2016, 11, 7)
+)
+
+forecasters = question.forecasters
+george = forecasters[0] # Forecasters are ordered alphabetically.
+kramer = forecasters[1]
+print(george.participation_rate) # Decimal("1")
+print(kramer.participation_rate) # Decimal("0.857") (rounded) 
+print(george.average_daily_brier_score) # Decimal("0.794") (rounded)
+print(kramer.average_daily_brier_score) # Decimal("0.25")
+print(george.accuracy_score) # Decimal("0.22")
+print(kramer.accuracy_score) # Decimal("-0.378") (rounded)
+```
+
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md).
@@ -161,6 +262,8 @@ With this library, I am trying to achieve the following goals.
 - Feature complete
 - Easy to read (for as many people as possible)
 - Easy and predictable to use (with modern tools)
+
+Performance is _not_ a goal at the moment.
 
 ### Feature complete
 
