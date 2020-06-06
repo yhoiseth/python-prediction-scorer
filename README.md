@@ -92,12 +92,12 @@ Sometimes, the ordering of alternatives matters. For example, consider the follo
 
 > What will the closing value of the S&P 500 stock market index be on 2019-12-31?
 >
-> | Index | Alternative                                  |
-> |-------|----------------------------------------------|
-> | 0     | < 3,000.00                                   |
-> | 1     | ≥ 3,000.00, < 3,500.00                       |
-> | 2     | ≥ 3,500.00, < 4,000.00                       |
-> | 3     | ≥ 4,000.00                                   |
+> | Index | Alternative            |
+> | ----- | ---------------------- |
+> | 0     | < 3,000.00             |
+> | 1     | ≥ 3,000.00, < 3,500.00 |
+> | 2     | ≥ 3,500.00, < 4,000.00 |
+> | 3     | ≥ 4,000.00             |
 
 We [now know that the answer is 3,230.78](https://us.spindices.com/indices/equity/sp-500). This means that, among our alternatives, the one with index 1 turned out to be correct. But notice that index 2 is closer to the right answer than index 3. In such cases, the regular Brier score is a poor measure of forecasting accuracy. Instead, we can use [the ordered categorical scoring rule](https://goodjudgment.io/Training/Ordered_Categorical_Scoring_Rule.pdf).
 
@@ -143,7 +143,7 @@ kramer = predictionscorer.Prediction(
 
 (median, (george, kramer)) = predictionscorer.compare((george, kramer))
 
-print(median) # Decimal('0.4825') 
+print(median) # Decimal('0.4825')
 print(george.relative_brier_score) # Decimal('0.2375')
 print(kramer.relative_brier_score) # Decimal('-0.2375')
 ```
@@ -158,28 +158,28 @@ It is more difficult to predict things a long time into the future. It is also m
 >
 > **Accuracy Score**: The Accuracy Score is how we quantify how much more or less accurate you were than the crowd…
 >
-> To calculate your Accuracy Score for a single question, we take your average daily Brier score and subtract the average Median daily Brier score of the crowd. Then, we multiply the difference by your Participation Rate, which is the percentage of possible days on which you had an active forecast. That means negative scores indicate you were more accurate than the crowd, and positive scores indicate you were less accurate than the crowd (on average). 
+> To calculate your Accuracy Score for a single question, we take your average daily Brier score and subtract the average Median daily Brier score of the crowd. Then, we multiply the difference by your Participation Rate, which is the percentage of possible days on which you had an active forecast. That means negative scores indicate you were more accurate than the crowd, and positive scores indicate you were less accurate than the crowd (on average).
 
 #### Example
 
 To illustrate, consider the following five (made-up) predictions for the 2016 US presidential election. In this example, no forecasts could be made before November 1 or after November 7.
 
-| ID | Forecaster | Clinton | Trump | Date       | Time  | Brier score |
-|----|------------|---------|-------|------------|-------|-------------|
-| 1  | George     | 70      | 30    | Nov 1      | 16:05 | 0.98        |
-| 2  | Kramer     | 40      | 60    | Nov 2      | 11:37 | 0.32        |
-| 3  | George     | 50      | 50    | Nov 3      | 09:09 | 0.50        |
-| 4  | George     | 60      | 40    | Nov 3      | 21:42 | 0.72        |
-| 5  | Kramer     | 30      | 70    | Nov 5      | 11:45 | 0.18        |
+| ID  | Forecaster | Clinton | Trump | Date  | Time  | Brier score |
+| --- | ---------- | ------- | ----- | ----- | ----- | ----------- |
+| 1   | George     | 70      | 30    | Nov 1 | 16:05 | 0.98        |
+| 2   | Kramer     | 40      | 60    | Nov 2 | 11:37 | 0.32        |
+| 3   | George     | 50      | 50    | Nov 3 | 09:09 | 0.50        |
+| 4   | George     | 60      | 40    | Nov 3 | 21:42 | 0.72        |
+| 5   | Kramer     | 30      | 70    | Nov 5 | 11:45 | 0.18        |
 
 George’s participation rate is 7/7. Kramer’s participation rate is 6/7.
 
-George’s average daily Brier score is (2 * 0.98 + 5 * 0.72) / 7 = 0.794. Kramer’s average daily Brier score is 3 * (0.32 + 0.18) / 6 = 0.25.
+George’s average daily Brier score is `(2 * 0.98 + 5 * 0.72) / 7 = 0.794`. Kramer’s average daily Brier score is `3 * (0.32 + 0.18) / 6 = 0.25`.
 
 The median scores for each day are given below.
 
 | Day   | IDs of active forecasts | Median score | Comment                                        |
-|-------|-------------------------|--------------|------------------------------------------------|
+| ----- | ----------------------- | ------------ | ---------------------------------------------- |
 | Nov 1 | 1                       | 0.98         | Only George had an active forecast.            |
 | Nov 2 | 1 and 2                 | 0.65         | Kramer made his first forecast.                |
 | Nov 3 | 2 and 4                 | 0.52         | George overwrites his 09:09 forecast at 21:42. |
@@ -188,9 +188,9 @@ The median scores for each day are given below.
 | Nov 6 | 4 and 5                 | 0.45         | Same as November 5.                            |
 | Nov 7 | 4 and 5                 | 0.45         | Same as November 6.                            |
 
-The average daily median score of the crowd is (0.98 + 0.65 + 2 * 0.52 + 3 * 0.45) / 7 = 0.574.
+The average daily median score of the crowd is `(0.98 + 0.65 + 2 * 0.52 + 3 * 0.45) / 7 = 0.574`.
 
-George’s accuracy score is (0.794 - 0.574) * 7/7 = 0.22. Kramer’s accuracy score is (0.25 - 0.574) * 6/7 = -0.278. 
+George’s accuracy score is `(0.794 - 0.574) * 7/7 = 0.22`. Kramer’s accuracy score is `(0.25 - 0.574) * 6/7 = -0.278`.
 
 In code:
 
@@ -244,7 +244,7 @@ forecasters = question.forecasters
 george = forecasters[0] # Forecasters are ordered alphabetically.
 kramer = forecasters[1]
 print(george.participation_rate) # Decimal("1")
-print(kramer.participation_rate) # Decimal("0.857") (rounded) 
+print(kramer.participation_rate) # Decimal("0.857") (rounded)
 print(george.average_daily_brier_score) # Decimal("0.794") (rounded)
 print(kramer.average_daily_brier_score) # Decimal("0.25")
 print(george.accuracy_score) # Decimal("0.22")
@@ -273,7 +273,7 @@ The library should handle even such advanced cases.
 
 ### Easy to read (for as many people as possible)
 
-The code should be easy to read, even for people who don’t know math or Python well. 
+The code should be easy to read, even for people who don’t know math or Python well.
 
 To achieve this, I’ve opted for an object-oriented design rather than, say, the array approach used by [NumPy](https://numpy.org/). The result is a more verbose and explicit API. I also try to not use advanced Python features (which many don’t understand).
 
