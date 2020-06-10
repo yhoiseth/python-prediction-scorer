@@ -14,7 +14,7 @@ class Prediction:
             return probability
         if isinstance(probability, int):
             return Decimal(probability)
-        return Decimal(str(probability))  # Floats are sometimes converted inprecisely.
+        return Decimal(str(probability))  # Floats are sometimes converted imprecisely.
 
     @property
     def brier(self) -> Decimal:
