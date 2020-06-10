@@ -18,3 +18,11 @@ class TestBrier:
 
     def test_100_percent(self):
         assert Prediction(100).brier == 0
+
+
+class TestQuadratic:
+    def test_0_percent(self):
+        assert Prediction(0).quadratic == -1
+
+    def test_100_percent(self):
+        assert Prediction(100).quadratic == 1
