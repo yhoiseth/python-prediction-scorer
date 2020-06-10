@@ -1,15 +1,20 @@
 from decimal import Decimal
-from typing import Optional
+from typing import Optional, Union
 
 
 class Prediction:
     _brier: Optional[Decimal] = None
     probability: Decimal
 
-    def __init__(self, probability):
-        self.probability = (
-            probability if isinstance(probability, Decimal) else Decimal(probability)
-        )
+    def __init__(self, probability: Union[Decimal, float, int]):
+        self.probability = self.convert_probability(probability)
+
+    def convert_probability(self, probability: Union[Decimal, float, int]) -> Decimal:
+        if isinstance(probability, Decimal):
+            return probability
+        if isinstance(probability, int):
+            return Decimal(probability)
+        return Decimal(str(probability))  # Floats are sometimes converted inprecisely.
 
     @property
     def brier(self) -> Decimal:
