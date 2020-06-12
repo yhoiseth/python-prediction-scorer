@@ -16,9 +16,9 @@ def convert_probability(probability: Union[Decimal, float, int]) -> Decimal:
 
 class Prediction:
     _brier: Optional[Decimal] = None
-    _quadratic: Optional[Decimal] = None
     _inverse_probability: Decimal
     _probability: Decimal
+    _quadratic: Optional[Decimal] = None
 
     def __init__(self, probability_in_percent: Union[Decimal, float, int]):
         self._probability = convert_probability(probability_in_percent)
