@@ -28,7 +28,7 @@ class Prediction:
     def brier(self) -> Decimal:
         if isinstance(self._brier, Decimal):
             return self._brier
-        self._brier = 2 * (self._inverse_probability ** TWO)
+        self._brier = TWO * (self._inverse_probability ** TWO)
         return self._brier
 
     @property
