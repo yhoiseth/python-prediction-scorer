@@ -24,5 +24,14 @@ class TestQuadratic:
     def test_0_percent(self):
         assert Prediction(0).quadratic == -1
 
+    def test_20_percent(self):
+        assert Prediction(20).quadratic == Decimal("-0.28")
+
+    def test_50_percent(self):
+        assert Prediction(50).quadratic == 0.5
+
+    def test_80_percent(self):
+        assert Prediction(80).quadratic == Decimal("0.92")
+
     def test_100_percent(self):
         assert Prediction(100).quadratic == 1
