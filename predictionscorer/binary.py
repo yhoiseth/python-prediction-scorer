@@ -33,7 +33,10 @@ class Prediction:
 
     @property
     def quadratic(self) -> Decimal:
-        return (
+        if isinstance(self._quadratic, Decimal):
+            return self._quadratic
+        self._quadratic = (
             self._probability * (TWO - self._probability)
             - self._inverse_probability ** TWO
         )
+        return self._quadratic
