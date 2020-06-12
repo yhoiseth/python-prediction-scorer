@@ -3,20 +3,23 @@ from typing import Optional, Union
 
 
 def convert_probability(probability: Union[Decimal, float, int]) -> Decimal:
-    if isinstance(probability, Decimal):
-        return probability
-    if isinstance(probability, int):
-        return Decimal(probability)
-    return Decimal(str(probability))  # Floats are sometimes converted imprecisely.
+    if isinstance(probability, float):
+        # Floats are sometimes converted imprecisely.
+        probability = Decimal(str(probability))
+    elif not isinstance(probability, Decimal):
+        probability = Decimal(probability)
+    return probability / Decimal(100)
 
 
 class Prediction:
     _brier: Optional[Decimal] = None
     _quadratic: Optional[Decimal] = None
-    probability: Decimal
+    _inverse_probability: Decimal
+    _probability: Decimal
 
-    def __init__(self, probability: Union[Decimal, float, int]):
-        self.probability = convert_probability(probability)
+    def __init__(self, probability_in_percent: Union[Decimal, float, int]):
+        self._probability = convert_probability(probability_in_percent)
+        self._inverse_probability = Decimal(1) - self._probability
 
     @property
     def brier(self) -> Decimal:
@@ -24,9 +27,14 @@ class Prediction:
             return self._brier
         one = Decimal(1)
         exponent = Decimal(2)
-        probability_true = self.probability / Decimal(100)
-        probability_false = one - probability_true
+        probability_false = one - self._probability
         self._brier = (
-            one - probability_true
+            one - self._probability
         ) ** exponent + probability_false ** exponent
         return self._brier
+
+    @property
+    def quadratic(self) -> Decimal:
+        return self._probability * (
+            Decimal(2) - self._probability
+        ) + self._inverse_probability * (-self._inverse_probability)
