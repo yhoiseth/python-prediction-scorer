@@ -28,14 +28,12 @@ class Prediction:
     def brier(self) -> Decimal:
         if isinstance(self._brier, Decimal):
             return self._brier
-        self._brier = (
-            self._inverse_probability ** TWO + self._inverse_probability ** TWO
-        )
+        self._brier = 2 * (self._inverse_probability ** TWO)
         return self._brier
 
     @property
     def quadratic(self) -> Decimal:
         return (
-            self._probability * (Decimal(2) - self._probability)
+            self._probability * (TWO - self._probability)
             - self._inverse_probability ** TWO
         )
