@@ -1,3 +1,4 @@
+import math
 from decimal import Decimal
 from typing import Optional, Union
 
@@ -17,6 +18,7 @@ def convert_probability(probability: Union[Decimal, float, int]) -> Decimal:
 class Prediction:
     _brier: Optional[Decimal] = None
     _inverse_probability: Decimal
+    _logarithmic: Optional[Decimal] = None
     _probability: Decimal
     _quadratic: Optional[Decimal] = None
 
@@ -40,3 +42,10 @@ class Prediction:
             - self._inverse_probability ** TWO
         )
         return self._quadratic
+
+    @property
+    def logarithmic(self) -> Decimal:
+        if isinstance(self._logarithmic, Decimal):
+            return self._logarithmic
+        self._logarithmic = -Decimal(str(math.log10(self._probability)))
+        return self._logarithmic

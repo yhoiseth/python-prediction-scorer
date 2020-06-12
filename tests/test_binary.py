@@ -1,4 +1,7 @@
+import math
 from decimal import Decimal
+
+import pytest
 
 from predictionscorer.binary import Prediction
 
@@ -35,3 +38,21 @@ class TestQuadratic:
 
     def test_100_percent(self):
         assert Prediction(100).quadratic == 1
+
+
+class TestLogarithmic:
+    def test_0_percent(self):
+        with pytest.raises(ValueError):
+            assert Prediction(0).logarithmic
+
+    def test_20_percent(self):
+        assert Prediction(20).logarithmic == pytest.approx(Decimal("0.699"), abs=1e-3)
+
+    def test_50_percent(self):
+        assert Prediction(50).logarithmic == pytest.approx(Decimal("0.301"), abs=1e-3)
+
+    def test_80_percent(self):
+        assert Prediction(80).logarithmic == pytest.approx(Decimal("0.097"), abs=1e-3)
+
+    def test_100_percent(self):
+        assert Prediction(100).logarithmic == 0
