@@ -1,6 +1,9 @@
 from decimal import Decimal
 from typing import Optional, Union
 
+ONE = Decimal(1)
+TWO = Decimal(2)
+
 
 def convert_probability(probability: Union[Decimal, float, int]) -> Decimal:
     if isinstance(probability, float):
@@ -19,22 +22,20 @@ class Prediction:
 
     def __init__(self, probability_in_percent: Union[Decimal, float, int]):
         self._probability = convert_probability(probability_in_percent)
-        self._inverse_probability = Decimal(1) - self._probability
+        self._inverse_probability = ONE - self._probability
 
     @property
     def brier(self) -> Decimal:
         if isinstance(self._brier, Decimal):
             return self._brier
-        one = Decimal(1)
-        exponent = Decimal(2)
-        probability_false = one - self._probability
         self._brier = (
-            one - self._probability
-        ) ** exponent + probability_false ** exponent
+            self._inverse_probability ** TWO + self._inverse_probability ** TWO
+        )
         return self._brier
 
     @property
     def quadratic(self) -> Decimal:
-        return self._probability * (
-            Decimal(2) - self._probability
-        ) + self._inverse_probability * (-self._inverse_probability)
+        return (
+            self._probability * (Decimal(2) - self._probability)
+            - self._inverse_probability ** TWO
+        )
