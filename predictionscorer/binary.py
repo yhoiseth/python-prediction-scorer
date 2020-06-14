@@ -62,7 +62,7 @@ class Prediction:
     def logarithmic(self) -> Decimal:
         if isinstance(self._logarithmic, Decimal):
             return self._logarithmic
-        self._logarithmic = -Decimal(str(math.log2(self._probability)))
+        self._logarithmic = -log(self._probability)
         return self._logarithmic
 
     @property
