@@ -46,13 +46,13 @@ class TestLogarithmic:
             assert Prediction(0).logarithmic
 
     def test_20_percent(self):
-        assert Prediction(20).logarithmic == pytest.approx(Decimal("0.699"), abs=1e-3)
+        assert Prediction(20).logarithmic == pytest.approx(Decimal("2.321"), abs=1e-3)
 
     def test_50_percent(self):
-        assert Prediction(50).logarithmic == pytest.approx(Decimal("0.301"), abs=1e-3)
+        assert Prediction(50).logarithmic == 1
 
     def test_80_percent(self):
-        assert Prediction(80).logarithmic == pytest.approx(Decimal("0.097"), abs=1e-3)
+        assert Prediction(80).logarithmic == pytest.approx(Decimal("0.321"), abs=1e-3)
 
     def test_100_percent(self):
         assert Prediction(100).logarithmic == 0
