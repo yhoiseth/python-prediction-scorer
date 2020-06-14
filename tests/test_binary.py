@@ -72,4 +72,4 @@ class TestPractical:
         assert Prediction(80).practical == pytest.approx(Decimal("67.812"), abs=1e-3)
 
     def test_100_percent(self):
-        assert Prediction(100).practical == pytest.approx(Decimal("100.00"), abs=1e-2)
+        assert Prediction(100).practical == 100

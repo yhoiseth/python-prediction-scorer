@@ -71,4 +71,8 @@ class Prediction:
             return self._practical
         nominator = self._max_practical_score * (log(self._probability) + ONE)
         denominator = log(self._max_probability + ONE)
-        return nominator / denominator
+        score = nominator / denominator
+        if score > self._max_practical_score:
+            score = self._max_practical_score
+        self._practical = score
+        return self._practical
