@@ -56,3 +56,21 @@ class TestLogarithmic:
 
     def test_100_percent(self):
         assert Prediction(100).logarithmic == 0
+
+
+class TestPractical:
+    def test_0_percent(self):
+        with pytest.raises(ValueError):
+            assert Prediction(0).practical == 0
+
+    def test_20_percent(self):
+        assert Prediction(20).practical == pytest.approx(Decimal("-132.202"), abs=1e-3)
+
+    def test_50_percent(self):
+        assert Prediction(50).practical == 0
+
+    def test_80_percent(self):
+        assert Prediction(80).practical == pytest.approx(Decimal("67.812"), abs=1e-3)
+
+    def test_100_percent(self):
+        assert Prediction(100).practical == pytest.approx(Decimal("100.00"), abs=1e-2)
