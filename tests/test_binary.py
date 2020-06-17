@@ -57,8 +57,8 @@ class TestRelativeQuadratic:
         predictions = collection.predictions
         _40 = predictions[0]
         _65 = predictions[1]
-        assert _40.relative_quadratic == Decimal("0.2375")
-        assert _65.relative_quadratic == -_40.relative_quadratic
+        assert _40.relative_quadratic == Decimal("-0.2375")
+        assert _65.relative_quadratic == Decimal("0.2375")
 
 
 class TestLogarithmic:

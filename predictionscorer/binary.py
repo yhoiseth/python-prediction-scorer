@@ -40,7 +40,7 @@ class Collection:
         self.median_quadratic = median(quadratic_scores)
         for prediction in predictions:
             prediction.relative_brier = prediction.brier - self.median_brier
-            prediction.relative_quadratic = self.median_quadratic - prediction.quadratic
+            prediction.relative_quadratic = prediction.quadratic - self.median_quadratic
         self.predictions = predictions
 
 
