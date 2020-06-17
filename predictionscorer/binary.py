@@ -27,19 +27,26 @@ def median(scores: List[Decimal]) -> Decimal:
 
 class Collection:
     median_brier: Decimal
+    median_logarithmic: Decimal
     median_quadratic: Decimal
     predictions: Tuple["Prediction", ...]
 
     def __init__(self, predictions: Tuple["Prediction", ...]):
         brier_scores: List[Decimal] = []
+        logarithmic_scores: List[Decimal] = []
         quadratic_scores: List[Decimal] = []
         for prediction in predictions:
             brier_scores.append(prediction.brier)
+            logarithmic_scores.append(prediction.logarithmic)
             quadratic_scores.append(prediction.quadratic)
         self.median_brier = median(brier_scores)
+        self.median_logarithmic = median(logarithmic_scores)
         self.median_quadratic = median(quadratic_scores)
         for prediction in predictions:
             prediction.relative_brier = prediction.brier - self.median_brier
+            prediction.relative_logarithmic = (
+                prediction.logarithmic - self.median_logarithmic
+            )
             prediction.relative_quadratic = prediction.quadratic - self.median_quadratic
         self.predictions = predictions
 
@@ -54,6 +61,7 @@ class Prediction:
     _probability: Decimal
     _quadratic: Optional[Decimal] = None
     relative_brier: Optional[Decimal]
+    relative_logarithmic: Optional[Decimal]
     relative_quadratic: Optional[Decimal]
 
     def __init__(

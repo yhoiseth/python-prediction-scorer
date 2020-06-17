@@ -79,6 +79,17 @@ class TestLogarithmic:
         assert Prediction(100).logarithmic == 0
 
 
+class TestRelativeLogarithmic:
+    def test_20_80(self):
+        collection = Collection((Prediction(20), Prediction(80)))
+        assert collection.median_logarithmic == Decimal("1.32192809488736215")
+        predictions = collection.predictions
+        _40 = predictions[0]
+        _65 = predictions[1]
+        assert _40.relative_logarithmic == Decimal("0.99999999999999985")
+        assert _65.relative_logarithmic == Decimal("-0.99999999999999985")
+
+
 class TestPractical:
     def test_0_percent(self):
         with pytest.raises(ValueError):
