@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import pytest
 
-from predictionscorer.binary import Prediction
+from predictionscorer.binary import Collection, Prediction
 
 
 class TestBrier:
@@ -20,6 +20,12 @@ class TestBrier:
 
     def test_100_percent(self):
         assert Prediction(100).brier == 0
+
+
+class TestRelativeBrier:
+    def test_40_65(self):
+        collection = Collection((Prediction(40), Prediction(65)))
+        assert collection.median_brier == Decimal("0.4825")
 
 
 class TestQuadratic:

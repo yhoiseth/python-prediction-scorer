@@ -1,6 +1,7 @@
 import math
+import statistics
 from decimal import Decimal
-from typing import Optional, Union
+from typing import Optional, Tuple, Union
 
 ONE = Decimal(1)
 TWO = Decimal(2)
@@ -18,6 +19,22 @@ def convert_probability(probability: Union[Decimal, float, int]) -> Decimal:
     elif not isinstance(probability, Decimal):
         probability = Decimal(probability)
     return probability / ONE_HUNDRED
+
+
+class Collection:
+    _median_brier: Optional[Decimal] = None
+    predictions: Tuple["Prediction", ...]
+
+    def __init__(self, predictions: Tuple["Prediction", ...]):
+        self.predictions = predictions
+
+    @property
+    def median_brier(self) -> Decimal:
+        if isinstance(self._median_brier, Decimal):
+            return self._median_brier
+        brier_scores = map(lambda prediction: prediction.brier, self.predictions)
+        self._median_brier = Decimal(statistics.median(brier_scores))
+        return self._median_brier
 
 
 class Prediction:
