@@ -30,7 +30,7 @@ class TestRelativeBrier:
         _40 = predictions[0]
         _65 = predictions[1]
         assert _40.relative_brier == Decimal("0.2375")
-        assert _65.relative_brier == Decimal("-0.2375")
+        assert _65.relative_brier == -_40.relative_brier
 
 
 class TestQuadratic:
