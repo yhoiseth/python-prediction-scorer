@@ -50,6 +50,17 @@ class TestQuadratic:
         assert Prediction(100).quadratic == 1
 
 
+class TestRelativeQuadratic:
+    def test_40_65(self):
+        collection = Collection((Prediction(40), Prediction(65)))
+        assert collection.median_quadratic == Decimal("0.5175")
+        predictions = collection.predictions
+        _40 = predictions[0]
+        _65 = predictions[1]
+        assert _40.relative_quadratic == Decimal("0.2375")
+        assert _65.relative_quadratic == -_40.relative_quadratic
+
+
 class TestLogarithmic:
     def test_0_percent(self):
         with pytest.raises(ValueError):
