@@ -106,3 +106,14 @@ class TestPractical:
 
     def test_100_percent(self):
         assert Prediction(100).practical == 100
+
+
+class TestRelativePractical:
+    def test_20_80(self):
+        collection = Collection((Prediction(20), Prediction(80)))
+        assert collection.median_practical == Decimal("-32.19513193465698959628081970")
+        predictions = collection.predictions
+        _20 = predictions[0]
+        _80 = predictions[1]
+        assert _20.relative_practical == Decimal("-100.0072141759531188363038352")
+        assert _80.relative_practical == Decimal("100.0072141759531188363038352")
