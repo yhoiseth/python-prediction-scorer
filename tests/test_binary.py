@@ -26,6 +26,11 @@ class TestRelativeBrier:
     def test_40_65(self):
         collection = Collection((Prediction(40), Prediction(65)))
         assert collection.median_brier == Decimal("0.4825")
+        predictions = collection.predictions
+        _40 = predictions[0]
+        _65 = predictions[1]
+        assert _40.relative_brier == Decimal("0.2375")
+        assert _65.relative_brier == Decimal("-0.2375")
 
 
 class TestQuadratic:
