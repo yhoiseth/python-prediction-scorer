@@ -1,8 +1,18 @@
 from decimal import Decimal
+from typing import Union
 
 import pytest
 
 from predictionscorer.binary import Collection, Prediction
+
+
+def approximately(number: Union[Decimal, float, int]):
+    if isinstance(number, int):
+        number = Decimal(number)
+    elif isinstance(number, float):
+        number = Decimal(str(number))
+    assert isinstance(number, Decimal)
+    return pytest.approx(number, abs=1e-2)
 
 
 class TestBrier:
@@ -102,6 +112,17 @@ class TestLogarithmic:
 
 
 class TestRelativeLogarithmic:
+    def test_20_80_100(self):
+        collection = Collection((Prediction(20), Prediction(80), Prediction(100)))
+        assert collection.median_logarithmic == approximately(0.32)
+        predictions = collection.predictions
+        _20 = predictions[0]
+        _80 = predictions[1]
+        _100 = predictions[2]
+        assert _20.relative_logarithmic == approximately(2)
+        assert _80.relative_logarithmic == 0
+        assert _100.relative_logarithmic == approximately(-0.32)
+
     def test_20_80(self):
         collection = Collection((Prediction(20), Prediction(80)))
         assert collection.median_logarithmic == Decimal("1.32192809488736215")
