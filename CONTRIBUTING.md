@@ -1,36 +1,38 @@
-# Create virtual environment
+# Contributing
+
+## Create virtual environment
 
 `python3 -m venv venv`
 
-# Activate virtual environment
+## Activate virtual environment
 
 `source venv/bin/activate.fish`
 
-# Install dependencies
+## Install dependencies
 
 `pip-sync`
 
-# Set up pre-commit hooks
+## Set up pre-commit hooks
 
 `pre-commit install`
 
-# Check pre-commit hooks
+## Check pre-commit hooks
 
 `pre-commit run --all-files`
 
-# Prepare for tests
+## Prepare for tests
 
 `pip install -e .`
 
-# Run tests
+## Run tests
 
 `pytest`
 
-# Update dependencies
+## Update dependencies
 
 `./update-dependencies.sh`
 
-# Issue checklist
+## Issue checklist
 
 Copy and paste into GitHub:
 
@@ -40,37 +42,37 @@ Copy and paste into GitHub:
 - [ ] Changelog
 - [ ] Release
 
-# Create release
+## Create release
 
-## Update version number
+### Update version number
 
 Edit in [`setup.py`](setup.py).
 
-## Update Changelog
+### Update Changelog
 
 [CHANGELOG.md](CHANGELOG.md)
 
-## Create distribution
+### Create distribution
 
 `python setup.py sdist`
 
-## Publish
+### Publish
 
 `twine upload dist/*`
 
-## Commit
+### Commit
 
 `git commit -am 'Release v[version number]`
 
-## Create tag
+### Create tag
 
 `git tag -a v[version number] -m "v[version number]"`
 
-## Push
+### Push
 
 `git push origin v[version number]`
 
-## Create GitHub release
+### Create GitHub release
 
 1. [Create new release](https://github.com/yhoiseth/python-prediction-scorer/releases/new)
 2. Use the tag — e.g. `v1.0.0` as the release title.
