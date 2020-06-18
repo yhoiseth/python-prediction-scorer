@@ -43,6 +43,9 @@ class Collection:
         self.median_logarithmic = median(logarithmic_scores)
         self.median_practical = median(practical_scores)
         self.median_quadratic = median(quadratic_scores)
+        self.set_relative_scores(predictions)
+
+    def set_relative_scores(self, predictions):
         for prediction in predictions:
             prediction.relative_brier = prediction.brier - self.median_brier
             prediction.relative_practical = prediction.practical - self.median_practical
