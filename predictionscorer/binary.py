@@ -33,15 +33,12 @@ class Collection:
     predictions: Tuple["Prediction", ...]
 
     def __init__(self, predictions: Tuple["Prediction", ...]):
-        brier_scores: List[Decimal] = []
-        logarithmic_scores: List[Decimal] = []
-        practical_scores: List[Decimal] = []
-        quadratic_scores: List[Decimal] = []
-        for prediction in predictions:
-            brier_scores.append(prediction.brier)
-            logarithmic_scores.append(prediction.logarithmic)
-            practical_scores.append(prediction.practical)
-            quadratic_scores.append(prediction.quadratic)
+        (
+            brier_scores,
+            logarithmic_scores,
+            practical_scores,
+            quadratic_scores,
+        ) = self.collect_scores(predictions)
         self.median_brier = median(brier_scores)
         self.median_logarithmic = median(logarithmic_scores)
         self.median_practical = median(practical_scores)
@@ -54,6 +51,23 @@ class Collection:
             )
             prediction.relative_quadratic = prediction.quadratic - self.median_quadratic
         self.predictions = predictions
+
+    @staticmethod
+    def collect_scores(
+        predictions: Tuple["Prediction", ...]
+    ) -> Tuple[
+        List[Decimal], List[Decimal], List[Decimal], List[Decimal],
+    ]:
+        brier_scores: List[Decimal] = []
+        logarithmic_scores: List[Decimal] = []
+        practical_scores: List[Decimal] = []
+        quadratic_scores: List[Decimal] = []
+        for prediction in predictions:
+            brier_scores.append(prediction.brier)
+            logarithmic_scores.append(prediction.logarithmic)
+            practical_scores.append(prediction.practical)
+            quadratic_scores.append(prediction.quadratic)
+        return brier_scores, logarithmic_scores, practical_scores, quadratic_scores
 
 
 class Prediction:
