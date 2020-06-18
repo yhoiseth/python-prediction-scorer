@@ -23,6 +23,17 @@ class TestBrier:
 
 
 class TestRelativeBrier:
+    def test_20_80_100(self):
+        collection = Collection((Prediction(20), Prediction(80), Prediction(100)))
+        assert collection.median_brier == Decimal("0.08")
+        predictions = collection.predictions
+        _20 = predictions[0]
+        _80 = predictions[1]
+        _100 = predictions[2]
+        assert _20.relative_brier == Decimal("1.20")
+        assert _80.relative_brier == 0
+        assert _100.relative_brier == Decimal("-0.08")
+
     def test_40_65(self):
         collection = Collection((Prediction(40), Prediction(65)))
         assert collection.median_brier == Decimal("0.4825")
