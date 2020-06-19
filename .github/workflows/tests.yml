@@ -35,3 +35,7 @@ jobs:
       - name: Plot script smoke test
         run: |
           python plot.py
+      - name: Super-Linter
+        uses: github/super-linter@v2.0.0
+        env:
+          VALIDATE_PYTHON: false # Ignore import errors

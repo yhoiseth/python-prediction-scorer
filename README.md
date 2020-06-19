@@ -1,7 +1,7 @@
+# Python Prediction Scorer
+
 ![Code style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)
 ![tests](https://github.com/yhoiseth/python-prediction-scorer/workflows/tests/badge.svg)
-
-# Python Prediction Scorer
 
 The purpose of this library is to help you score and compare predictions.
 
