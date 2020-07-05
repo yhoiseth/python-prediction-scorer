@@ -1,7 +1,30 @@
-# Python Prediction Scorer
-
 ![Code style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)
 ![tests](https://github.com/yhoiseth/python-prediction-scorer/workflows/tests/badge.svg)
+
+# Python Prediction Scorer
+
+- [Python Prediction Scorer](#python-prediction-scorer)
+  - [Status](#status)
+  - [Goals](#goals)
+  - [Background](#background)
+  - [Installation](#installation)
+    - [System requirements](#system-requirements)
+  - [Usage](#usage)
+    - [More than two alternatives](#more-than-two-alternatives)
+      - [If the order matters](#if-the-order-matters)
+  - [Comparing scores](#comparing-scores)
+    - [Comparing scores over time](#comparing-scores-over-time)
+      - [Example](#example)
+  - [Changelog](#changelog)
+  - [Goals and judgment calls](#goals-and-judgment-calls)
+    - [Feature complete](#feature-complete)
+    - [Easy to read (for as many people as possible)](#easy-to-read--for-as-many-people-as-possible-)
+    - [Easy and predictable to use (with modern tools)](#easy-and-predictable-to-use--with-modern-tools-)
+  - [Contributing](#contributing)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+## Motivation
 
 The purpose of this library is to help you score and compare predictions.
 
