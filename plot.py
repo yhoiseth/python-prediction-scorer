@@ -8,7 +8,7 @@ from predictionscorer.choice import Prediction
 predictions: List[Prediction] = []
 x_axis_data: List[int] = []
 for index in range(1, 100):
-    predictions.append(Prediction(index))
+    predictions.append(Prediction(index, Decimal(2)))
     x_axis_data.append(index)
 
 y_axis_data: List[Decimal] = []
