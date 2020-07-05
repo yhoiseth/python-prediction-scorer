@@ -90,7 +90,7 @@ class Prediction:
     def __init__(
         self,
         probability_in_percent: Union[Decimal, float, int],
-        max_practical_score=ONE_HUNDRED,
+        max_practical_score=TWO,
         max_probability=Decimal("99.99"),
     ):
         self._probability = convert_probability(probability_in_percent)
