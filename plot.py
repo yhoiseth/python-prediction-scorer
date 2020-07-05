@@ -19,7 +19,7 @@ for prediction in predictions:
 plt.plot(x_axis_data, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
 plt.ylabel("Brier score")
-plt.title("Brier score for probabilities 1-99")
+plt.title("Brier score for probabilities 1 % - 99 %")
 plt.draw()
 plt.savefig("docs/charts/choice/brier.svg")
 
@@ -33,7 +33,7 @@ for prediction in predictions:
 plt.plot(x_axis_data, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
 plt.ylabel("Logarithmic score")
-plt.title("Logarithmic score for probabilities 1-99")
+plt.title("Logarithmic score for probabilities 1 % - 99 %")
 plt.draw()
 plt.savefig("docs/charts/choice/logarithmic.svg")
 
@@ -47,7 +47,7 @@ for prediction in predictions:
 plt.plot(x_axis_data, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
 plt.ylabel("Practical score")
-plt.title("Practical score for probabilities 1-99")
+plt.title("Practical score for probabilities 1 % - 99 %")
 plt.draw()
 plt.savefig("docs/charts/choice/practical.svg")
 
@@ -61,6 +61,6 @@ for prediction in predictions:
 plt.plot(x_axis_data, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
 plt.ylabel("Quadratic score")
-plt.title("Quadratic score for probabilities 1-99")
+plt.title("Quadratic score for probabilities 1 % - 99 %")
 plt.draw()
 plt.savefig("docs/charts/choice/quadratic.svg")

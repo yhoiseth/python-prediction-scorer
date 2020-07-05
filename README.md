@@ -56,10 +56,11 @@ Python Prediction Scorer requires Python 3.7+. There are currently no other depe
 
 For _choice predictions_, the forecaster assigns probabilities to different answers. As an example, George and Kramer made the following forecasts for the result of a game where the home team ended up winning:
 
-| Result | George | Kramer | Correct |
-| Home team wins | 40 % | 65 % | Yes |
-| Tie | 30 % | 10 % | No |
-| Away team wins | 30 % | 25 % | No |
+| Result         | George | Kramer | Correct |
+| -------------- | ------ | ------ | ------- |
+| Home team wins | 40 %   | 65 %   | Yes     |
+| Tie            | 30 %   | 10 %   | No      |
+| Away team wins | 30 %   | 25 %   | No      |
 
 Let’s say that the home team won. Kramer assigned a higher probability to the correct answer than George did, so his forecast was better. But how much better? In order to find out, we must quantify the quality of their predictions. That’s what this library does.
 
@@ -73,6 +74,21 @@ We have four _scoring rules_ to determine this:
 Let us look at each of them.
 
 #### Brier
+
+Brier scores range from 0 to 2. Lower is better.
+
+![Brier scores for probabilities 0-100](docs/charts/choice/brier.svg)
+
+```python
+from predictionscorer.choice import Prediction
+
+george = Prediction(40)
+print(george.brier) # 0.72
+
+kramer = Prediction(65)
+print(kramer.brier) # 0.2450
+
+```
 
 For example, say that George and Kramer were predicting the outcome of the 2016 US presidential election. George said that Donald Trump had a 40 percent probability of winning, while Kramer put Trump’s chances at 65 percent.
 
