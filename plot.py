@@ -16,10 +16,51 @@ y_axis_data: List[Decimal] = []
 for prediction in predictions:
     y_axis_data.append(prediction.brier)
 
-brier_plot = plt
-brier_plot.plot(x_axis_data, y_axis_data)
-brier_plot.xlabel("Probability")
-brier_plot.ylabel("Brier score if true")
-brier_plot.title("Brier scores for probabilities 0-100")
-brier_plot.draw()
-brier_plot.savefig("docs/charts/choice/brier.svg")
+plt.plot(x_axis_data, y_axis_data)
+plt.xlabel("Probability assigned to correct answer")
+plt.ylabel("Brier score")
+plt.title("Brier score for probabilities 1-99")
+plt.draw()
+plt.savefig("docs/charts/choice/brier.svg")
+
+plt.clf()
+
+y_axis_data = []
+
+for prediction in predictions:
+    y_axis_data.append(prediction.logarithmic)
+
+plt.plot(x_axis_data, y_axis_data)
+plt.xlabel("Probability assigned to correct answer")
+plt.ylabel("Logarithmic score")
+plt.title("Logarithmic score for probabilities 1-99")
+plt.draw()
+plt.savefig("docs/charts/choice/logarithmic.svg")
+
+plt.clf()
+
+y_axis_data = []
+
+for prediction in predictions:
+    y_axis_data.append(prediction.practical)
+
+plt.plot(x_axis_data, y_axis_data)
+plt.xlabel("Probability assigned to correct answer")
+plt.ylabel("Practical score")
+plt.title("Practical score for probabilities 1-99")
+plt.draw()
+plt.savefig("docs/charts/choice/practical.svg")
+
+plt.clf()
+
+y_axis_data = []
+
+for prediction in predictions:
+    y_axis_data.append(prediction.quadratic)
+
+plt.plot(x_axis_data, y_axis_data)
+plt.xlabel("Probability assigned to correct answer")
+plt.ylabel("Quadratic score")
+plt.title("Quadratic score for probabilities 1-99")
+plt.draw()
+plt.savefig("docs/charts/choice/quadratic.svg")
