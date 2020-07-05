@@ -52,6 +52,28 @@ Python Prediction Scorer requires Python 3.7+. There are currently no other depe
 
 ## Usage
 
+### Choice predictions
+
+For _choice predictions_, the forecaster assigns probabilities to different answers. As an example, George and Kramer made the following forecasts for the result of a game where the home team ended up winning:
+
+| Result | George | Kramer | Correct |
+| Home team wins | 40 % | 65 % | Yes |
+| Tie | 30 % | 10 % | No |
+| Away team wins | 30 % | 25 % | No |
+
+Let’s say that the home team won. Kramer assigned a higher probability to the correct answer than George did, so his forecast was better. But how much better? In order to find out, we must quantify the quality of their predictions. That’s what this library does.
+
+We have four _scoring rules_ to determine this:
+
+1. Brier
+2. Logarithmic
+3. Practical
+4. Quadratic
+
+Let us look at each of them.
+
+#### Brier
+
 For example, say that George and Kramer were predicting the outcome of the 2016 US presidential election. George said that Donald Trump had a 40 percent probability of winning, while Kramer put Trump’s chances at 65 percent.
 
 Considering that Trump won, Kramer’s prediction was better than George’s. But how much better? In order to find out, we must quantify the quality of their predictions. That’s what this library does.

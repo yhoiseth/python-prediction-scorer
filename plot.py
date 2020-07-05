@@ -1,31 +1,25 @@
-import decimal
-import typing
+from decimal import Decimal
+from typing import List
 
 import matplotlib.pyplot as plt
 
-import predictionscorer
+from predictionscorer.choice import Prediction
 
-predictions: typing.List[predictionscorer.Prediction] = []
+predictions: List[Prediction] = []
+x_axis_data: List[int] = []
+for index in range(1, 100):
+    predictions.append(Prediction(index))
+    x_axis_data.append(index)
 
-for index in range(0, 101):
-    predictions.append(
-        predictionscorer.Prediction(
-            (decimal.Decimal(index), decimal.Decimal(100 - index)),
-            true_alternative_index=0,
-        )
-    )
-
-x_axis_data: typing.List[decimal.Decimal] = []
-y_axis_data: typing.List[decimal.Decimal] = []
+y_axis_data: List[Decimal] = []
 
 for prediction in predictions:
-    x_axis_data.append(prediction.probabilities[0])
-    y_axis_data.append(prediction.brier_score)
+    y_axis_data.append(prediction.brier)
 
-
-plt.plot(x_axis_data, y_axis_data)
-plt.xlabel("Probability")
-plt.ylabel("Brier score if true")
-plt.title("Brier scores for probabilities 0-100")
-plt.draw()
-plt.savefig("docs/images/brier-scores-probabilities-0-100.svg")
+brier_plot = plt
+brier_plot.plot(x_axis_data, y_axis_data)
+brier_plot.xlabel("Probability")
+brier_plot.ylabel("Brier score if true")
+brier_plot.title("Brier scores for probabilities 0-100")
+brier_plot.draw()
+brier_plot.savefig("docs/charts/choice/brier.svg")

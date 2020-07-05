@@ -3,7 +3,7 @@ from typing import Union
 
 import pytest
 
-from predictionscorer.binary import Collection, Prediction
+from predictionscorer.choice import Collection, Prediction
 
 
 def approximately(number: Union[Decimal, float, int]):
