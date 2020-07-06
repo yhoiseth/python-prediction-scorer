@@ -83,8 +83,8 @@ Brier scores range from 0 to 2. Lower is better.
 ```python
 from predictionscorer.choice import Collection, Prediction
 
-george = Prediction(40)
-kramer = Prediction(65)
+george = Prediction(0.40)
+kramer = Prediction(0.65)
 
 print(george.brier) # 0.72
 print(kramer.brier) # 0.2450
@@ -107,8 +107,8 @@ Logarithmic scores range from approaching infinity (worst) to 0 (best):
 ```python
 from predictionscorer.choice import Collection, Prediction
 
-george = Prediction(40)
-kramer = Prediction(65)
+george = Prediction(0.40)
+kramer = Prediction(0.65)
 
 print(george.logarithmic) # 1.32
 print(kramer.logarithmic) # 0.62
@@ -131,8 +131,8 @@ Practical scores range from approaching negative infinity (worst) to a configura
 ```python
 from predictionscorer.choice import Collection, Prediction
 
-george = Prediction(40)
-kramer = Prediction(65)
+george = Prediction(0.40)
+kramer = Prediction(0.65)
 
 print(george.practical) # -0.64
 print(kramer.practical) # 0.76
@@ -162,8 +162,8 @@ Quadratic scores range from -1 (worst) to 1 (best):
 ```python
 from predictionscorer.choice import Collection, Prediction
 
-george = Prediction(40)
-kramer = Prediction(65)
+george = Prediction(0.40)
+kramer = Prediction(0.65)
 
 print(george.quadratic) # 0.28
 print(kramer.quadratic) # 0.76
