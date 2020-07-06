@@ -135,24 +135,24 @@ class TestPractical:
             assert Prediction(0).practical == 0
 
     def test_20_percent(self):
-        assert Prediction(20).practical == pytest.approx(Decimal("-132.202"), abs=1e-3)
+        assert Prediction(20).practical == pytest.approx(Decimal("-2.644"), abs=1e-3)
 
     def test_50_percent(self):
         assert Prediction(50).practical == 0
 
     def test_80_percent(self):
-        assert Prediction(80).practical == pytest.approx(Decimal("67.812"), abs=1e-3)
+        assert Prediction(80).practical == pytest.approx(Decimal("1.356"), abs=1e-3)
 
     def test_100_percent(self):
-        assert Prediction(100).practical == 100
+        assert Prediction(100).practical == 2
 
 
 class TestRelativePractical:
     def test_20_80(self):
         collection = Collection((Prediction(20), Prediction(80)))
-        assert collection.median_practical == Decimal("-32.19513193465698959628081970")
+        assert collection.median_practical == approximately(-0.643)
         predictions = collection.predictions
         _20 = predictions[0]
         _80 = predictions[1]
-        assert _20.relative_practical == Decimal("-100.0072141759531188363038352")
-        assert _80.relative_practical == Decimal("100.0072141759531188363038352")
+        assert _20.relative_practical == approximately(-2)
+        assert _80.relative_practical == approximately(2)
