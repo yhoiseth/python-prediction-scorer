@@ -12,13 +12,13 @@ def log(value: Decimal) -> Decimal:
     return Decimal(str(math.log2(value)))
 
 
-def convert_probability(probability: Union[Decimal, float, int]) -> Decimal:
+def to_decimal(probability: Union[Decimal, float, int]) -> Decimal:
+    if isinstance(probability, Decimal):
+        return probability
     if isinstance(probability, float):
         # Floats are sometimes converted imprecisely.
-        probability = Decimal(str(probability))
-    elif not isinstance(probability, Decimal):
-        probability = Decimal(probability)
-    return probability / ONE_HUNDRED
+        return Decimal(str(probability))
+    return Decimal(probability)
 
 
 def median(scores: List[Decimal]) -> Decimal:
@@ -80,8 +80,8 @@ class Prediction:
     _max_practical_score: Decimal
     _max_probability: Decimal
     _practical: Optional[Decimal] = None
-    _probability: Decimal
     _quadratic: Optional[Decimal] = None
+    probability: Decimal
     relative_brier: Optional[Decimal]
     relative_logarithmic: Optional[Decimal]
     relative_practical: Optional[Decimal]
@@ -89,14 +89,16 @@ class Prediction:
 
     def __init__(
         self,
-        probability_in_percent: Union[Decimal, float, int],
-        max_practical_score=TWO,
-        max_probability=Decimal("99.99"),
+        probability: Union[Decimal, float, int],
+        max_practical_score: Union[Decimal, float, int] = TWO,
+        max_probability: Union[Decimal, float, int] = Decimal("0.9999"),
     ):
-        self._probability = convert_probability(probability_in_percent)
-        self._inverse_probability = ONE - self._probability
-        self._max_practical_score = max_practical_score
-        self._max_probability = convert_probability(max_probability)
+        assert 0 <= probability <= 1
+        assert max_probability <= 1
+        self.probability = to_decimal(probability)
+        self._inverse_probability = ONE - self.probability
+        self._max_practical_score = to_decimal(max_practical_score)
+        self._max_probability = to_decimal(max_probability)
 
     @property
     def brier(self) -> Decimal:
@@ -110,7 +112,7 @@ class Prediction:
         if isinstance(self._quadratic, Decimal):
             return self._quadratic
         self._quadratic = (
-            self._probability * (TWO - self._probability)
+            self.probability * (TWO - self.probability)
             - self._inverse_probability ** TWO
         )
         return self._quadratic
@@ -119,14 +121,14 @@ class Prediction:
     def logarithmic(self) -> Decimal:
         if isinstance(self._logarithmic, Decimal):
             return self._logarithmic
-        self._logarithmic = -log(self._probability)
+        self._logarithmic = -log(self.probability)
         return self._logarithmic
 
     @property
     def practical(self) -> Decimal:
         if isinstance(self._practical, Decimal):
             return self._practical
-        nominator = self._max_practical_score * (log(self._probability) + ONE)
+        nominator = self._max_practical_score * (log(self.probability) + ONE)
         denominator = log(self._max_probability + ONE)
         score = nominator / denominator
         if score > self._max_practical_score:
