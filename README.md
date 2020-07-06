@@ -101,7 +101,7 @@ print(kramer.relative_brier) # -0.2375
 
 Logarithmic scores range from approaching infinity (worst) to 0 (best):
 
-![Logarithmic scores for probabilities 0-100](docs/charts/choice/brier.svg)
+![Logarithmic scores for probabilities 0-100](docs/charts/choice/logarithmic.svg)
 
 ```python
 from predictionscorer.choice import Collection, Prediction
@@ -119,6 +119,61 @@ print(collection.median_logarithmic) # 0.97
 # The `Prediction` objects have now been enriched with relative scores:
 print(george.relative_logarithmic) # 0.35
 print(kramer.relative_logarithmic) # -0.35
+```
+
+#### Practical
+
+Practical scores range from approaching negative infinity (worst) to a configurable maximum — we use 2:
+
+![Practical scores for probabilities 0-100](docs/charts/choice/practical.svg)
+
+```python
+from predictionscorer.choice import Collection, Prediction
+
+george = Prediction(40)
+kramer = Prediction(65)
+
+print(george.practical) # -0.64
+print(kramer.practical) # 0.76
+
+# Now let’s compare the scores:
+collection = Collection((george, kramer))
+print(collection.median_practical) # 0.06
+
+# The `Prediction` objects have now been enriched with relative scores:
+print(george.relative_practical) # -0.70
+print(kramer.relative_practical) # 0.70
+```
+
+`Prediction` accepts to optional parameters which affects the practical score, but not the other scoring rules:
+
+| Name                  | Default            |
+| --------------------- | ------------------ |
+| `max_practical_score` | `Decimal(2)`       |
+| `max_probability`     | `Decimal("99.99")` |
+
+#### Quadratic
+
+Quadratic scores range from -1 (worst) to 1 (best):
+
+![Quadratic scores for probabilities 0-100](docs/charts/choice/quadratic.svg)
+
+```python
+from predictionscorer.choice import Collection, Prediction
+
+george = Prediction(40)
+kramer = Prediction(65)
+
+print(george.quadratic) # 0.28
+print(kramer.quadratic) # 0.76
+
+# Now let’s compare the scores:
+collection = Collection((george, kramer))
+print(collection.median_quadratic) # 0.52
+
+# The `Prediction` objects have now been enriched with relative scores:
+print(george.relative_quadratic) # -0.24
+print(kramer.relative_quadratic) # 0.24
 ```
 
 For example, say that George and Kramer were predicting the outcome of the 2016 US presidential election. George said that Donald Trump had a 40 percent probability of winning, while Kramer put Trump’s chances at 65 percent.
