@@ -44,11 +44,10 @@ class TestRelativeBrier:
         assert perfect.relative_brier == Decimal("-0.08")
 
     def test_40_65(self):
-        collection = Collection((Prediction(40), Prediction(65)))
+        _40 = Prediction(40)
+        _65 = Prediction(65)
+        collection = Collection((_40, _65))
         assert collection.median_brier == Decimal("0.4825")
-        predictions = collection.predictions
-        _40 = predictions[0]
-        _65 = predictions[1]
         assert _40.relative_brier == Decimal("0.2375")
         assert _65.relative_brier == -_40.relative_brier
 
