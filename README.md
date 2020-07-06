@@ -4,22 +4,23 @@
 # Python Prediction Scorer
 
 - [Python Prediction Scorer](#python-prediction-scorer)
+  - [Motivation](#motivation)
   - [Status](#status)
   - [Goals](#goals)
   - [Background](#background)
   - [Installation](#installation)
     - [System requirements](#system-requirements)
   - [Usage](#usage)
-    - [More than two alternatives](#more-than-two-alternatives)
-      - [If the order matters](#if-the-order-matters)
-  - [Comparing scores](#comparing-scores)
-    - [Comparing scores over time](#comparing-scores-over-time)
-      - [Example](#example)
+    - [Choice predictions](#choice-predictions)
+      - [Brier](#brier)
+      - [Logarithmic](#logarithmic)
+      - [Practical](#practical)
+      - [Quadratic](#quadratic)
   - [Changelog](#changelog)
   - [Goals and judgment calls](#goals-and-judgment-calls)
     - [Feature complete](#feature-complete)
-    - [Easy to read (for as many people as possible)](#easy-to-read--for-as-many-people-as-possible-)
-    - [Easy and predictable to use (with modern tools)](#easy-and-predictable-to-use--with-modern-tools-)
+    - [Easy to read (for as many people as possible)](#easy-to-read-for-as-many-people-as-possible)
+    - [Easy and predictable to use with modern tools](#easy-and-predictable-to-use-with-modern-tools)
   - [Contributing](#contributing)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -176,6 +177,7 @@ print(george.relative_quadratic) # -0.24
 print(kramer.relative_quadratic) # 0.24
 ```
 
+<!--
 For example, say that George and Kramer were predicting the outcome of the 2016 US presidential election. George said that Donald Trump had a 40 percent probability of winning, while Kramer put Trump’s chances at 65 percent.
 
 Considering that Trump won, Kramer’s prediction was better than George’s. But how much better? In order to find out, we must quantify the quality of their predictions. That’s what this library does.
@@ -397,6 +399,7 @@ print(kramer.average_daily_brier_score) # Decimal("0.25")
 print(george.accuracy_score) # Decimal("0.22")
 print(kramer.accuracy_score) # Decimal("-0.378") (rounded)
 ```
+-->
 
 ## Changelog
 
@@ -418,13 +421,13 @@ There are many ways to score and compare predictions, some more complicated than
 
 The library should handle even such advanced cases.
 
-### Easy to read (for as many people as possible)
+### Easy to read for as many people as possible
 
 The code should be easy to read, even for people who don’t know math or Python well.
 
 To achieve this, I’ve opted for an object-oriented design rather than, say, the array approach used by [NumPy](https://numpy.org/). The result is a more verbose and explicit API. I also try to not use advanced Python features (which many don’t understand).
 
-### Easy and predictable to use (with modern tools)
+### Easy and predictable to use with modern tools
 
 The library should be easy to use, and the results should be predictable and correct.
 
