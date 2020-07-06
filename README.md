@@ -83,9 +83,9 @@ Brier scores range from 0 to 2. Lower is better.
 from predictionscorer.choice import Collection, Prediction
 
 george = Prediction(40)
-print(george.brier) # 0.72
-
 kramer = Prediction(65)
+
+print(george.brier) # 0.72
 print(kramer.brier) # 0.2450
 
 # Now let’s compare the scores:
@@ -95,6 +95,30 @@ print(collection.median_brier) # 0.4825
 # The `Prediction` objects have now been enriched with relative scores:
 print(george.relative_brier) # 0.2375
 print(kramer.relative_brier) # -0.2375
+```
+
+#### Logarithmic
+
+Logarithmic scores range from approaching infinity (worst) to 0 (best):
+
+![Logarithmic scores for probabilities 0-100](docs/charts/choice/brier.svg)
+
+```python
+from predictionscorer.choice import Collection, Prediction
+
+george = Prediction(40)
+kramer = Prediction(65)
+
+print(george.logarithmic) # 1.32
+print(kramer.logarithmic) # 0.62
+
+# Now let’s compare the scores:
+collection = Collection((george, kramer))
+print(collection.median_logarithmic) # 0.97
+
+# The `Prediction` objects have now been enriched with relative scores:
+print(george.relative_logarithmic) # 0.35
+print(kramer.relative_logarithmic) # -0.35
 ```
 
 For example, say that George and Kramer were predicting the outcome of the 2016 US presidential election. George said that Donald Trump had a 40 percent probability of winning, while Kramer put Trump’s chances at 65 percent.
