@@ -3,6 +3,8 @@ import statistics
 from decimal import Decimal
 from typing import List, Optional, Tuple, Union
 
+from predictionscorer.choice.calculators import brier_score
+
 ONE = Decimal(1)
 TWO = Decimal(2)
 ONE_HUNDRED = Decimal(100)
@@ -104,7 +106,7 @@ class Prediction:
     def brier(self) -> Decimal:
         if isinstance(self._brier, Decimal):
             return self._brier
-        self._brier = TWO * (self._inverse_probability ** TWO)
+        self._brier = brier_score(self.probability)
         return self._brier
 
     @property
