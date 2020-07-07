@@ -3,7 +3,11 @@ import statistics
 from decimal import Decimal
 from typing import List, Optional, Tuple, Union
 
-from predictionscorer.choice.calculators import brier_score, quadratic_score
+from predictionscorer.choice.calculators import (
+    brier_score,
+    practical_score,
+    quadratic_score,
+)
 
 ONE = Decimal(1)
 TWO = Decimal(2)
@@ -127,10 +131,7 @@ class Prediction:
     def practical(self) -> Decimal:
         if isinstance(self._practical, Decimal):
             return self._practical
-        nominator = self._max_practical_score * (log(self.probability) + ONE)
-        denominator = log(self._max_probability + ONE)
-        score = nominator / denominator
-        if score > self._max_practical_score:
-            score = self._max_practical_score
-        self._practical = score
+        self._practical = practical_score(
+            self.probability, self._max_probability, self._max_practical_score
+        )
         return self._practical
