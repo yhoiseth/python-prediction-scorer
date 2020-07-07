@@ -3,7 +3,7 @@ import statistics
 from decimal import Decimal
 from typing import List, Optional, Tuple, Union
 
-from predictionscorer.choice.calculators import brier_score
+from predictionscorer.choice.calculators import brier_score, quadratic_score
 
 ONE = Decimal(1)
 TWO = Decimal(2)
@@ -113,10 +113,7 @@ class Prediction:
     def quadratic(self) -> Decimal:
         if isinstance(self._quadratic, Decimal):
             return self._quadratic
-        self._quadratic = (
-            self.probability * (TWO - self.probability)
-            - self._inverse_probability ** TWO
-        )
+        self._quadratic = quadratic_score(self.probability)
         return self._quadratic
 
     @property
