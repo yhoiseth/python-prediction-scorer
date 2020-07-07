@@ -5,6 +5,7 @@ from typing import List, Optional, Tuple, Union
 
 from predictionscorer.choice.calculators import (
     brier_score,
+    logarithmic_score,
     practical_score,
     quadratic_score,
 )
@@ -124,7 +125,7 @@ class Prediction:
     def logarithmic(self) -> Decimal:
         if isinstance(self._logarithmic, Decimal):
             return self._logarithmic
-        self._logarithmic = -log(self.probability)
+        self._logarithmic = logarithmic_score(self.probability)
         return self._logarithmic
 
     @property

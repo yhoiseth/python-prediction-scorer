@@ -21,10 +21,9 @@ def brier_score(probability: Union[Decimal, float, int]) -> Decimal:
     return TWO * (inverse_probability(probability) ** TWO)
 
 
-def quadratic_score(probability: Union[Decimal, float, int]) -> Decimal:
+def logarithmic_score(probability: Union[Decimal, float, int]) -> Decimal:
     probability = to_decimal(probability)
-    inverse = inverse_probability(probability)
-    return probability * (TWO - probability) - inverse ** TWO
+    return -log(probability)
 
 
 def practical_score(
@@ -41,3 +40,9 @@ def practical_score(
     if score <= max_score:
         return score
     return max_score
+
+
+def quadratic_score(probability: Union[Decimal, float, int]) -> Decimal:
+    probability = to_decimal(probability)
+    inverse = inverse_probability(probability)
+    return probability * (TWO - probability) - inverse ** TWO
