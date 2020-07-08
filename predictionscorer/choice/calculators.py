@@ -17,6 +17,18 @@ def log(value: Decimal) -> Decimal:
 
 
 def brier_score(probability: Union[Decimal, float, int]) -> Decimal:
+    """Calculate the Brier score for the provided probability.
+
+    Parameters
+    ----------
+    probability
+        A number greater than or equal to 0 and less than or equal to 1.
+    Returns
+    -------
+    Decimal
+        From 2 (worst) to 0 (best).
+    """
+    assert 0 <= probability <= 1
     probability = to_decimal(probability)
     return TWO * (inverse_probability(probability) ** TWO)
 
