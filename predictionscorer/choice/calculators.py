@@ -49,6 +49,22 @@ def assert_valid_probability(probability: Union[Decimal, float, int]):
 
 
 def logarithmic_score(probability: Union[Decimal, float, int]) -> Decimal:
+    """Calculate the logarithmic score for the provided probability.
+
+    Parameters
+    ----------
+    probability
+        A number greater than 0 and less than or equal to 1.
+
+    Returns
+    -------
+    Decimal
+        Approaches infinity as `probability` approaches zero. The best possible score is 0.
+    """
+    assert_valid_probability(probability)
+    assert (
+        probability != 0
+    ), "The logarithmic score of zero is not defined because the logarithm of zero is not defined."
     probability = to_decimal(probability)
     return -log(probability)
 
