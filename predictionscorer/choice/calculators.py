@@ -34,9 +34,18 @@ def brier_score(probability: Union[Decimal, float, int]) -> Decimal:
     AssertionError
         If `probability` is less than 0 or greater than 1.
     """
-    assert 0 <= probability <= 1
+    assert_valid_probability(probability)
     probability = to_decimal(probability)
     return TWO * (inverse_probability(probability) ** TWO)
+
+
+def assert_valid_probability(probability: Union[Decimal, float, int]):
+    assert (
+        probability >= 0
+    ), "A probability cannot be less than zero, as a probability of zero indicates absolute certainty."
+    assert (
+        probability <= 1
+    ), "A probability cannot be greater than one, as a probability of one indicates absolute certainty."
 
 
 def logarithmic_score(probability: Union[Decimal, float, int]) -> Decimal:
