@@ -28,6 +28,11 @@ def brier_score(probability: Union[Decimal, float, int]) -> Decimal:
     -------
     Decimal
         From 2 (worst) to 0 (best).
+
+    Raises
+    ------
+    AssertionError
+        If `probability` is less than 0 or greater than 1.
     """
     assert 0 <= probability <= 1
     probability = to_decimal(probability)
