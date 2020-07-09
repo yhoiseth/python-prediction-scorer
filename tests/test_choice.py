@@ -75,4 +75,4 @@ class TestPractical:
         assert practical_score(0.80) == 1.36
 
     def test_max(self):
-        assert practical_score(0.9999) == 2
+        assert practical_score(1) == 2
