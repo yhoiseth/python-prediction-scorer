@@ -34,12 +34,12 @@ def brier_score(probability: Union[Decimal, float, int]) -> Decimal:
     AssertionError
         If `probability` is less than 0 or greater than 1.
     """
-    assert_valid_probability(probability)
     probability = to_decimal(probability)
+    assert_valid_probability(probability)
     return TWO * (inverse_probability(probability) ** TWO)
 
 
-def assert_valid_probability(probability: Union[Decimal, float, int]):
+def assert_valid_probability(probability: Decimal) -> None:
     assert (
         probability >= 0
     ), "A probability cannot be less than zero, as a probability of zero indicates absolute certainty."
@@ -60,12 +60,17 @@ def logarithmic_score(probability: Union[Decimal, float, int]) -> Decimal:
     -------
     Decimal
         Approaches infinity as `probability` approaches zero. The best possible score is 0.
+
+    Raises
+    ------
+    AssertionError
+        If `probability` is less than or equal to 0 or greater than 1.
     """
+    probability = to_decimal(probability)
     assert_valid_probability(probability)
     assert (
         probability != 0
     ), "The logarithmic score of zero is not defined because the logarithm of zero is not defined."
-    probability = to_decimal(probability)
     return -log(probability)
 
 
@@ -79,7 +84,7 @@ def practical_score(
     Parameters
     ----------
     probability
-        A number greater than 0 and less than or equal to 1.
+        A number greater than 0 and less than or equal to `max_probability`.
     max_probability
         The maximum probability allowed. Defaults to 0.9999.
     max_score
@@ -88,23 +93,61 @@ def practical_score(
     -------
     Decimal
         Approaches negative infinity as `probability` approaches 0. The best possible score (`probability` = 1) is defined by `max_score`.
+
+    Raises
+    ------
+    AssertionError
+        If `probability` is less than or equal to 0 or greater than `max_probability`.
+    AssertionError
+        If `max_score` is zero or less.
+    AssertionError
+        If `max_probability` is zero or less or greater than 1.
     """
-    assert_valid_probability(probability)
-    assert (
-        probability != 0
-    ), "The practical score of zero is not defined because the logarithm of zero is not defined."
     probability = to_decimal(probability)
     max_probability = to_decimal(max_probability)
     max_score = to_decimal(max_score)
+    _assert_valid_practical_score_inputs(probability, max_probability, max_score)
     nominator = max_score * (log(probability) + ONE)
     denominator = log(max_probability + ONE)
     score = nominator / denominator
-    if score <= max_score:
-        return score
-    return max_score
+    if score > max_score:
+        return max_score
+    return score
+
+
+def _assert_valid_practical_score_inputs(
+    probability: Decimal, max_probability: Decimal, max_score: Decimal
+) -> None:
+    assert_valid_probability(probability)
+    assert_valid_probability(max_probability)
+    assert max_probability > 0, "max_probability must be greater than zero."
+    assert (
+        probability <= max_probability
+    ), "probability cannot be greater than max_probability."
+    assert max_score > 0, "max_score must be greater than zero."
+    assert (
+        probability != 0
+    ), "The practical score of zero is not defined because the logarithm of zero is not defined."
 
 
 def quadratic_score(probability: Union[Decimal, float, int]) -> Decimal:
+    """Calculate the quadratic score for the provided probability.
+
+    Parameters
+    ----------
+    probability
+        A number greater than or equal to 0 and less than or equal to 1.
+    Returns
+    -------
+    Decimal
+        The worst possible score is -1. The best possible score is 1.
+
+    Raises
+    ------
+    AssertionError
+        If `probability` is less than 0 or greater than 1.
+    """
     probability = to_decimal(probability)
+    assert_valid_probability(probability)
     inverse = inverse_probability(probability)
     return probability * (TWO - probability) - inverse ** TWO
