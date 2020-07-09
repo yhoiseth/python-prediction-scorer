@@ -3,23 +3,18 @@ from typing import List
 
 from matplotlib import pyplot as plt
 
-from predictionscorer.choice import (
-    brier_score,
-    logarithmic_score,
-    practical_score,
-    quadratic_score,
-)
+from predictionscorer.choice import Prediction
 
-probabilities: List[float] = []
+predictions: List[Prediction] = []
 x_axis_data: List[int] = []
-for index in range(1, 100, 3):
-    probabilities.append(index / 100)
+for index in range(1, 100):
+    predictions.append(Prediction(index / 100, Decimal(2)))
     x_axis_data.append(index)
 
-y_axis_data: List[float] = []
+y_axis_data: List[Decimal] = []
 
-for probability in probabilities:
-    y_axis_data.append(brier_score(probability))
+for prediction in predictions:
+    y_axis_data.append(prediction.brier)
 
 plt.plot(x_axis_data, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
@@ -32,8 +27,8 @@ plt.clf()
 
 y_axis_data = []
 
-for probability in probabilities:
-    y_axis_data.append(logarithmic_score(probability))
+for prediction in predictions:
+    y_axis_data.append(prediction.logarithmic)
 
 plt.plot(x_axis_data, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
@@ -46,8 +41,8 @@ plt.clf()
 
 y_axis_data = []
 
-for probability in probabilities:
-    y_axis_data.append(practical_score(probability))
+for prediction in predictions:
+    y_axis_data.append(prediction.practical)
 
 plt.plot(x_axis_data, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
@@ -60,8 +55,8 @@ plt.clf()
 
 y_axis_data = []
 
-for probability in probabilities:
-    y_axis_data.append(quadratic_score(probability))
+for prediction in predictions:
+    y_axis_data.append(prediction.quadratic)
 
 plt.plot(x_axis_data, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
