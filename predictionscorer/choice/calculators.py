@@ -60,7 +60,7 @@ def logarithmic_score(probability: Union[float, int]) -> float:
 
 def practical_score(
     probability: Union[float, int],
-    max_probability: Union[float, int] = 0.9999,
+    max_probability: Union[float, int] = 1,
     max_score: Union[float, int] = 2,
 ) -> float:
     """Calculate the practical score for the provided probability.
@@ -70,7 +70,7 @@ def practical_score(
     probability
         A number greater than 0 and less than or equal to `max_probability`.
     max_probability
-        The maximum probability allowed. Defaults to 0.9999.
+        The maximum probability allowed. Defaults to 1.
     max_score
         The maximum score allowed. Defaults to 2.
 
