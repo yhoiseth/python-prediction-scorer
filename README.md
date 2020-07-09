@@ -81,21 +81,10 @@ Brier scores range from 0 to 2. Lower is better.
 ![Brier scores for probabilities 0-100](docs/charts/choice/brier.svg)
 
 ```python
-from predictionscorer.choice import Collection, Prediction
+from predictionscorer.choice.calculators import brier_score
 
-george = Prediction(0.40)
-kramer = Prediction(0.65)
-
-print(george.brier) # 0.72
-print(kramer.brier) # 0.2450
-
-# Now let’s compare the scores:
-collection = Collection((george, kramer))
-print(collection.median_brier) # 0.4825
-
-# The `Prediction` objects have now been enriched with relative scores:
-print(george.relative_brier) # 0.2375
-print(kramer.relative_brier) # -0.2375
+george = brier_score(0.4) # 0.72
+kramer = brier_score(0.65) # 0.2450
 ```
 
 #### Logarithmic
@@ -105,21 +94,10 @@ Logarithmic scores range from approaching infinity (worst) to 0 (best):
 ![Logarithmic scores for probabilities 0-100](docs/charts/choice/logarithmic.svg)
 
 ```python
-from predictionscorer.choice import Collection, Prediction
+from predictionscorer.choice.calculators import logarithmic_score
 
-george = Prediction(0.40)
-kramer = Prediction(0.65)
-
-print(george.logarithmic) # 1.32
-print(kramer.logarithmic) # 0.62
-
-# Now let’s compare the scores:
-collection = Collection((george, kramer))
-print(collection.median_logarithmic) # 0.97
-
-# The `Prediction` objects have now been enriched with relative scores:
-print(george.relative_logarithmic) # 0.35
-print(kramer.relative_logarithmic) # -0.35
+george = logarithmic_score(0.4) # 1.32
+kramer = logarithmic_score(0.65) # 0.62
 ```
 
 #### Practical
@@ -129,21 +107,10 @@ Practical scores range from approaching negative infinity (worst) to a configura
 ![Practical scores for probabilities 0-100](docs/charts/choice/practical.svg)
 
 ```python
-from predictionscorer.choice import Collection, Prediction
+from predictionscorer.choice.calculators import practical_score
 
-george = Prediction(0.40)
-kramer = Prediction(0.65)
-
-print(george.practical) # -0.64
-print(kramer.practical) # 0.76
-
-# Now let’s compare the scores:
-collection = Collection((george, kramer))
-print(collection.median_practical) # 0.06
-
-# The `Prediction` objects have now been enriched with relative scores:
-print(george.relative_practical) # -0.70
-print(kramer.relative_practical) # 0.70
+george = practical_score(0.4) # -0.64
+kramer = practical_score(0.65) # 0.76
 ```
 
 `Prediction` accepts to optional parameters which affects the practical score, but not the other scoring rules:
@@ -160,21 +127,10 @@ Quadratic scores range from -1 (worst) to 1 (best):
 ![Quadratic scores for probabilities 0-100](docs/charts/choice/quadratic.svg)
 
 ```python
-from predictionscorer.choice import Collection, Prediction
+from predictionscorer.choice.calculators import quadratic_score
 
-george = Prediction(0.40)
-kramer = Prediction(0.65)
-
-print(george.quadratic) # 0.28
-print(kramer.quadratic) # 0.76
-
-# Now let’s compare the scores:
-collection = Collection((george, kramer))
-print(collection.median_quadratic) # 0.52
-
-# The `Prediction` objects have now been enriched with relative scores:
-print(george.relative_quadratic) # -0.24
-print(kramer.relative_quadratic) # 0.24
+george = quadratic_score(0.40) # 0.28
+kramer = quadratic_score(0.65) # 0.76
 ```
 
 <!--
