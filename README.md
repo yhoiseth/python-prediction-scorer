@@ -84,7 +84,7 @@ Brier scores range from 0 to 2. Lower is better.
 from predictionscorer.choice.calculators import brier_score
 
 george = brier_score(0.4) # 0.72
-kramer = brier_score(0.65) # 0.2450
+kramer = brier_score(0.65) # 0.245
 ```
 
 #### Logarithmic
@@ -96,7 +96,7 @@ Logarithmic scores range from approaching infinity (worst) to 0 (best):
 ```python
 from predictionscorer.choice.calculators import logarithmic_score
 
-george = logarithmic_score(0.4) # 1.32
+george = logarithmic_score(0.4) # 1.322
 kramer = logarithmic_score(0.65) # 0.62
 ```
 
