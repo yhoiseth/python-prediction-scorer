@@ -74,6 +74,21 @@ def practical_score(
     max_probability: Union[Decimal, float, int] = Decimal("0.9999"),
     max_score: Union[Decimal, float, int] = TWO,
 ) -> Decimal:
+    """Calculate the practical score for the provided probability.
+
+    Parameters
+    ----------
+    probability
+        A number greater than 0 and less than or equal to 1.
+    max_probability
+        The maximum probability allowed. Defaults to 0.9999.
+    max_score
+        The maximum score allowed. Defaults to 2.
+    Returns
+    -------
+    Decimal
+        Approaches negative infinity as `probability` approaches 0. The best possible score (`probability` = 1) is defined by `max_score`.
+    """
     assert_valid_probability(probability)
     assert (
         probability != 0
