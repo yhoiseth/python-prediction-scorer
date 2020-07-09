@@ -19,6 +19,13 @@ def log(value: Decimal) -> Decimal:
 def brier_score(probability: Union[Decimal, float, int]) -> Decimal:
     """Calculate the Brier score for the provided probability.
 
+    >>> brier_score(0)
+    Decimal('2')
+    >>> brier_score(0.4)
+    Decimal('0.72')
+    >>> brier_score(1)
+    Decimal('0')
+
     Parameters
     ----------
     probability
@@ -153,3 +160,9 @@ def quadratic_score(probability: Union[Decimal, float, int]) -> Decimal:
     assert_valid_probability(probability)
     inverse = inverse_probability(probability)
     return probability * (TWO - probability) - inverse ** TWO
+
+
+if __name__ == "__main__":
+    import doctest
+
+    doctest.testmod()
