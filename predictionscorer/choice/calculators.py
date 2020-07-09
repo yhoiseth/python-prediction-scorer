@@ -71,9 +71,13 @@ def logarithmic_score(probability: Union[Decimal, float, int]) -> Decimal:
 
 def practical_score(
     probability: Union[Decimal, float, int],
-    max_probability: Union[Decimal, float, int],
-    max_score: Union[Decimal, float, int],
+    max_probability: Union[Decimal, float, int] = Decimal("0.9999"),
+    max_score: Union[Decimal, float, int] = TWO,
 ) -> Decimal:
+    assert_valid_probability(probability)
+    assert (
+        probability != 0
+    ), "The practical score of zero is not defined because the logarithm of zero is not defined."
     probability = to_decimal(probability)
     max_probability = to_decimal(max_probability)
     max_score = to_decimal(max_score)
