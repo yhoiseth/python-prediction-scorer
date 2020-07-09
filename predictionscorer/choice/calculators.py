@@ -119,8 +119,8 @@ def practical_score(
     denominator = _log(max_probability + ONE)
     score = nominator / denominator
     if score > max_score:
-        return max_score
-    return score
+        score = max_score
+    return round(score, 2)
 
 
 def _assert_valid_practical_score_inputs(

@@ -78,13 +78,13 @@ class TestPractical:
             assert practical_score(0.0) == 0
 
     def test_20_percent(self):
-        assert practical_score(0.20) == pytest.approx(Decimal("-2.644"), abs=1e-3)
+        assert practical_score(0.20) == Decimal("-2.64")
 
     def test_50_percent(self):
         assert practical_score(0.50) == 0
 
     def test_80_percent(self):
-        assert practical_score(0.80) == pytest.approx(Decimal("1.356"), abs=1e-3)
+        assert practical_score(0.80) == Decimal("1.36")
 
     def test_max(self):
-        assert practical_score(0.9999) == approximately(2)
+        assert practical_score(0.9999) == 2
