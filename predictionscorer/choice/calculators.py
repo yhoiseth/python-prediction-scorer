@@ -89,6 +89,7 @@ def practical_score(
         The maximum probability allowed. Defaults to 0.9999.
     max_score
         The maximum score allowed. Defaults to 2.
+
     Returns
     -------
     Decimal
@@ -137,6 +138,7 @@ def quadratic_score(probability: Union[Decimal, float, int]) -> Decimal:
     ----------
     probability
         A number greater than or equal to 0 and less than or equal to 1.
+
     Returns
     -------
     Decimal
