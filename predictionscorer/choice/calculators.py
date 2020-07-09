@@ -42,11 +42,11 @@ def brier_score(probability: Union[Decimal, float, int]) -> Decimal:
         If `probability` is less than 0 or greater than 1.
     """
     probability = to_decimal(probability)
-    assert_valid_probability(probability)
+    _assert_valid_probability(probability)
     return TWO * (_inverse_probability(probability) ** TWO)
 
 
-def assert_valid_probability(probability: Decimal) -> None:
+def _assert_valid_probability(probability: Decimal) -> None:
     assert (
         probability >= 0
     ), "A probability cannot be less than zero, as a probability of zero indicates absolute certainty."
@@ -74,7 +74,7 @@ def logarithmic_score(probability: Union[Decimal, float, int]) -> Decimal:
         If `probability` is less than or equal to 0 or greater than 1.
     """
     probability = to_decimal(probability)
-    assert_valid_probability(probability)
+    _assert_valid_probability(probability)
     assert (
         probability != 0
     ), "The logarithmic score of zero is not defined because the logarithm of zero is not defined."
@@ -126,8 +126,8 @@ def practical_score(
 def _assert_valid_practical_score_inputs(
     probability: Decimal, max_probability: Decimal, max_score: Decimal
 ) -> None:
-    assert_valid_probability(probability)
-    assert_valid_probability(max_probability)
+    _assert_valid_probability(probability)
+    _assert_valid_probability(max_probability)
     assert max_probability > 0, "max_probability must be greater than zero."
     assert (
         probability <= max_probability
@@ -157,7 +157,7 @@ def quadratic_score(probability: Union[Decimal, float, int]) -> Decimal:
         If `probability` is less than 0 or greater than 1.
     """
     probability = to_decimal(probability)
-    assert_valid_probability(probability)
+    _assert_valid_probability(probability)
     inverse = _inverse_probability(probability)
     return probability * (TWO - probability) - inverse ** TWO
 
