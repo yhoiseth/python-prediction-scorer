@@ -146,4 +146,4 @@ def _log(value: Union[float, int]) -> float:
 
 
 def _round(score: float) -> float:
-    return round(score, 2)
+    return float(round(score, 2))
