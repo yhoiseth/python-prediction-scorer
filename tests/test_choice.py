@@ -1,6 +1,3 @@
-from decimal import Decimal
-from typing import Union
-
 import pytest
 
 from predictionscorer.choice import (
@@ -11,27 +8,18 @@ from predictionscorer.choice import (
 )
 
 
-def approximately(number: Union[Decimal, float, int]):
-    if isinstance(number, int):
-        number = Decimal(number)
-    elif isinstance(number, float):
-        number = Decimal(str(number))
-    assert isinstance(number, Decimal)
-    return pytest.approx(number, abs=1e-2)
-
-
 class TestBrier:
     def test_0_percent(self):
         assert brier_score(0.0) == 2
 
     def test_20_percent(self):
-        assert brier_score(0.20) == Decimal("1.28")
+        assert brier_score(0.20) == 1.28
 
     def test_50_percent(self):
         assert brier_score(0.50) == 0.5
 
     def test_80_percent(self):
-        assert brier_score(0.80) == Decimal("0.08")
+        assert brier_score(0.80) == 0.08
 
     def test_100_percent(self):
         assert brier_score(1) == 0
@@ -42,13 +30,13 @@ class TestQuadratic:
         assert quadratic_score(0.0) == -1
 
     def test_20_percent(self):
-        assert quadratic_score(0.20) == Decimal("-0.28")
+        assert quadratic_score(0.20) == -0.28
 
     def test_50_percent(self):
         assert quadratic_score(0.50) == 0.5
 
     def test_80_percent(self):
-        assert quadratic_score(0.80) == Decimal("0.92")
+        assert quadratic_score(0.80) == 0.92
 
     def test_100_percent(self):
         assert quadratic_score(1) == 1
@@ -60,13 +48,13 @@ class TestLogarithmic:
             assert logarithmic_score(0.0)
 
     def test_20_percent(self):
-        assert logarithmic_score(0.20) == pytest.approx(Decimal("2.321"), abs=1e-3)
+        assert logarithmic_score(0.20) == 2.32
 
     def test_50_percent(self):
         assert logarithmic_score(0.50) == 1
 
     def test_80_percent(self):
-        assert logarithmic_score(0.80) == pytest.approx(Decimal("0.321"), abs=1e-3)
+        assert logarithmic_score(0.80) == 0.32
 
     def test_100_percent(self):
         assert logarithmic_score(1) == 0
@@ -78,13 +66,13 @@ class TestPractical:
             assert practical_score(0.0) == 0
 
     def test_20_percent(self):
-        assert practical_score(0.20) == Decimal("-2.64")
+        assert practical_score(0.20) == -2.64
 
     def test_50_percent(self):
         assert practical_score(0.50) == 0
 
     def test_80_percent(self):
-        assert practical_score(0.80) == Decimal("1.36")
+        assert practical_score(0.80) == 1.36
 
     def test_max(self):
         assert practical_score(0.9999) == 2

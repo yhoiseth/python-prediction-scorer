@@ -1,1 +1,0 @@
-from predictionscorer.predictions import *
