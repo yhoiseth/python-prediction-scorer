@@ -4,4 +4,5 @@ matplotlib
 mypy
 pre-commit
 pytest
+sphinx
 twine
