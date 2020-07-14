@@ -3,8 +3,8 @@ from typing import Union
 
 from predictionscorer._common import inverse_probability, log, to_decimal
 
-ONE = Decimal(1)
-TWO = Decimal(2)
+_ONE = Decimal(1)
+_TWO = Decimal(2)
 
 
 def brier_score(probability: Union[Decimal, float, int]) -> Decimal:
@@ -27,16 +27,7 @@ def brier_score(probability: Union[Decimal, float, int]) -> Decimal:
     """
     probability = to_decimal(probability)
     _assert_valid_probability(probability)
-    return TWO * (inverse_probability(probability) ** TWO)
-
-
-def _assert_valid_probability(probability: Decimal) -> None:
-    assert (
-        probability >= 0
-    ), "A probability cannot be less than zero, as a probability of zero indicates absolute certainty."
-    assert (
-        probability <= 1
-    ), "A probability cannot be greater than one, as a probability of one indicates absolute certainty."
+    return _TWO * (inverse_probability(probability) ** _TWO)
 
 
 def logarithmic_score(probability: Union[Decimal, float, int]) -> Decimal:
@@ -68,7 +59,7 @@ def logarithmic_score(probability: Union[Decimal, float, int]) -> Decimal:
 def practical_score(
     probability: Union[Decimal, float, int],
     max_probability: Union[Decimal, float, int] = Decimal("0.9999"),
-    max_score: Union[Decimal, float, int] = TWO,
+    max_score: Union[Decimal, float, int] = _TWO,
 ) -> Decimal:
     """Calculate the practical score for the provided probability.
 
@@ -99,27 +90,12 @@ def practical_score(
     max_probability = to_decimal(max_probability)
     max_score = to_decimal(max_score)
     _assert_valid_practical_score_inputs(probability, max_probability, max_score)
-    nominator = max_score * (log(probability) + ONE)
-    denominator = log(max_probability + ONE)
+    nominator = max_score * (log(probability) + _ONE)
+    denominator = log(max_probability + _ONE)
     score = nominator / denominator
     if score > max_score:
         return max_score
     return score
-
-
-def _assert_valid_practical_score_inputs(
-    probability: Decimal, max_probability: Decimal, max_score: Decimal
-) -> None:
-    _assert_valid_probability(probability)
-    _assert_valid_probability(max_probability)
-    assert max_probability > 0, "max_probability must be greater than zero."
-    assert (
-        probability <= max_probability
-    ), "probability cannot be greater than max_probability."
-    assert max_score > 0, "max_score must be greater than zero."
-    assert (
-        probability != 0
-    ), "The practical score of zero is not defined because the logarithm of zero is not defined."
 
 
 def quadratic_score(probability: Union[Decimal, float, int]) -> Decimal:
@@ -143,4 +119,28 @@ def quadratic_score(probability: Union[Decimal, float, int]) -> Decimal:
     probability = to_decimal(probability)
     _assert_valid_probability(probability)
     inverse = inverse_probability(probability)
-    return probability * (TWO - probability) - inverse ** TWO
+    return probability * (_TWO - probability) - inverse ** _TWO
+
+
+def _assert_valid_practical_score_inputs(
+    probability: Decimal, max_probability: Decimal, max_score: Decimal
+) -> None:
+    _assert_valid_probability(probability)
+    _assert_valid_probability(max_probability)
+    assert max_probability > 0, "max_probability must be greater than zero."
+    assert (
+        probability <= max_probability
+    ), "probability cannot be greater than max_probability."
+    assert max_score > 0, "max_score must be greater than zero."
+    assert (
+        probability != 0
+    ), "The practical score of zero is not defined because the logarithm of zero is not defined."
+
+
+def _assert_valid_probability(probability: Decimal) -> None:
+    assert (
+        probability >= 0
+    ), "A probability cannot be less than zero, as a probability of zero indicates absolute certainty."
+    assert (
+        probability <= 1
+    ), "A probability cannot be greater than one, as a probability of one indicates absolute certainty."
