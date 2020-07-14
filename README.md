@@ -35,6 +35,16 @@ Some of the code in this library comes from my work at [Empiricast](https://yngv
 
 For a thorough introduction to scoring rules, see [Calibration Scoring Rules for Practical Prediction Training](https://arxiv.org/abs/1808.07501v1) by [Spencer Greenberg](https://www.spencergreenberg.com/).
 
+## Features
+
+1. 4 scoring rules for choice predictions:
+   1. Brier
+   2. Logarithmic
+   3. Practical
+   4. Quadratic
+2. Fully type hinted
+3. 100 percent test coverage
+
 ## Installation
 
 `pip install predictionscorer`
@@ -142,39 +152,6 @@ kramer_score = quadratic_score(kramer_probability) # 0.76
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md).
-
-## Goals and judgment calls
-
-With this library, I am trying to achieve the following goals.
-
-- Feature complete
-- Easy to read (for as many people as possible)
-- Easy and predictable to use (with modern tools)
-
-Performance is _not_ a goal at the moment.
-
-### Feature complete
-
-There are many ways to score and compare predictions, some more complicated than others. For example, consider the case where many people make multiple forecasts on the same question over a period of time. We want to award being right early, which means comparing early forecasts to early forecasts, late forecasts to late forecasts, and aggregating them all together.
-
-The library should handle even such advanced cases.
-
-### Easy to read for as many people as possible
-
-The code should be easy to read, even for people who don’t know math or Python well.
-
-To achieve this, I’ve opted for an object-oriented design rather than, say, the array approach used by [NumPy](https://numpy.org/). The result is a more verbose and explicit API. I also try to not use advanced Python features (which many don’t understand).
-
-### Easy and predictable to use with modern tools
-
-The library should be easy to use, and the results should be predictable and correct.
-
-- Type hints and annotations wherever possible (this also makes the code easier to read). Use a modern IDE like [PyCharm](https://www.jetbrains.com/pycharm/) and/or a type checker like [mypy](http://mypy-lang.org/) to benefit from this.
-- The [Decimal](https://docs.python.org/3/library/decimal.html) data type rather than floats. This makes the library a bit more involved to use if you don’t use decimals in your code, but you won’t get unexpected return values like 3.3000000000000003.
-- Assertions so the code fails early instead of producing incorrect results. For example, creating an instance of the `Prediction` class will fail if you pass it probabilities that sum to anything else than 100.
-- Automated tests to make sure that we get the expected results.
-- Immutability where possible in order to prevent bugs.
-- [Semantic versioning](https://semver.org/) in order to make it easy to deal with changes.
 
 ## Contributing
 
