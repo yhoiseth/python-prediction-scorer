@@ -1,7 +1,7 @@
 from decimal import Decimal
 from typing import Union
 
-from predictionscorer.common import _inverse_probability, _log, to_decimal
+from predictionscorer._common import inverse_probability, log, to_decimal
 
 ONE = Decimal(1)
 TWO = Decimal(2)
@@ -27,7 +27,7 @@ def brier_score(probability: Union[Decimal, float, int]) -> Decimal:
     """
     probability = to_decimal(probability)
     _assert_valid_probability(probability)
-    return TWO * (_inverse_probability(probability) ** TWO)
+    return TWO * (inverse_probability(probability) ** TWO)
 
 
 def _assert_valid_probability(probability: Decimal) -> None:
@@ -62,7 +62,7 @@ def logarithmic_score(probability: Union[Decimal, float, int]) -> Decimal:
     assert (
         probability != 0
     ), "The logarithmic score of zero is not defined because the logarithm of zero is not defined."
-    return -_log(probability)
+    return -log(probability)
 
 
 def practical_score(
@@ -99,8 +99,8 @@ def practical_score(
     max_probability = to_decimal(max_probability)
     max_score = to_decimal(max_score)
     _assert_valid_practical_score_inputs(probability, max_probability, max_score)
-    nominator = max_score * (_log(probability) + ONE)
-    denominator = _log(max_probability + ONE)
+    nominator = max_score * (log(probability) + ONE)
+    denominator = log(max_probability + ONE)
     score = nominator / denominator
     if score > max_score:
         return max_score
@@ -142,5 +142,5 @@ def quadratic_score(probability: Union[Decimal, float, int]) -> Decimal:
     """
     probability = to_decimal(probability)
     _assert_valid_probability(probability)
-    inverse = _inverse_probability(probability)
+    inverse = inverse_probability(probability)
     return probability * (TWO - probability) - inverse ** TWO
