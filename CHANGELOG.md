@@ -10,11 +10,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
+- New scoring rules API
+- Charts for all scoring rules
+
 ### Changed
 
 ### Fixed
 
 ### Removed
+
+- Old API
 
 ## [0.3.0] - 2020-05-24
 
