@@ -131,8 +131,6 @@ kramer_score = practical_score(0.65) # 0.76
 | `max_practical_score` | `Decimal(2)`        |
 | `max_probability`     | `Decimal("0.9999")` |
 
-@TODO: Optional parameters
-
 #### Quadratic
 
 Quadratic scores range from -1 (worst) to 1 (best):
