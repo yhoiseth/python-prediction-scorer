@@ -80,7 +80,7 @@ Let us look at each of them.
 
 Brier scores range from 0 to 2. Lower is better.
 
-![Brier scores for probabilities 0-100](docs/charts/choice/brier.svg)
+![Brier scores for probabilities 0-100](docs/charts/brier.svg)
 
 ```python
 from predictionscorer.rules import brier_score
@@ -96,7 +96,7 @@ kramer_score = brier_score(kramer_probability) # 0.2450
 
 Logarithmic scores range from approaching infinity (worst) to 0 (best):
 
-![Logarithmic scores for probabilities 0-100](docs/charts/choice/logarithmic.svg)
+![Logarithmic scores for probabilities 0-100](docs/charts/logarithmic.svg)
 
 ```python
 from predictionscorer.rules import logarithmic_score
@@ -112,7 +112,7 @@ kramer_probability = logarithmic_score(kramer_probability) # 0.62
 
 Practical scores range from approaching negative infinity (worst) to a configurable maximum — we use 2:
 
-![Practical scores for probabilities 0-100](docs/charts/choice/practical.svg)
+![Practical scores for probabilities 0-100](docs/charts/practical.svg)
 
 ```python
 from predictionscorer.rules import practical_score
@@ -137,7 +137,7 @@ kramer_score = practical_score(0.65) # 0.76
 
 Quadratic scores range from -1 (worst) to 1 (best):
 
-![Quadratic scores for probabilities 0-100](docs/charts/choice/quadratic.svg)
+![Quadratic scores for probabilities 0-100](docs/charts/quadratic.svg)
 
 ```python
 from predictionscorer.rules import quadratic_score
