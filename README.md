@@ -1,5 +1,6 @@
 ![Code style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)
 ![tests](https://github.com/yhoiseth/python-prediction-scorer/workflows/tests/badge.svg)
+[![PyPI version](https://badge.fury.io/py/predictionscorer.svg)](https://badge.fury.io/py/predictionscorer)
 
 # Python Prediction Scorer
 
