@@ -1,19 +1,10 @@
-import math
 from decimal import Decimal
 from typing import Union
 
-from predictionscorer.common import to_decimal
+from predictionscorer.common import _inverse_probability, _log, to_decimal
 
 ONE = Decimal(1)
 TWO = Decimal(2)
-
-
-def _inverse_probability(probability: Decimal) -> Decimal:
-    return ONE - probability
-
-
-def _log(value: Decimal) -> Decimal:
-    return Decimal(str(math.log2(value)))
 
 
 def brier_score(probability: Union[Decimal, float, int]) -> Decimal:
