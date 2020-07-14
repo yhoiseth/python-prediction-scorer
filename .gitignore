@@ -141,5 +141,6 @@ cython_debug/
 .DS_Store
 **/.DS_Store
 
-# Visual Studio Code
+# IDEs
+.idea/
 .vscode/
