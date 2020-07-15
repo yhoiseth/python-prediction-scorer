@@ -46,6 +46,10 @@ For a thorough introduction to scoring rules, see [Calibration Scoring Rules for
 2. Fully type hinted
 3. 100 percent test coverage
 
+## REST API
+
+Python Prediction Scorer is also available as a REST API. This is useful if you are not using Python or if you are using a Python version that we don’t support. The documentation is available on [https://predictionscorer.herokuapp.com/docs](https://predictionscorer.herokuapp.com/docs).
+
 ## Installation
 
 `pip install predictionscorer`
