@@ -22,6 +22,8 @@ for probability in probabilities:
 plt.plot(probabilities, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
 plt.xticks([0.0, 0.25, 0.50, 0.75, 1.0])
+# plt.yticks([0.0, 0.50, 1.0, 1.5, 2.0])
+plt.grid(True)
 plt.ylabel("Brier score")
 plt.draw()
 plt.savefig("docs/charts/brier.svg")
@@ -35,6 +37,9 @@ for probability in probabilities:
 
 plt.plot(probabilities, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
+plt.xticks([0.0, 0.25, 0.50, 0.75, 1.0])
+# plt.yticks([-1.0, -0.50, 0, 0.5, 1.0])
+plt.grid(True)
 plt.ylabel("Quadratic score")
 plt.draw()
 plt.savefig("docs/charts/quadratic.svg")
@@ -49,6 +54,8 @@ for probability in probabilities:
 
 plt.plot(probabilities, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
+plt.xticks([0.0, 0.25, 0.50, 0.75, 1.0])
+plt.grid(True)
 plt.ylabel("Practical score")
 plt.draw()
 plt.savefig("docs/charts/practical.svg")
@@ -62,6 +69,8 @@ for probability in probabilities:
 
 plt.plot(probabilities, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
+plt.xticks([0.0, 0.25, 0.50, 0.75, 1.0])
+plt.grid(True)
 plt.ylabel("Logarithmic score")
 plt.draw()
 plt.savefig("docs/charts/logarithmic.svg")
