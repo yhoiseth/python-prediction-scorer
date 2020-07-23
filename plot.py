@@ -11,7 +11,7 @@ from predictionscorer.rules import (
 )
 
 probabilities: List[float] = []
-for index in range(1, 100):
+for index in range(0, 101):
     probabilities.append((index / 100))
 
 y_axis_data: List[Decimal] = []
@@ -21,6 +21,7 @@ for probability in probabilities:
 
 plt.plot(probabilities, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
+plt.xticks([0.0, 0.25, 0.50, 0.75, 1.0])
 plt.ylabel("Brier score")
 plt.draw()
 plt.savefig("docs/charts/brier.svg")
@@ -30,13 +31,13 @@ plt.clf()
 y_axis_data = []
 
 for probability in probabilities:
-    y_axis_data.append(logarithmic_score(probability))
+    y_axis_data.append(quadratic_score(probability))
 
 plt.plot(probabilities, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
-plt.ylabel("Logarithmic score")
+plt.ylabel("Quadratic score")
 plt.draw()
-plt.savefig("docs/charts/logarithmic.svg")
+plt.savefig("docs/charts/quadratic.svg")
 
 plt.clf()
 
@@ -56,10 +57,10 @@ plt.clf()
 y_axis_data = []
 
 for probability in probabilities:
-    y_axis_data.append(quadratic_score(probability))
+    y_axis_data.append(logarithmic_score(probability))
 
 plt.plot(probabilities, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
-plt.ylabel("Quadratic score")
+plt.ylabel("Logarithmic score")
 plt.draw()
-plt.savefig("docs/charts/quadratic.svg")
+plt.savefig("docs/charts/logarithmic.svg")
