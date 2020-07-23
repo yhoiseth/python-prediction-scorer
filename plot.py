@@ -41,10 +41,11 @@ plt.savefig("docs/charts/quadratic.svg")
 
 plt.clf()
 
-y_axis_data = []
+probabilities.pop(0)
 
+y_axis_data = []
 for probability in probabilities:
-    y_axis_data.append(practical_score(probability))
+    y_axis_data.append(practical_score(probability, max_probability=1))
 
 plt.plot(probabilities, y_axis_data)
 plt.xlabel("Probability assigned to correct answer")
