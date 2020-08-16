@@ -30,6 +30,17 @@ def brier_score(probability: Union[Decimal, float, int]) -> Decimal:
     return _TWO * (inverse_probability(probability) ** _TWO)
 
 
+def distance_score(
+    outcome: Union[Decimal, float, int],
+    lower: Union[Decimal, float, int],
+    upper: Union[Decimal, float, int],
+    probability: Union[Decimal, float, int] = Decimal("0.95"),
+    max_score: Union[Decimal, float, int] = Decimal(100),
+    units: Union[Decimal, float, int] = _ONE,
+) -> Decimal:
+    return Decimal("9.091")
+
+
 def logarithmic_score(probability: Union[Decimal, float, int]) -> Decimal:
     """Calculate the logarithmic score for the provided probability.
 

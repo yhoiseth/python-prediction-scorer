@@ -5,6 +5,7 @@ import pytest
 
 from predictionscorer.rules import (
     brier_score,
+    distance_score,
     logarithmic_score,
     practical_score,
     quadratic_score,
