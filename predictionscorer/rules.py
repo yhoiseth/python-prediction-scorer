@@ -38,6 +38,13 @@ def distance_score(
     max_score: Union[Decimal, float, int] = Decimal(100),
     units: Union[Decimal, float, int] = _ONE,
 ) -> Decimal:
+    outcome = to_decimal(outcome)
+    lower = to_decimal(lower)
+    upper = to_decimal(upper)
+    if outcome == lower == upper:
+        raise ValueError(
+            "The distance score is not defined for cases when outcome, lower and upper are equal."
+        )
     return Decimal("9.091")
 
 
