@@ -39,9 +39,13 @@ class TestBrier:
 
 
 class TestDistance:
-    def test_spot_on(self):
+    def test_example(self):
         score = distance_score(10, 5, 15)
         assert score == approximately(9.091)
+
+    def test_perfect_95_percent(self):
+        with pytest.raises(ValueError):
+            distance_score(10, 10, 10)
 
 
 class TestLogarithmic:
