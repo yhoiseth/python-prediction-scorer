@@ -12,6 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     name="predictionscorer",
+    package_data={"predictionscorer": ["py.typed"]},
     packages=setuptools.find_packages(),
     python_requires=">=3.8,<3.9",
     url="https://github.com/yhoiseth/python-prediction-scorer",
