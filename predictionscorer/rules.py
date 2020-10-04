@@ -51,6 +51,8 @@ def distance_score(
     r = (lower - outcome) / distance_units
     s = (upper - lower) / distance_units
     t = (outcome - upper) / distance_units
+    if outcome > upper:
+        return (-_TWO * t) / (_ONE - probability) - (s * t) / (1 + t)
     return Decimal(4) * max_score * ((r * t) / (s ** _TWO)) * (_ONE - s / (_ONE + s))
 
 

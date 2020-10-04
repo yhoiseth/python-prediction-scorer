@@ -47,7 +47,10 @@ class TestDistance:
         assert distance_score(0, -1, 1) == approximately(0.667)
 
     def test_too_low(self):
-        assert distance_score(2, 0, 1) == approximately(-8)
+        assert distance_score(outcome=2, lower=0, upper=1) == -20.5
+
+    def test_too_high(self):
+        assert distance_score(0, 1, 2) == -8
 
     def test_perfect(self):
         with pytest.raises(ValueError):
