@@ -18,3 +18,11 @@ def inverse_probability(probability: Decimal) -> Decimal:
 
 def log(value: Decimal) -> Decimal:
     return Decimal(str(math.log2(value)))
+
+
+def too_high(outcome: Decimal, low: Decimal) -> bool:
+    return outcome < low
+
+
+def too_low(outcome: Decimal, high: Decimal) -> bool:
+    return outcome > high

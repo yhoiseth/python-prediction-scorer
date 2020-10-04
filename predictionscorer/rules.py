@@ -1,7 +1,13 @@
 from decimal import Decimal
 from typing import Union
 
-from predictionscorer._common import inverse_probability, log, to_decimal
+from predictionscorer._common import (
+    inverse_probability,
+    log,
+    to_decimal,
+    too_high,
+    too_low,
+)
 
 _ONE = Decimal(1)
 _TWO = Decimal(2)
@@ -51,9 +57,9 @@ def distance_score(
     r = (low - outcome) / distance_units
     s = (high - low) / distance_units
     t = (outcome - high) / distance_units
-    if outcome > high:
+    if too_low(outcome, high):
         return (-_TWO * t) / (_ONE - probability) - (s * t) / (_ONE + t)
-    if outcome < low:
+    if too_high(outcome, low):
         return (-_TWO * r) / (_ONE - probability) - (r * s) / (_ONE + r)
     return Decimal(4) * max_score * ((r * t) / (s ** _TWO)) * (_ONE - s / (_ONE + s))
 
