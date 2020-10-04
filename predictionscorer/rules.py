@@ -54,6 +54,8 @@ def distance_score(
         raise ValueError(
             "The distance score is not defined for cases when outcome, lower and upper are equal."
         )
+    if low > high:
+        raise ValueError("high must be greater than low.")
     r = (low - outcome) / distance_units
     s = (high - low) / distance_units
     t = (outcome - high) / distance_units
