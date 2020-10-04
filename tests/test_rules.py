@@ -39,11 +39,17 @@ class TestBrier:
 
 
 class TestDistance:
-    def test_example(self):
+    def test_10_5_15(self):
         score = distance_score(10, 5, 15)
-        assert score == approximately(9.091)
+        assert score == approximately(0.182)
 
-    def test_perfect_95_percent(self):
+    def test_0_minus_1_1(self):
+        assert distance_score(0, -1, 1) == approximately(0.667)
+
+    # def test_too_low(self):
+    #     assert distance_score(2, 0, 1) == approximately()
+
+    def test_perfect(self):
         with pytest.raises(ValueError):
             distance_score(10, 10, 10)
 
