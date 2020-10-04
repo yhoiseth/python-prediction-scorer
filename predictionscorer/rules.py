@@ -32,27 +32,29 @@ def brier_score(probability: Union[Decimal, float, int]) -> Decimal:
 
 def distance_score(
     outcome: Union[Decimal, float, int],
-    lower: Union[Decimal, float, int],
-    upper: Union[Decimal, float, int],
+    low: Union[Decimal, float, int],
+    high: Union[Decimal, float, int],
     distance_units: Union[Decimal, float, int] = _ONE,
     max_score: Union[Decimal, float, int] = _TWO,
     probability: Union[Decimal, float, int] = Decimal("0.90"),
 ) -> Decimal:
     outcome = to_decimal(outcome)
-    lower = to_decimal(lower)
-    upper = to_decimal(upper)
+    low = to_decimal(low)
+    high = to_decimal(high)
     distance_units = to_decimal(distance_units)
     max_score = to_decimal(max_score)
     probability = to_decimal(probability)
-    if outcome == lower == upper:
+    if outcome == low == high:
         raise ValueError(
             "The distance score is not defined for cases when outcome, lower and upper are equal."
         )
-    r = (lower - outcome) / distance_units
-    s = (upper - lower) / distance_units
-    t = (outcome - upper) / distance_units
-    if outcome > upper:
-        return (-_TWO * t) / (_ONE - probability) - (s * t) / (1 + t)
+    r = (low - outcome) / distance_units
+    s = (high - low) / distance_units
+    t = (outcome - high) / distance_units
+    if outcome > high:
+        return (-_TWO * t) / (_ONE - probability) - (s * t) / (_ONE + t)
+    if outcome < low:
+        return (-_TWO * r) / (_ONE - probability) - (r * s) / (_ONE + r)
     return Decimal(4) * max_score * ((r * t) / (s ** _TWO)) * (_ONE - s / (_ONE + s))
 
 
