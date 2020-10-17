@@ -40,14 +40,12 @@ def distance_score(
     outcome: Union[Decimal, float, int],
     low: Union[Decimal, float, int],
     high: Union[Decimal, float, int],
-    distance_units: Union[Decimal, float, int] = _ONE,
     max_score: Union[Decimal, float, int] = _TWO,
     probability: Union[Decimal, float, int] = Decimal("0.90"),
 ) -> Decimal:
     outcome = to_decimal(outcome)
     low = to_decimal(low)
     high = to_decimal(high)
-    distance_units = to_decimal(distance_units)
     max_score = to_decimal(max_score)
     probability = to_decimal(probability)
     if outcome == low == high:
@@ -56,9 +54,9 @@ def distance_score(
         )
     if low > high:
         raise ValueError("high must be greater than low.")
-    r = (low - outcome) / distance_units
-    s = (high - low) / distance_units
-    t = (outcome - high) / distance_units
+    r = low - outcome
+    s = high - low
+    t = outcome - high
     if too_low(outcome, high):
         return (-_TWO * t) / (_ONE - probability) - (s * t) / (_ONE + t)
     if too_high(outcome, low):
