@@ -1,7 +1,13 @@
 from decimal import Decimal
 from typing import Union
 
-from predictionscorer._common import inverse_probability, log, to_decimal
+from predictionscorer._common import (
+    inverse_probability,
+    log,
+    to_decimal,
+    too_high,
+    too_low,
+)
 
 _ONE = Decimal(1)
 _TWO = Decimal(2)
@@ -28,6 +34,69 @@ def brier_score(probability: Union[Decimal, float, int]) -> Decimal:
     probability = to_decimal(probability)
     _assert_valid_probability(probability)
     return _TWO * (inverse_probability(probability) ** _TWO)
+
+
+def distance_score(
+    outcome: Union[Decimal, float, int],
+    low: Union[Decimal, float, int],
+    high: Union[Decimal, float, int],
+    max_score: Union[Decimal, float, int] = _TWO,
+    probability: Union[Decimal, float, int] = Decimal("0.90"),
+) -> Decimal:
+    """Calculate the distance score for the provided confidence interval and outcome.
+
+    Parameters
+    ----------
+    outcome
+        The value that the predicted variable ended up being.
+    low
+        The lower end of the confidence interval.
+    high
+        The higher end of the confidence interval.
+    max_score
+        The maximum score that can be set. Defaults to 2.
+    probability
+        The confidence interval probability. Defaults to 0.90.
+
+    Returns
+    -------
+    Decimal
+        The distance score.
+
+    Raises
+    ------
+    ValueError
+        If outcome, low and high are all the same number.
+    ValueError
+        If low is greater than high
+    ValueError
+        If probability is less than zero.
+    ValueError
+        If probability is 1 or greater.
+    """
+    outcome = to_decimal(outcome)
+    low = to_decimal(low)
+    high = to_decimal(high)
+    max_score = to_decimal(max_score)
+    probability = to_decimal(probability)
+    if probability < 0:
+        raise ValueError("The probability cannot be less than 0.")
+    if probability >= 1:
+        raise ValueError("The probability cannot be 1 or greater.")
+    if outcome == low == high:
+        raise ValueError(
+            "The distance score is not defined for cases when outcome, lower and upper are equal."
+        )
+    if low > high:
+        raise ValueError("high must be greater than low.")
+    r = low - outcome
+    s = high - low
+    t = outcome - high
+    if too_low(outcome, high):
+        return (-_TWO * t) / (_ONE - probability) - (s * t) / (_ONE + t)
+    if too_high(outcome, low):
+        return (-_TWO * r) / (_ONE - probability) - (r * s) / (_ONE + r)
+    return Decimal(4) * max_score * ((r * t) / (s ** _TWO)) * (_ONE - s / (_ONE + s))
 
 
 def logarithmic_score(probability: Union[Decimal, float, int]) -> Decimal:

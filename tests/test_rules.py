@@ -5,6 +5,7 @@ import pytest
 
 from predictionscorer.rules import (
     brier_score,
+    distance_score,
     logarithmic_score,
     practical_score,
     quadratic_score,
@@ -35,6 +36,28 @@ class TestBrier:
 
     def test_100_percent(self):
         assert brier_score(1) == 0
+
+
+class TestDistance:
+    def test_10_5_15(self):
+        score = distance_score(10, 5, 15)
+        assert score == approximately(0.182)
+
+    def test_0_minus_1_1(self):
+        assert distance_score(0, -1, 1) == approximately(0.667)
+
+    def test_too_low(self):
+        assert distance_score(outcome=2, low=0, high=1) == -20.5
+
+    def test_too_high(self):
+        assert distance_score(outcome=0, low=1, high=2) == -20.5
+
+    def test_perfect(self):
+        with pytest.raises(ValueError):
+            distance_score(10, 10, 10)
+
+    def test_all_options(self):
+        assert distance_score(96, 90, 100, 10, 0.5) == approximately(0.873)
 
 
 class TestLogarithmic:
