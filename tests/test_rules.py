@@ -56,6 +56,9 @@ class TestDistance:
         with pytest.raises(ValueError):
             distance_score(10, 10, 10)
 
+    def test_all_options(self):
+        assert distance_score(96, 90, 100, 10, 0.5) == approximately(0.873)
+
 
 class TestLogarithmic:
     def test_0_percent(self):
