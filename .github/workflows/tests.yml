@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9, 3.10]
+        python-version: [3.8, 3.9, "3.10"]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -36,6 +36,6 @@ jobs:
         run: |
           python plot.py
       - name: Super-Linter
-        uses: github/super-linter@v2.0.0
+        uses: github/super-linter@v4.9.7
         env:
           VALIDATE_PYTHON: false # Ignore import errors
